@@ -115,13 +115,17 @@ section {
 }
 
 #menu .e-menu-item a {
-    width: 100%;
+    width: 100%!important;
     color: rgb(171, 163, 152);
     font-weight: 300;
     box-sizing: border-box;
     padding: 10px;
+    margin-top:30px;
+    margin-bottom:30px;
 }
-
+.e-anchor-wrap {
+    width: 100% !important;
+}
 #menu .e-anchor-wrap {
     display: inline-block;
 }
@@ -269,7 +273,6 @@ section {
         width: 100% !important;
         height: 100% !important;
         transform: translateX(-100%); /* Sidebar should be closed by default on smaller screens */
-        position: fixed;
         overflow-y: auto;
     }
     
