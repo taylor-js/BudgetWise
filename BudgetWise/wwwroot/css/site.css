@@ -133,6 +133,7 @@ section {
 #menu .e-menu-item.e-separator {
     border: none;
     margin: 5px 5px;
+    padding: 0 20px;
     text-transform: uppercase;
     font-weight: bold;
     font-size: 13px;
