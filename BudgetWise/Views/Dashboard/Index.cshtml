@@ -148,14 +148,14 @@
     <div class="col-12 col-md-6 mb-4">
         <div class="widget chart">
             <div class="p-4">
-                <h5 class="fw-bold">Income & Expense Distribution</h5>
-                <h6>Across Different Categories</h6>
+                <h5 class="fw-bold">Income & Expense</h5>
+                <h6>Distribution Across Categories</h6>
             </div>
             <div class="px-4 pb-4">
                 @if (ViewBag.RadarChartData is not null)
                 {
                     <ejs-chart id="radar-chart" width="100%" height="500px" palettes='@(new string[] {"#e61f1f", "#2cb850"})' PointRender="onPointRender">
-                        <e-chart-primaryxaxis labelFormat="${value}" valueType="Category" interval="3" labelRotation="0" labelIntersectAction="Trim" crossesAt="0" isInversed="true">
+                        <e-chart-primaryxaxis visible="false" labelFormat="${value}" valueType="Category" interval="2" labelRotation="0" labelIntersectAction="Trim" crossesAt="1" isInversed="true">
                             <e-majorgridlines width="0"></e-majorgridlines>
                             <e-labelstyle color="#ffffff"></e-labelstyle>
                         </e-chart-primaryxaxis>
@@ -180,8 +180,8 @@
                             <e-tooltipsettings-border width="1"></e-tooltipsettings-border>
                             <e-tooltipsettings-textstyle color="#ffffff" fontFamily="inherit" size="15px"></e-tooltipsettings-textstyle>
                         </e-chart-tooltipsettings>
-                        <e-chart-zoomsettings enableMouseWheelZooming="true" enablePinchZooming="true" enableSelectionZooming="true" enablePan="true"></e-chart-zoomsettings>
-                        <e-chart-margin left="50" right="50" top="50" bottom="50"></e-chart-margin>
+                        <e-chart-zoomsettings enableMouseWheelZooming="true" enablePinchZooming="true" enableSelectionZooming="true" enablePan="true" enableScrollbar="true"></e-chart-zoomsettings>
+                        <e-chart-margin left="0" right="0" top="0" bottom="0"></e-chart-margin>
                     </ejs-chart>
                 }
             </div>
