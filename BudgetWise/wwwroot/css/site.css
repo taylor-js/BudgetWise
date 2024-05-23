@@ -176,7 +176,6 @@ section {
     transform: translateX(-100%);
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
-    overflow: hidden;
 }
 .sidebar::-webkit-scrollbar {
     display: none; /* Chrome, Safari, and Opera */
@@ -199,7 +198,7 @@ section {
 
 .e-sidebar {
     width: 100% !important;
-    position: fixed;
+    position: absolute;
     background-color: #12161d;
     overflow-y: auto; /*The issue is here*/
     -ms-overflow-style: none; /* IE and Edge */
@@ -214,6 +213,7 @@ section {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    overflow-y: auto;
 }
 
 /*Main Content & Sidebar*/
@@ -265,9 +265,11 @@ section {
 
 @media (max-width: 767px) {
     .sidebar {
-        width: 100%!important;
-        height:100%!important;
+        width: 100% !important;
+        height: 100% !important;
         transform: translateX(-100%); /* Sidebar should be closed by default on smaller screens */
+        position: fixed;
+        overflow-y: auto;
     }
     
     .sidebar.open {

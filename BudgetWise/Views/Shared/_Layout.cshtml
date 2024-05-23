@@ -43,17 +43,17 @@
                 </a>
             </div>
             <div class="d-flex align-items-center ms-auto">
-                @if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
+                @if (User is not null && User.Identity is not null && User.Identity.IsAuthenticated)
                 {
                     <partial name="_LoginPartial.cshtml" />
                 }
-                @if (User == null || User.Identity == null || !User.Identity.IsAuthenticated)
+                @if (User is null || User.Identity is null || !User.Identity.IsAuthenticated)
                 {
                     <div class="nav-item ms-2">
                         <a id="about-link" class="logo-text d-lg-block me-2" href="@Url.Action("About", "Home")" style="text-decoration: none; color: white; font-weight: 600;">About</a>
                     </div>
                 }
-                @if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
+                @if (User is not null && User.Identity is not null && User.Identity.IsAuthenticated)
                 {
                     <div class="nav-item ms-2">
                         <i id="sidebar-toggler-layout" class="sidebar-toggler fa-solid fa-bars fa-2x" onclick="toggleSidebar()"></i>
@@ -63,13 +63,13 @@
         </div>
     </nav>
 
-    <div class="wrapper @((User != null && User.Identity != null && User.Identity.IsAuthenticated) ? "open" : "")" >
+    <div class="wrapper @((User is not null && User.Identity is not null && User.Identity.IsAuthenticated) ? "open" : "")">
         <!-- Sidebar Partial -->
         
         <div class="container-fluid">
             <div class="row">
                 <!-- Sidebar -->
-                @if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
+                @if (User is not null && User.Identity is not null && User.Identity.IsAuthenticated)
                 {
                     <div id="mySidebar" class="col-md-2 sidebar" >
                         <partial name="_SideBar.cshtml" />
@@ -125,10 +125,6 @@
 
     <script type="text/javascript" asp-append-version="true">
         $(document).ready(function () {
-            $('#sidebar-toggler-layout').on('click', function () {
-                console.log('Toggler clicked');
-                toggleSidebar();
-            });
             function toggleSidebar() {
                 var sidebar = $('#mySidebar');
                 var wrapper = $('.wrapper');
@@ -138,6 +134,10 @@
                 body.toggleClass('sidebar-open');
                 console.log('Sidebar toggled');
             }
+            $('#sidebar-toggler-layout').on('click', function () {
+                console.log('Toggler clicked');
+                toggleSidebar();
+            });
         });
     </script>
     @await RenderSectionAsync("scripts", required: false)
