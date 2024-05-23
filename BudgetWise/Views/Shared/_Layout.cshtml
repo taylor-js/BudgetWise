@@ -56,7 +56,7 @@
                 @if (User is not null && User.Identity is not null && User.Identity.IsAuthenticated)
                 {
                     <div class="nav-item ms-2">
-                        <i id="sidebar-toggler-layout" class="sidebar-toggler fa-solid fa-bars fa-2x" onclick="toggleSidebar()"></i>
+                        <i id="sidebar-toggler-layout" class="sidebar-toggler fa-solid fa-bars fa-2x"></i>
                     </div>
                 }
             </div>
@@ -101,7 +101,6 @@
                                                     </div>
                                                 </div>
                                                 @* Breadcrumb rendering *@
-                                                @* <ejs-breadcrumb id="breadcrumb" items="breadcrumbItems" separatorTemplate="@Html.Raw("<span class='fa-solid fa-angle-right'></span>")" enableNavigation="false"></ejs-breadcrumb> *@
                                                 <ejs-breadcrumb id="breadcrumb" separatorTemplate="@Html.Raw("<span class='fa-solid fa-angle-right'></span>")" enableNavigation="false"></ejs-breadcrumb>
                                             </div>
                                         </div>
@@ -122,10 +121,9 @@
     <script type="text/javascript" asp-append-version="true" src="https://cdn.syncfusion.com/ej2/25.2.3/dist/ej2.min.js"></script>
     <script type="text/javascript" asp-append-version="true" src="https://cdn.syncfusion.com/ej2/syncfusion-helper.js" type="text/javascript"></script>
     <script type="text/javascript" asp-append-version="true" src="~/js/site.js"></script>
-
     <script type="text/javascript" asp-append-version="true">
         $(document).ready(function () {
-            function toggleSidebar() {
+            $('#sidebar-toggler-layout').on('click', function () {
                 var sidebar = $('#mySidebar');
                 var wrapper = $('.wrapper');
                 var body = $('body');
@@ -133,10 +131,6 @@
                 wrapper.toggleClass('open');
                 body.toggleClass('sidebar-open');
                 console.log('Sidebar toggled');
-            }
-            $('#sidebar-toggler-layout').on('click', function () {
-                console.log('Toggler clicked');
-                toggleSidebar();
             });
         });
     </script>
