@@ -11,16 +11,14 @@ html {
         font-size: 16px;
     }
 }
-<<<<<<< HEAD
 
 body {
-    height: 100%!important;
+    height: 100% !important;
     background-color: #12161d;
     color: #fff;
     overflow-x: hidden;
-    overflow-y:auto;
-
-=======
+    overflow-y: auto;
+}
 .dark-textbox {
     background-color: #212529; /* Dark background color */
     color: #ffffff; /* White text color */
@@ -32,7 +30,6 @@ body {
     color: #fff;
     overflow-x: hidden;
     overflow-y: auto;
->>>>>>> 434d795 (Updated dotnet version on yaml, fixed login page breadcrumb with response url on Program.cs, and made adjustments to UI with css file)
 }
 body.sidebar-open {
   overflow: hidden;
@@ -401,11 +398,8 @@ img.profile-pic {
 }
 /* Widgets */
 .widget {
-<<<<<<< HEAD
     border-radius: 1rem;
-=======
     border-radius: 0.5rem;
->>>>>>> 434d795 (Updated dotnet version on yaml, fixed login page breadcrumb with response url on Program.cs, and made adjustments to UI with css file)
     background-color: #1a222b;
     height: 100%;
 }
@@ -501,6 +495,13 @@ img.profile-pic {
 .ejs-accumulationchart {
     margin: auto;
 }
+#radar-chart .e-chart .e-axis-labels text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 500px; /* Adjust width as needed */
+}
+
 
 /* Buttons */
 a.btn-custom {
@@ -891,7 +892,3 @@ a {
 #heatmap {
   position: relative;
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 434d795 (Updated dotnet version on yaml, fixed login page breadcrumb with response url on Program.cs, and made adjustments to UI with css file)

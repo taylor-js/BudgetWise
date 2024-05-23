@@ -16,11 +16,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BudgetWise")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-<<<<<<< HEAD
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fd8dc5dc48eab41b269f351beee5ce02396b2c1b")]
-=======
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bbf3e6d5b6892ea349630a0a2045ae796b777699")]
->>>>>>> 434d795 (Updated dotnet version on yaml, fixed login page breadcrumb with response url on Program.cs, and made adjustments to UI with css file)
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+59a1705ddb807451a1e97e930cbfcaa0b2e30744")]
 [assembly: System.Reflection.AssemblyProductAttribute("BudgetWise")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BudgetWise")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
