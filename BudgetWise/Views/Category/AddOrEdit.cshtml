@@ -1,0 +1,97 @@
+﻿@model BudgetWise.Models.Category
+@using Microsoft.AspNetCore.Identity
+@using BudgetWise.Areas.Identity.Data
+@using Syncfusion.EJ2.DropDowns
+@{
+    ViewData["PageTitle"] = Model.CategoryId == 0 ? "Create a new category" : "Edit category";
+    var emojiFieldSettings = new AutoCompleteFieldSettings
+    {
+        // Retrieve only the actual HTML-encoded emoji
+        Value = "htmlCode"
+    };
+
+    // Custom item template to display the emoji
+    var itemTemplateHtml = "<div><span>${htmlCode}</span> - ${name}</div>";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="widget p-5" style="background-color:#212b36">
+            <form asp-action="AddOrEdit" asp-controller="Category" method="post">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="UserId" name="UserId" value="@Model.UserId" />
+                <input type="hidden" asp-for="CategoryId" name="CategoryId" value="@Model.CategoryId" />
+                <div class="mb-3">
+                    <div class='e-btn-group custom-rbt-group'>
+                        <input type="radio" id="radioleft" name="Type" value="Expense" checked="@(Model.Title == "Expense")" />
+                        <label class="e-btn" for="radioleft">Expense</label>
+                        <input type="radio" id="radiomiddle" name="Type" value="Income" checked="@(Model.Title == "Income")" />
+                        <label class="e-btn" for="radiomiddle">Income</label>
+                    </div>
+                    <span asp-validation-for="Type" class="text-danger fs-6"></span>
+                </div>
+
+                <div class="mb-3">
+                    <ejs-textbox id="title" placeholder="Title" ejs-for="Title" floatLabelType="Always"></ejs-textbox>
+                    <span asp-validation-for="Title" class="text-danger fs-6"></span>
+                </div>
+
+                <div class="mb-3">
+                    <ejs-autocomplete id="icon" placeholder="Icon" ejs-for="Icon" floatLabelType="Always" fields="emojiFieldSettings" itemTemplate="@Html.Raw(itemTemplateHtml)" allowFiltering="true"></ejs-autocomplete>
+                    <span asp-validation-for="Icon" class="text-danger fs-6"></span>
+                </div>
+
+                <div class="d-flex">
+                    <ejs-button id="submit" type="submit" cssClass="e-success w-20 me-2">
+                        <e-content-template>Submit</e-content-template>
+                    </ejs-button>
+                    <ejs-button id="cancel" type="button" cssClass="e-secondary w-20 ms-2" onclick="window.location.href='@Url.Action("Index", "Category")'">
+                        <e-content-template>Cancel</e-content-template>
+                    </ejs-button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @* <div class="col-md-5">
+        <div class="widget h-100 d-flex justify-content-center align-items-center">
+            <i class="fa-solid fa-shapes fa-2xl"></i>
+        </div>
+    </div> *@
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var autoCompleteObj = document.getElementById('icon').ej2_instances[0];
+
+        // Fetch and bind data to ejs-autocomplete
+        fetch('/api/EmojiApi/flattened')
+            .then(response => response.json())
+            .then(data => {
+                // Add a filterText property for combined search
+                data.forEach(emoji => {
+                    emoji.filterText = `${emoji.htmlCode} ${emoji.name} ${emoji.category} ${emoji.group}`;
+                });
+
+                autoCompleteObj.dataSource = data;
+                autoCompleteObj.dataBind();
+                console.log('Data bound to ejs-autocomplete:', autoCompleteObj.dataSource);
+            })
+            .catch(error => console.error('Error fetching Emoji Data:', error));
+
+        // Custom filtering event
+        autoCompleteObj.filtering = function (e) {
+            var query = new ej.data.Query()
+                .where('filterText', 'contains', e.text, true);
+
+            e.updateData(autoCompleteObj.dataSource, query);
+        };
+
+        // Set the actual emoji in the textbox on select
+        autoCompleteObj.select = function (e) {
+            // Set the autocomplete text property to the HTML-encoded emoji
+            autoCompleteObj.text = e.itemData.htmlCode;
+        };
+    });
+</script>

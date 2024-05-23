@@ -1,0 +1,897 @@
+/* Global styles */
+html {
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
+    font-family: "Inter";
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+<<<<<<< HEAD
+
+body {
+    height: 100%!important;
+    background-color: #12161d;
+    color: #fff;
+    overflow-x: hidden;
+    overflow-y:auto;
+
+=======
+.dark-textbox {
+    background-color: #212529; /* Dark background color */
+    color: #ffffff; /* White text color */
+}
+
+body {
+    height: 100% !important;
+    background-color: #12161d;
+    color: #fff;
+    overflow-x: hidden;
+    overflow-y: auto;
+>>>>>>> 434d795 (Updated dotnet version on yaml, fixed login page breadcrumb with response url on Program.cs, and made adjustments to UI with css file)
+}
+body.sidebar-open {
+  overflow: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #fff;
+}
+@media (max-width: 767.98px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.8rem;
+    }
+
+    h3 {
+        font-size: 1.6rem;
+    }
+
+    h4 {
+        font-size: 1.4rem;
+    }
+
+    h5 {
+        font-size: 1.2rem;
+    }
+
+    h6 {
+        font-size: 1rem;
+    }
+}
+
+section {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.form-label {
+    color: #fff;
+}
+
+/* App Logo */
+.app-logo .logo-img {
+    width: 30px;
+    height: auto;
+}
+
+.logo-text {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+}
+
+.logo-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+/* Menu */
+#menu {
+    width: 100% !important;
+    height: 100% !important;
+    background-color: inherit;
+    overflow-y: hidden;
+    padding-top: 80px;
+}
+
+#menu .e-menu-item:not(.e-separator) {
+    height: 100%!important;
+}
+
+#menu .e-menu-item {
+    box-sizing: border-box;
+}
+
+#menu .e-menu-item a {
+    width: 100%;
+    color: rgb(171, 163, 152);
+    font-weight: 300;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+#menu .e-anchor-wrap {
+    display: inline-block;
+}
+
+#menu .e-menu-item .e-anchor-wrap span.e-menu-icon {
+    color: rgb(171, 163, 152);
+}
+
+#menu .e-menu-item.e-separator {
+    border: none;
+    margin: 5px 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 13px;
+    color: #65da41;
+}
+
+#menu .e-menu-item.e-separator:not(:first-child) {
+    background-color:inherit;
+}
+
+/* Added CSS for dropdowns */
+#menu .e-menu-item .e-ul {
+    padding: 0;
+    margin: 0;
+    top: 0;
+    left: 100%;
+    min-width: 200px;
+}
+
+.e-menu-icon {
+    margin-right: 10px !important;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+}
+
+/* Sidebar */
+
+.sidebar {
+    flex-grow: 1;
+    width: 100%;
+    height: 100% !important;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    transition: transform 0.3s ease;
+    display: flex;
+    transform: translateX(-100%);
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    overflow: hidden;
+}
+.sidebar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Opera */
+}
+
+.sidebar .e-menu-wrapper .e-hamburger .e-control .e-menu {
+    width: 100% !important;
+    height: 100% !important;
+    background-color: #12161d;
+}
+
+.e-menu-wrapper, .e-menu-container{
+    border-radius:0px!important;
+}
+
+.sidebar .e-menu-wrapper {
+    width: 100% !important;
+    background-color: #12161d;
+}
+
+.e-sidebar {
+    width: 100% !important;
+    position: fixed;
+    background-color: #12161d;
+    overflow-y: auto; /*The issue is here*/
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+.e-sidebar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Opera */
+}
+
+.wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/*Main Content & Sidebar*/
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    transition: margin-left 0.3s ease;
+    margin-top: 60px !important;
+    border-left: 2px solid rgba(75, 82, 85, 0.24);
+    height: 100% !important;
+}
+
+@media (min-width: 768px) {
+    .sidebar {
+        width: 200px;
+        transform: translateX(0);
+    }
+
+    .sidebar.open {
+        transform: translateX(-100%);
+    }
+
+    .sidebar .e-menu-wrapper {
+        width: 200px !important;
+    }
+
+    .e-sidebar {
+        width: inherit;
+    }
+
+    .wrapper {
+        width: auto;
+        min-height: 100vh;
+        overflow-x: hidden;
+        overflow-y: hidden;
+        margin-left: 0;
+        transition: margin-left 0.3s ease;
+    }
+
+    .wrapper.open {
+        margin-left: 200px;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 767px) {
+    .sidebar {
+        width: 100%!important;
+        height:100%!important;
+        transform: translateX(-100%); /* Sidebar should be closed by default on smaller screens */
+    }
+    
+    .sidebar.open {
+        width: 100%!important;
+        height:100%!important;
+        transform: translateX(0); /* Sidebar opens on mobile when toggled */
+    }
+}
+
+#sidebar-toggler-layout {
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* Navbar */
+nav.navbar {
+    height:60px!important;
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: #222b33;
+    width: 100% !important;
+}
+.navbar-icon:hover {
+    transform: none !important;
+    transition: none !important; /* Disable any transition effects */
+}
+nav.navbar .navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+nav.navbar .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+nav.navbar .nav-link {
+    color: rgba(255, 255, 255, 0.55);
+    padding: 0.5rem 1rem;
+}
+
+nav.navbar .nav-link:hover,
+nav.navbar .nav-link:focus {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+nav.navbar i {
+    padding: 10px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+nav.navbar i:hover,
+nav.navbar img:hover {
+    cursor: pointer;
+    background-color: #48545f14;
+    transform: scale(1.05) translateZ(0px);
+}
+
+@media (max-width: 991.98px) {
+    nav.navbar .navbar-collapse {
+        position: fixed;
+        top: 60px;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1;
+        background-color: rgba(18, 22, 29, 0.9);
+        overflow-y: auto;
+        transition: 0.3s;
+    }
+
+    nav.navbar .navbar-collapse.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    nav.navbar .navbar-nav {
+        padding: 1rem;
+    }
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    background-color: #222b33;
+    color: #fff;
+    border: none !important;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link:hover {
+    background-color: #222b33;
+    color: #fff;
+    border: transparent !important;
+}
+
+.card-header {
+    border-bottom-color: #222b33 !important;
+    border-bottom: 2px solid;
+}
+
+.nav-tabs .nav-link {
+    border: none !important;
+}
+
+/* Profile */
+img.profile-pic {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+}
+
+.profile-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    background-color: rgba(72, 84, 95, 0.12);
+    padding: 15px;
+    margin: 0 15px 30px;
+    border-radius: 12px;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.profile-wrapper .profile-pic {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-wrapper .titles {
+    line-height: 1;
+}
+/* Widgets */
+.widget {
+<<<<<<< HEAD
+    border-radius: 1rem;
+=======
+    border-radius: 0.5rem;
+>>>>>>> 434d795 (Updated dotnet version on yaml, fixed login page breadcrumb with response url on Program.cs, and made adjustments to UI with css file)
+    background-color: #1a222b;
+    height: 100%;
+}
+
+.widget.summary > div:first-child {
+    background-color: #222b33;
+    padding: 1rem;
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+}
+
+.widget.summary > div:first-child i {
+    font-weight: bold;
+}
+
+.widget.income > div:first-child {
+    color: #65da41;
+}
+
+.widget.expense > div:first-child {
+    color: #ff4e48;
+}
+
+.widget.balance > div:first-child {
+    color: #2aa1ff;
+}
+
+.widget.chart {
+    padding: 5px;
+    max-width: 100%;
+}
+
+@media (max-width: 767.98px) {
+    .widget.summary {
+        flex-direction: column; /* Change flex direction to column on mobile */
+    }
+
+    .widget.summary > div:last-child {
+        border-bottom-left-radius: 1rem; /* Add border radius to bottom left on mobile */
+        border-bottom-right-radius: 1rem; /* Add border radius to bottom right on mobile
+    padding: 1rem; /* Add padding to the content on mobile */
+    }
+
+    .widget .lead {
+        font-size: 1rem;
+    }
+
+    .widget .display-6 {
+        font-size: 1.5rem;
+    }
+
+    .widget h5 {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .widget .p-5 {
+        padding: 1rem !important;
+    }
+
+    h5.fw-bold {
+        font-size: 1.25rem !important;
+    }
+
+    #treemap, #bar-chart, #monthly-trend-chart, #stacked-column-chart, #stacked-area-chart {
+        height: 300px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    h5.fw-bold {
+        font-size: 1.5rem !important;
+    }
+
+    #treemap, #bar-chart, #monthly-trend-chart, #stacked-column-chart, #stacked-area-chart {
+        height: 350px !important;
+    }
+}
+
+@media (min-width: 992px) {
+    h5.fw-bold {
+        font-size: 1.75rem !important;
+    }
+}
+
+@media (min-width: 1200px) {
+    h5.fw-bold {
+        font-size: 2rem !important;
+    }
+}
+
+.ejs-accumulationchart {
+    margin: auto;
+}
+
+/* Buttons */
+a.btn-custom {
+    color: #fff !important;
+}
+
+.btn:focus,
+.btn:active {
+    outline: none !important;
+    box-shadow: none;
+}
+
+.responsive-button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+}
+
+@media (max-width: 767.98px) {
+    .responsive-button {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
+}
+
+/* Breadcrumb */
+.e-breadcrumb a,
+.e-breadcrumb a:hover {
+    text-decoration: none !important;
+    color: inherit !important;
+}
+
+.e-breadcrumb{
+    visibility:visible!important;
+}
+
+/* Radio Button Group */
+.e-btn-group.custom-rbt-group {
+    width: 100%;
+}
+
+.e-btn-group.custom-rbt-group .e-btn {
+    width: 50%;
+}
+
+.custom-rbt-group label.e-btn {
+    box-shadow: none !important;
+    background-color: rgb(34 43 51);
+    color: #fff;
+}
+
+.e-btn-group.custom-rbt-group input:checked + label.e-btn {
+    background-color: #fff;
+    color: #212b36;
+    border: 1px solid #fff;
+}
+
+/* Grid */
+.e-grid {
+    border: 0;
+    border-radius: 5px;
+}
+
+.e-gridcontent tbody {
+    border: 1px solid #fff;
+}
+
+.e-grid .e-gridcontent,
+.e-grid .e-table {
+    background-color: #1a222b;
+}
+
+.e-grid .e-gridheader {
+    border: 5px;
+    padding: 0px !important;
+    background-color: #222b33;
+}
+.e-headercontent {
+    border-right-width: 0px !important;
+}
+
+.e-grid .e-gridheader .e-headercell {
+    background-color: #222b33;
+    margin: 15px !important;
+    padding: 15px !important;
+}
+
+.e-grid .e-gridpager {
+    background-color: #1a222b;
+}
+
+.e-grid .e-pagercontainer {
+    border: none;
+    background-color: #1a222b;
+}
+
+.e-content {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+.e-content::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Opera */
+}
+
+.e-pagercontainer .e-icons {
+    background-color: #1a222b;
+    border: none !important;
+}
+
+.e-pager .e-numericitem {
+    color: #adb5bd;
+    background-color: #1a222b;
+    padding: 15px !important;
+}
+
+.e-pager .e-numericitem:not(.e-currentitem) {
+    border: none !important;
+}
+
+.e-pager .e-numericitem:hover {
+    color: #fff;
+}
+
+.e-pager .e-numericitem.e-currentitem {
+    color: #fff;
+    border: none !important;
+    background-color: #31373d;
+}
+
+.e-pager div.e-icons:not(.e-disable) {
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.e-grid .e-pager {
+    padding: 10px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.e-grid .e-headercell,
+.e-grid .e-rowcell {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 767.98px) {
+    .e-grid-header .e-headercell,
+    .e-grid-content .e-rowcell {
+        white-space: normal;
+        word-wrap: break-word;
+        padding: 20px;
+    }
+}
+
+.e-grid-header {
+    white-space: normal;
+    padding: 20px;
+}
+
+.e-grid .e-toolbar {
+    background-color: #222b33;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border: none;
+    padding: 8px;
+}
+
+.e-grid .e-toolbar .e-toolbar-items {
+    background-color: #222b33;
+}
+
+.e-grid .e-toolbar .e-toolbar-item.e-search-wrapper {
+    margin-left: auto;
+}
+
+.e-grid .e-toolbar .e-search .e-input-group {
+    background-color: #fff;
+    border-radius: 4px;
+}
+
+.e-grid .e-toolbar .e-search .e-input-group .e-input {
+    height: 30px;
+    padding: 4px 8px;
+    font-size: 14px;
+    color: #333;
+}
+
+.e-grid .e-toolbar .e-search .e-input-group .e-input-group-icon {
+    color: #999;
+}
+
+.action-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.action-icons .btn {
+    padding: 5px;
+    font-size: 14px;
+}
+
+.action-icons a,
+.action-icons button {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    margin-right: 5px;
+}
+
+.action-icons a:hover,
+.action-icons button:hover {
+    border-color: #fff;
+}
+
+.action-icons a:hover i,
+.action-icons button:hover i {
+    color: inherit;
+}
+
+/* Miscellaneous */
+footer {
+    margin-top: auto;
+}
+
+*:not(.fa-solid):not(.fa):not(.e-icons) {
+    font-family: "Inter";
+}
+
+.no-a-decoration,
+.no-a-decoration:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+@media (max-width: 767px) {
+    .lead {
+        font-size: 1rem;
+    }
+
+    .display-6 {
+        font-size: 1.5rem;
+    }
+
+    .p-4 {
+        padding: 1rem !important;
+    }
+
+    .mb-4 {
+        margin-bottom: 1rem !important;
+    }
+}
+
+.text-truncate-custom {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 576px) {
+    #username-container {
+        max-width: 100px; /* Adjust as necessary */
+    }
+}
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: var(--bs-nav-pills-link-active-color);
+    background-color: #222b33;
+    color: black;
+}
+
+.custom-nav-link {
+    color: rgb(171, 163, 152) !important;
+    font-weight: bold;
+    padding: 18px;
+    background-color: #222b33;
+}
+.custom-nav-link:hover {
+    background-color: #222b33!important;
+    color: white!important;
+}
+.custom-nav-item {
+    margin-bottom: 10px;
+}
+
+a {
+    color: #65da41;
+}
+
+.custom-button-color {
+    background-color: #65da41;
+    color:black;
+}
+
+.custom-button-color:hover {
+    background-color: #4ba130;
+    color: black;
+}
+
+.card-header .nav-item .nav-link {
+    color: #65da41;
+}
+
+#heatmap {
+    position: relative;
+}
+
+@media (max-width: 767.98px) {
+  #heatmap {
+    width:1000px;
+  }
+
+  .scrollable-heatmap-mobile::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .scrollable-heatmap-mobile::-webkit-scrollbar-track {
+    background-color: #1a222b;
+    border-radius: 4px;
+  }
+
+  .scrollable-heatmap-mobile::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 4px;
+  }
+
+  .scrollable-heatmap-mobile::-webkit-scrollbar-thumb:hover {
+    background-color: #888;
+  }
+
+  .scrollable-heatmap-mobile {
+    scrollbar-width: thin;
+    scrollbar-color: #555 #1a222b;
+    overflow-x: scroll !important;
+    position: relative;
+  }
+
+  .scrollable-heatmap-mobile:hover {
+    scrollbar-width: thin;
+  }
+
+  .scrollable-heatmap-mobile {
+    overflow-x: scroll;
+  }
+}
+
+/* Ensure the tooltip container adjusts to fit its content */
+.e-control .e-tooltip.e-control.e-tooltip.e-lib {
+  display: inline-block !important; /* Ensure it fits its content */
+  width: auto !important; /* Allow the width to be determined by its content */
+  max-width: 100% !important; /* Ensure it doesn't exceed the container's width */
+  white-space: nowrap !important; /* Prevent text from wrapping */
+  padding: 0 !important; /* Remove any default padding */
+  box-sizing: border-box; /* Include padding and border in the element's total width */
+  overflow: visible !important; /* Ensure overflow content is visible */
+}
+
+.custom-tooltip {
+  background-color: rgba(18, 22, 29, 0.8);
+  color: #ffffff;
+  font-family: Inter;
+  font-size: 14px;
+  padding: 10px;
+  width: auto !important;
+  position: absolute;
+  max-width: calc(100vw - 20px); /* Ensure tooltip doesn't overflow horizontally */
+  max-height: calc(100vh - 20px); /* Ensure tooltip doesn't overflow vertically */
+  z-index: 9999; /* Ensure tooltip is on top */
+  transform: translateX(-100%) translateY(-100%); /* Position tooltip above and to the left of the cursor */
+  border-radius: 4px;
+  overflow: visible;
+}
+
+.tooltip-header {
+  font-weight: bold;
+  margin-bottom: 5px;
+  border-bottom: 1px solid #ffffff;
+}
+
+.e-treemap-container {
+  position: relative;
+}
+
+#heatmap {
+  position: relative;
+}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 434d795 (Updated dotnet version on yaml, fixed login page breadcrumb with response url on Program.cs, and made adjustments to UI with css file)

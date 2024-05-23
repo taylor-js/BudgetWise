@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["PageTitle"] = "About";
+    ViewData["PageActionText"] = "About";
+    ViewData["PageActionUrl"] = "/Dashboard/About/";
+}
+
+
+<section class="content-section">
+    <p>BudgetWise is a budget management web application designed to help individuals track and manage their financial transactions effectively. Developed using ASP.NET Core MVC in Visual Studio, BudgetWise utilizes a PostgreSQL database to manage two main data tables: Categories and Transactions.</p>
+
+    <p>This application is deployed on Heroku using the essential-2 tier plan, ensuring reliable access and performance. To enhance the user experience, BudgetWise incorporates Syncfusion components under a community license, which facilitates the creation of visually appealing charts, tables, and forms.</p>
+
+    @* <p>The data presented on BudgetWise is intended for testing purposes only. As of now, the application does not support account creation for individual users.</p> *@
+
+    <h6>Features</h6>
+    <ul>
+        <li><strong>Visualizations:</strong> The dashboard includes a treemap in the top left corner that displays expenses by categories based on the last 7 days of data. Adjacent to this, a bar chart in the top right corner shows a comparison of income versus expenses for the same period.</li>
+        <li><strong>Transaction Details:</strong> A table on the bottom left showcases the five most recent transactions, providing quick insights into recent financial activities.</li>
+        <li><strong>Trends Over Time:</strong> The bottom right features a line chart detailing the monthly trend of income, expenses, and balance over the past 12 months, offering a longer-term financial perspective.</li>
+    </ul>
+
+    <p>In addition to visualization, BudgetWise includes detailed views of the Categories and Transactions tables. These views allow for complete CRUD (Create, Read, Update, Delete) operations, positioned to the far right of each table, enhancing data management capabilities.</p>
+
+    <p>Adding a unique touch to category management, the application integrates an emoji JSON API for inserting or updating budget categories with icon images. This allows users to visually classify their spending categories. Users can also utilize the Microsoft keyboard shortcut (Windows key + ".") to search for and insert emojis directly.</p>
+    <p>The source code for BudgetWise is available for review and contributions on GitHub. You can access it <a href="https://github.com/taylor-js/BudgetWise" target="_blank">here</a>.</p>
+    <p>Thank you for visiting BudgetWise. Manage your finances wisely!</p>
+</section>

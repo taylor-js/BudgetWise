@@ -1,0 +1,425 @@
+﻿@using Syncfusion.EJ2.Maps;
+@using Syncfusion.EJ2.HeatMap;
+@{
+    ViewData["isDashboard"] = true;
+    var treemapData = ViewBag.TreemapData as IEnumerable<dynamic>;
+}
+
+<div class="row mb-0">
+    <div class="col-12 col-md-4 mb-4">
+        <div class="d-flex flex-row widget summary income">
+            <div class="d-flex flex-column justify-content-center">
+                <i class="fa-solid fa-dollar-sign fa-2xl"></i>
+            </div>
+            <div class="d-flex flex-column m-auto py-3">
+                <span class="lead fs-6 fs-md-4">Total Income</span>
+                <h1 class="display-6 fw-bold fs-4 fs-md-2">@ViewBag.TotalIncome</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-4 mb-4">
+        <div class="d-flex flex-row widget summary expense">
+            <div class="d-flex flex-column justify-content-center">
+                <i class="fa-solid fa-dollar-sign fa-2xl"></i>
+            </div>
+            <div class="d-flex flex-column m-auto py-3">
+                <span class="lead fs-6 fs-md-4">Total Expense</span>
+                <h1 class="display-6 fw-bold fs-4 fs-md-2">@ViewBag.TotalExpense</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-4 mb-4">
+        <div class="d-flex flex-row widget summary balance">
+            <div class="d-flex flex-column justify-content-center">
+                <i class="fa-solid fa-dollar-sign fa-2xl"></i>
+            </div>
+            <div class="d-flex flex-column m-auto py-3">
+                <span class="lead fs-6 fs-md-4">Balance</span>
+                <h1 class="display-6 fw-bold fs-4 fs-md-2">@ViewBag.Balance</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-12 col-md-6 mb-4">
+        <div class="widget chart">
+            <div class="p-4">
+                <h5 class="fw-bold">Expense by Category</h5>
+                <h6>Last 7 Days</h6>
+            </div>
+            <div class="px-4 pb-4">
+                @if (treemapData != null && treemapData.Any())
+                {
+                    <ejs-treemap id="treemap" enableDrillDown="true" dataSource="@ViewBag.TreemapData" weightValuePath="amount"
+                                 palette="@(new string[]{"#0e8d76","#a4b219","#cb9b00","#8a442c","#0454b5","#7d0a0a","#822690","#4c2090","#313e93","#0096ac"})"
+                                 legendSettings="@(new Syncfusion.EJ2.TreeMap.TreeMapLegendSettings { Visible = true, Position = Syncfusion.EJ2.TreeMap.LegendPosition.Top })"
+                                 format="C0" useGroupingSeparator leafItemSettings="@(new Syncfusion.EJ2.TreeMap.TreeMapLeafItemSettings { LabelPath = "categoryTitleWithIcon" })"
+                                 width="100%" height="100%" background="#1a222b">
+                        <e-treemap-legendsettings visible="true" position="@Syncfusion.EJ2.TreeMap.LegendPosition.Top" shape="@Syncfusion.EJ2.TreeMap.LegendShape.Circle">
+                            <e-legendsettings-textstyle Color="white" Size="auto" />
+                        </e-treemap-legendsettings>
+                        <e-treemap-tooltipsettings visible="true" fill="#12161d" format="${categoryTitleWithIcon}<br>Amount: ${formattedAmount}">
+                            <e-tooltipsettings-border width="1"></e-tooltipsettings-border>
+                            <e-tooltipsettings-textstyle color="#ffffff" fontFamily="inherit" size="15px"></e-tooltipsettings-textstyle>
+                        </e-treemap-tooltipsettings>
+                    </ejs-treemap>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6 mb-4">
+        <div class="widget chart">
+            <div class="p-4">
+                <h5 class="fw-bold">Income vs Expense</h5>
+                <h6>Last 7 Days</h6>
+            </div>
+            <div class="px-4 pb-4">
+                @if (ViewBag.BarChartData is not null)
+                {
+                    <ejs-chart id="bar-chart" background="#1a222b" palettes='@(new string[] {"#65da41", "#ff4e48"})' width="100%" height="100%">
+                        <e-chart-primaryxaxis valueType="Category">
+                            <e-majorgridlines width="0"></e-majorgridlines>
+                            <e-majorticklines width="0"></e-majorticklines>
+                            <e-labelstyle color="#ffffff"></e-labelstyle>
+                        </e-chart-primaryxaxis>
+                        <e-chart-primaryyaxis labelFormat="c1" labelRotation="90">
+                            <e-majorgridlines width="1" color="#32414d" dashArray="3,5"></e-majorgridlines>
+                            <e-majorticklines width="1"></e-majorticklines>
+                            <e-labelstyle color="#ffffff"></e-labelstyle>
+                        </e-chart-primaryyaxis>
+                        <e-chart-chartarea>
+                            <e-chartarea-border width="0"></e-chartarea-border>
+                        </e-chart-chartarea>
+                        <e-series-collection>
+                            <e-series dataSource="@ViewBag.BarChartData" xName="day" yName="income" name="Income" type="@Syncfusion.EJ2.Charts.ChartSeriesType.Bar" width="100"></e-series>
+                            <e-series dataSource="@ViewBag.BarChartData" xName="day" yName="expense" name="Expense" type="@Syncfusion.EJ2.Charts.ChartSeriesType.Bar" width="100"></e-series>
+                        </e-series-collection>
+                        <e-chart-legendsettings position="Top" alignment="Far" toggleVisibility="false">
+                            <e-legendsettings-textstyle Color="#fff" Size="auto"></e-legendsettings-textstyle>
+                        </e-chart-legendsettings>
+                        <e-chart-tooltipsettings enable="true" shared="true" fill="#12161d" format="@("${series.name}: ${point.y}")">
+                            <e-tooltipsettings-border width="1"></e-tooltipsettings-border>
+                            <e-tooltipsettings-textstyle color="#ffffff" fontFamily="inherit" size="15px"></e-tooltipsettings-textstyle>
+                        </e-chart-tooltipsettings>
+                    </ejs-chart>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+<<<<<<< HEAD
+    <div class="col-12 col-md-12 mb-4">
+        <div class="widget chart">
+            <div class="p-4">
+                <h5 class="fw-bold">Transaction Amounts</h5>
+                <h6>By Category and Month from First Entry</h6>
+            </div>
+            <div class="px-4 pb-4">
+                @if (ViewBag.HeatmapChartData is not null)
+                {
+                    <div class="scrollable-heatmap-mobile">
+                        <ejs-heatmap id="heatmap" dataSource="@ViewBag.HeatmapChartData.Data" showTooltip="true" backgroundColor="#1a222b" width="auto" height="800" created="onHeatmapCreated">
+                            <e-heatmap-titlesettings textStyle="@(new { size = "15px", fontWeight = "500", fontStyle = "Normal" })">
+                            </e-heatmap-titlesettings>
+                            <e-heatmap-xaxis labels="@ViewBag.HeatmapChartData.XLabels" labelRotation="90" textStyle="@(new { color = "#ffffff" })">
+                            </e-heatmap-xaxis>
+                            <e-heatmap-yaxis labels="@ViewBag.HeatmapChartData.YLabels" labelRotation="0" textStyle="@(new { color = "#ffffff", height = "1em", marginTop = "0px" })"></e-heatmap-yaxis>
+                            <e-heatmap-palettesettings type="Gradient">
+                            </e-heatmap-palettesettings>
+                            <e-heatmap-cellsettings showLabel="true" format="c0"></e-heatmap-cellsettings>
+                            <e-heatmap-legendsettings visible="true" position="Right" showLabel="true" height="150" textStyle="@(new { color = "#ffffff" })"></e-heatmap-legendsettings>
+                            <e-heatmap-tooltipsettings fill="rgba(26, 34, 43, 0.8);">
+                                <e-tooltipsettings-textstyle fontFamily="inherit" color="#ffffff" size="15px"></e-tooltipsettings-textstyle>
+                                <e-tooltipsettings-border width="1"></e-tooltipsettings-border>
+                            </e-heatmap-tooltipsettings>
+                        </ejs-heatmap>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-center">
+=======
+>>>>>>> 434d795 (Updated dotnet version on yaml, fixed login page breadcrumb with response url on Program.cs, and made adjustments to UI with css file)
+    <div class="col-12 col-md-6 mb-4">
+        <div class="widget chart">
+            <div class="p-4">
+                <h5 class="fw-bold">Monthly Trend</h5>
+                <h6>Last 12 Months from First Entry</h6>
+            </div>
+            <div class="px-4 pb-4">
+                @if (ViewBag.MonthlyTrendChartData is not null)
+                {
+                    <ejs-chart id="monthly-trend-chart" background="#1a222b" palettes='@(new string[] {"#2cb850", "#e61f1f", "#ffa500"})' width="100%" height="100%">
+                        <e-chart-primaryxaxis labelFormat="MMM yyyy" valueType="Category" labelRotation="90">
+                            <e-labelstyle color="#ffffff"></e-labelstyle>
+                        </e-chart-primaryxaxis>
+                        <e-chart-primaryyaxis labelFormat="c1">
+                            <e-majorgridlines width="1" color="#32414d" dashArray="3,5"></e-majorgridlines>
+                            <e-majorticklines width="1"></e-majorticklines>
+                            <e-labelstyle color="#ffffff"></e-labelstyle>
+                        </e-chart-primaryyaxis>
+                        <e-series-collection>
+                            <e-series dataSource="@ViewBag.MonthlyTrendChartData" xName="Month" yName="Income" name="Income" type="Line" width="3" fill="#2cb850"></e-series>
+                            <e-series dataSource="@ViewBag.MonthlyTrendChartData" xName="Month" yName="Expense" name="Expense" type="Line" width="3" fill="#e61f1f"></e-series>
+                            <e-series dataSource="@ViewBag.MonthlyTrendChartData" xName="Month" yName="Balance" name="Balance" type="Line" width="3" fill="#ffa500"></e-series>
+                        </e-series-collection>
+                        <e-chart-legendsettings>
+                            <e-legendsettings-textstyle color="#ffffff"></e-legendsettings-textstyle>
+                        </e-chart-legendsettings>
+                        <e-chart-tooltipsettings enable="true" shared="true" fill="#12161d" format="@("${series.name}: ${point.y}")">
+                            <e-tooltipsettings-border width="1"></e-tooltipsettings-border>
+                            <e-tooltipsettings-textstyle color="#ffffff" fontFamily="inherit" size="15px"></e-tooltipsettings-textstyle>
+                        </e-chart-tooltipsettings>
+                    </ejs-chart>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6 mb-4">
+        <div class="widget chart">
+            <div class="p-4">
+                <h5 class="fw-bold">Income & Expense Distribution</h5>
+                <h6>Across Different Categories</h6>
+            </div>
+            <div class="px-4 pb-4">
+                @if (ViewBag.RadarChartData is not null)
+                {
+                    <ejs-chart id="radar-chart" width="100%" height="500px" palettes='@(new string[] {"#e61f1f", "#2cb850"})' PointRender="onPointRender">
+<<<<<<< HEAD
+                        <e-chart-primaryxaxis labelFormat="${value}" valueType="Category" interval="5" labelRotation="0" labelIntersectAction="Trim">
+=======
+                        <e-chart-primaryxaxis labelFormat="${value}" valueType="Category" interval="5" labelRotation="0" labelIntersectAction="Trim" isInversed="true">
+>>>>>>> 434d795 (Updated dotnet version on yaml, fixed login page breadcrumb with response url on Program.cs, and made adjustments to UI with css file)
+                            <e-majorgridlines width="0"></e-majorgridlines>
+                            <e-labelstyle color="#ffffff" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px;"></e-labelstyle>
+                        </e-chart-primaryxaxis>
+                        <e-chart-primaryyaxis labelFormat="c1">
+                            <e-majorgridlines width="1" color="#32414d" dashArray="3,5"></e-majorgridlines>
+                            <e-majorticklines width="0"></e-majorticklines>
+                            <e-linestyle width="0"></e-linestyle>
+                            <e-labelstyle color="#ffffff"></e-labelstyle>
+                        </e-chart-primaryyaxis>
+                        <e-series-collection>
+                            <e-series dataSource="@ViewBag.RadarChartData.ExpenseData" xName="Category" yName="Amount" type="@Syncfusion.EJ2.Charts.ChartSeriesType.Radar" drawType="@Syncfusion.EJ2.Charts.ChartDrawType.Line" name="Expense">
+                                <e-series-marker visible="true"></e-series-marker>
+                            </e-series>
+                            <e-series dataSource="@ViewBag.RadarChartData.IncomeData" xName="Category" yName="Amount" type="@Syncfusion.EJ2.Charts.ChartSeriesType.Radar" drawType="@Syncfusion.EJ2.Charts.ChartDrawType.Line" name="Income">
+                                <e-series-marker visible="true"></e-series-marker>
+                            </e-series>
+                        </e-series-collection>
+                        <e-chart-legendsettings visible="true" position="Top" toggleVisibility="true">
+                            <e-legendsettings-textstyle color="#ffffff"></e-legendsettings-textstyle>
+                        </e-chart-legendsettings>
+<<<<<<< HEAD
+                        <e-chart-tooltipsettings enable="true" shared="false" fill="#12161d" format="${point.x} <br/> ${series.name}: ${point.y}">
+=======
+                        <e-chart-tooltipsettings enable="true" shared="false" fill="#12161d" format="${point.x}: <br/> ${point.y}">
+>>>>>>> 434d795 (Updated dotnet version on yaml, fixed login page breadcrumb with response url on Program.cs, and made adjustments to UI with css file)
+                            <e-tooltipsettings-border width="1"></e-tooltipsettings-border>
+                            <e-tooltipsettings-textstyle color="#ffffff" fontFamily="inherit" size="15px"></e-tooltipsettings-textstyle>
+                        </e-chart-tooltipsettings>
+                        <e-chart-zoomsettings enableMouseWheelZooming="true" enablePinchZooming="true" enableSelectionZooming="true" enablePan="true"></e-chart-zoomsettings>
+                    </ejs-chart>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-12 col-md-6 mb-4">
+        <div class="widget chart">
+            <div class="p-4">
+                <h5 class="fw-bold">Income vs Expense</h5>
+                <h6>Last 30 Days</h6>
+            </div>
+            <div class="px-4 pb-4">
+                @if (ViewBag.StackedColumnChartData is not null)
+                {
+                    <ejs-chart id="stacked-column-chart" background="#1a222b" palettes='@(new string[] {"#65da41", "#ff4e48"})' width="100%" height="100%">
+                        <e-chart-primaryxaxis valueType="DateTime" labelRotation="90" labelFormat="MMM-dd" intervalType="Days" edgeLabelPlacement="Shift">
+                            <e-majorgridlines width="0"></e-majorgridlines>
+                            <e-majorticklines width="0"></e-majorticklines>
+                            <e-labelstyle color="#ffffff"></e-labelstyle>
+                        </e-chart-primaryxaxis>
+                        <e-chart-primaryyaxis labelFormat="c1">
+                            <e-majorgridlines width="1" color="#32414d" dashArray="3,5"></e-majorgridlines>
+                            <e-majorticklines width="0"></e-majorticklines>
+                            <e-linestyle width="0"></e-linestyle>
+                            <e-labelstyle color="#ffffff"></e-labelstyle>
+                        </e-chart-primaryyaxis>
+                        <e-chart-chartarea>
+                            <e-chartarea-border width="0"></e-chartarea-border>
+                        </e-chart-chartarea>
+                        <e-series-collection>
+                            <e-series dataSource="@ViewBag.StackedColumnChartData" xName="Date" yName="Income" name="Income" type="@Syncfusion.EJ2.Charts.ChartSeriesType.StackingColumn"></e-series>
+                            <e-series dataSource="@ViewBag.StackedColumnChartData" xName="Date" yName="Expense" name="Expense" type="@Syncfusion.EJ2.Charts.ChartSeriesType.StackingColumn"></e-series>
+                        </e-series-collection>
+                        <e-chart-legendsettings position="Top" alignment="Far" toggleVisibility="false">
+                            <e-legendsettings-textstyle color="#ffffff"></e-legendsettings-textstyle>
+                        </e-chart-legendsettings>
+                        <e-chart-tooltipsettings enable="true" shared="true" fill="#12161d" format="@("${series.name}: ${point.y}")">
+                            <e-tooltipsettings-border width="1"></e-tooltipsettings-border>
+                            <e-tooltipsettings-textstyle color="#ffffff" fontFamily="inherit" size="15px"></e-tooltipsettings-textstyle>
+                        </e-chart-tooltipsettings>
+                    </ejs-chart>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6 mb-4">
+        <div class="widget chart">
+            <div class="p-4">
+                <h5 class="fw-bold">Income vs Expense</h5>
+                <h6>Last 12 Months from First Entry</h6>
+            </div>
+            <div class="px-4 pb-4">
+                @if (ViewBag.StackedAreaChartData is not null)
+                {
+                    <ejs-chart id="stacked-area-chart" background="#1a222b" palettes='@(new string[] {"#65da41", "#ff4e48"})' width="100%" height="100%">
+                        <e-chart-primaryxaxis labelRotation="90" valueType="Category" labelFormat="MMM yyyy">
+                            <e-majorgridlines width="0"></e-majorgridlines>
+                            <e-majorticklines width="0"></e-majorticklines>
+                            <e-labelstyle color="#ffffff"></e-labelstyle>
+                        </e-chart-primaryxaxis>
+                        <e-chart-primaryyaxis labelFormat="c1">
+                            <e-majorgridlines width="1" color="#32414d" dashArray="3,5"></e-majorgridlines>
+                            <e-majorticklines width="0"></e-majorticklines>
+                            <e-linestyle width="0"></e-linestyle>
+                            <e-labelstyle color="#ffffff"></e-labelstyle>
+                        </e-chart-primaryyaxis>
+                        <e-chart-chartarea>
+                            <e-chartarea-border width="0"></e-chartarea-border>
+                        </e-chart-chartarea>
+                        <e-series-collection>
+                            <e-series dataSource="@ViewBag.StackedAreaChartData" xName="Month" yName="Income" name="Income" type="@Syncfusion.EJ2.Charts.ChartSeriesType.StackingArea"></e-series>
+                            <e-series dataSource="@ViewBag.StackedAreaChartData" xName="Month" yName="Expense" name="Expense" type="@Syncfusion.EJ2.Charts.ChartSeriesType.StackingArea"></e-series>
+                        </e-series-collection>
+                        <e-chart-legendsettings position="Top" alignment="Far" toggleVisibility="false">
+                            <e-legendsettings-textstyle color="#ffffff" size="14px"></e-legendsettings-textstyle>
+                        </e-chart-legendsettings>
+                        <e-chart-tooltipsettings enable="true" shared="true" fill="#12161d" format="@("${series.name}: ${point.y}")">
+                            <e-tooltipsettings-border width="1"></e-tooltipsettings-border>
+                            <e-tooltipsettings-textstyle color="#ffffff" fontFamily="inherit" size="15px"></e-tooltipsettings-textstyle>
+                        </e-chart-tooltipsettings>
+                    </ejs-chart>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<<<<<<< HEAD
+=======
+
+
+<div class="row justify-content-center">
+    <div class="col-12 col-md-12 mb-4">
+        <div class="widget chart">
+            <div class="p-4">
+                <h5 class="fw-bold">Transaction Amounts</h5>
+                <h6>By Category and Month from First Entry</h6>
+            </div>
+            <div class="px-4 pb-4">
+                @if (ViewBag.HeatmapChartData is not null)
+                {
+                    <div class="scrollable-heatmap-mobile">
+                        <ejs-heatmap id="heatmap" dataSource="@ViewBag.HeatmapChartData.Data" showTooltip="true" backgroundColor="#1a222b" width="auto" height="800" created="onHeatmapCreated">
+                            <e-heatmap-titlesettings textStyle="@(new { size = "15px", fontWeight = "500", fontStyle = "Normal" })">
+                            </e-heatmap-titlesettings>
+                            <e-heatmap-xaxis labels="@ViewBag.HeatmapChartData.XLabels" labelRotation="90" textStyle="@(new { color = "#ffffff" })">
+                            </e-heatmap-xaxis>
+                            <e-heatmap-yaxis labels="@ViewBag.HeatmapChartData.YLabels" labelRotation="0" textStyle="@(new { color = "#ffffff", height = "1em", marginTop = "0px" })"></e-heatmap-yaxis>
+                            <e-heatmap-palettesettings type="Gradient">
+                            </e-heatmap-palettesettings>
+                            <e-heatmap-cellsettings showLabel="true" format="c0"></e-heatmap-cellsettings>
+                            <e-heatmap-legendsettings visible="true" position="Right" showLabel="true" height="150" textStyle="@(new { color = "#ffffff" })"></e-heatmap-legendsettings>
+                            <e-heatmap-tooltipsettings fill="rgba(26, 34, 43, 0.8);">
+                                <e-tooltipsettings-textstyle fontFamily="inherit" color="#ffffff" size="15px"></e-tooltipsettings-textstyle>
+                                <e-tooltipsettings-border width="1"></e-tooltipsettings-border>
+                            </e-heatmap-tooltipsettings>
+                        </ejs-heatmap>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+>>>>>>> 434d795 (Updated dotnet version on yaml, fixed login page breadcrumb with response url on Program.cs, and made adjustments to UI with css file)
+@section scripts{
+    <script>
+        function onPointRender(args) {
+            args.text = args.point.x + '<br/>' + args.point.y;
+        }
+    </script>
+    <script type="text/javascript">
+        function onHeatmapCreated() {
+            var heatmap = document.getElementById('heatmap').ej2_instances[0];
+            var maxLength = 25;
+
+            heatmap.yAxis.labels = heatmap.yAxis.labels.map(function (label) {
+                if (label.length > maxLength) {
+                    return label.substring(0, maxLength) + '...';
+                }
+                return label;
+            });
+
+            heatmap.refresh();
+        }
+    </script>
+}
+
+@* <div class="row justify-content-center">
+    <div class="col-12 col-md-6 mb-4">
+        <div class="widget chart" style="height: 100%;">
+            <div class="p-4">
+                <h5 class="fw-bold">Title</h5>
+            </div>
+            <div class="px-4 pb-4" style="height: calc(100% - 60px);">
+                <!--Chart Code-->
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6 mb-4">
+        <div class="widget chart" style="height: 100%;">
+            <div class="p-4">
+                <h5 class="fw-bold">Title</h5>
+            </div>
+            <div class="px-4 pb-4" style="height: calc(100% - 60px);">
+                <!--Chart Code-->
+            </div>
+        </div>
+    </div>
+</div> *@
+
+@* <div class="row justify-content-center">
+    <div class="col-12 col-md-6 mb-4">
+        <div class="widget chart" style="height: 100%;">
+            <div class="p-4">
+                <h5 class="fw-bold">Title</h5>
+            </div>
+            <div class="px-4 pb-4" style="height: calc(100% - 60px);">
+                <!--Chart Code-->
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6 mb-4">
+        <div class="widget chart" style="height: 100%;">
+            <div class="p-4">
+                <h5 class="fw-bold">Title</h5>
+            </div>
+            <div class="px-4 pb-4" style="height: calc(100% - 60px);">
+                <!--Chart Code-->
+            </div>
+        </div>
+    </div>
+</div>
+ *@

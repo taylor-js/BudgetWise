@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetWise", "BudgetWise\BudgetWise.csproj", "{D16BCF78-356E-47A1-93AC-C8CB72F6A0CF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AB22F342-EE73-4B99-9A67-4E03FA6FC6ED}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D16BCF78-356E-47A1-93AC-C8CB72F6A0CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D16BCF78-356E-47A1-93AC-C8CB72F6A0CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D16BCF78-356E-47A1-93AC-C8CB72F6A0CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D16BCF78-356E-47A1-93AC-C8CB72F6A0CF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AE9BFF3A-163B-44A1-BBD3-D3803966F44F}
+	EndGlobalSection
+EndGlobal
