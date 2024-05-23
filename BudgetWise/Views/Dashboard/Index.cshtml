@@ -54,11 +54,11 @@
                                  palette="@(new string[]{"#0e8d76","#a4b219","#cb9b00","#8a442c","#0454b5","#7d0a0a","#822690","#4c2090","#313e93","#0096ac"})"
                                  legendSettings="@(new Syncfusion.EJ2.TreeMap.TreeMapLegendSettings { Visible = true, Position = Syncfusion.EJ2.TreeMap.LegendPosition.Top })"
                                  format="C0" useGroupingSeparator leafItemSettings="@(new Syncfusion.EJ2.TreeMap.TreeMapLeafItemSettings { LabelPath = "categoryTitleWithIcon" })"
-                                 width="100%" height="100%" background="#1a222b">
+                                 width="auto" height="100%" background="#1a222b">
                         <e-treemap-legendsettings visible="true" position="@Syncfusion.EJ2.TreeMap.LegendPosition.Top" shape="@Syncfusion.EJ2.TreeMap.LegendShape.Circle">
                             <e-legendsettings-textstyle Color="white" Size="auto" />
                         </e-treemap-legendsettings>
-                        <e-treemap-tooltipsettings visible="true" fill="#12161d" format="${categoryTitleWithIcon}<br>Amount: ${formattedAmount}">
+                        <e-treemap-tooltipsettings visible="true" fill="#12161d" format="@("${categoryTitleWithIcon}<br>Amount: ${formattedAmount}")">
                             <e-tooltipsettings-border width="1"></e-tooltipsettings-border>
                             <e-tooltipsettings-textstyle color="#ffffff" fontFamily="inherit" size="15px"></e-tooltipsettings-textstyle>
                         </e-treemap-tooltipsettings>
@@ -176,7 +176,7 @@
                         <e-chart-legendsettings visible="true" position="Top" toggleVisibility="true">
                             <e-legendsettings-textstyle color="#ffffff"></e-legendsettings-textstyle>
                         </e-chart-legendsettings>
-                        <e-chart-tooltipsettings enable="true" shared="false" fill="#12161d" format="${point.x} <br/> ${series.name}: ${point.y}">
+                        <e-chart-tooltipsettings enable="true" shared="false" fill="#12161d" format="@("${point.x} <br/> ${series.name}: ${point.y}")">
                             <e-tooltipsettings-border width="1"></e-tooltipsettings-border>
                             <e-tooltipsettings-textstyle color="#ffffff" fontFamily="inherit" size="15px"></e-tooltipsettings-textstyle>
                         </e-chart-tooltipsettings>
