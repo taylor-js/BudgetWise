@@ -56,7 +56,7 @@
                 @if (User is not null && User.Identity is not null && User.Identity.IsAuthenticated)
                 {
                     <div class="nav-item ms-2">
-                        <i id="sidebar-toggler-layout" class="sidebar-toggler fa-solid fa-bars fa-2x"></i>
+                        <i id="sidebar-toggler" class="sidebar-toggler fa-solid fa-bars fa-2x"></i>
                     </div>
                 }
             </div>
@@ -90,8 +90,8 @@
                                                         <h3 class="fw-bold my-0">@ViewData["PageTitle"]</h3>
                                                         <div class="">
                                                             @if (ViewData["PageActionText"] != null &&
-                                                            (ViewContext.RouteData.Values["controller"]?.ToString() == "Category" ||
-                                                            ViewContext.RouteData.Values["controller"]?.ToString() == "Transaction"))
+                                                           (ViewContext.RouteData.Values["controller"]?.ToString() == "Category" ||
+                                                           ViewContext.RouteData.Values["controller"]?.ToString() == "Transaction"))
                                                             {
                                                                 <a class="btn btn-success btn-custom responsive-button" href="@ViewData["PageActionUrl"]">
                                                                     <i class="fa fa-plus" aria-hidden="true"></i> &nbsp @ViewData["PageActionText"]
@@ -123,7 +123,7 @@
     <script type="text/javascript" asp-append-version="true" src="~/js/site.js"></script>
     <script type="text/javascript" asp-append-version="true">
         $(document).ready(function () {
-            $('#sidebar-toggler-layout').on('click', function () {
+            $('#sidebar-toggler').on('click', function () {
                 var sidebar = $('#mySidebar');
                 var wrapper = $('.wrapper');
                 var body = $('body');
@@ -134,6 +134,7 @@
             });
         });
     </script>
+    
     @await RenderSectionAsync("scripts", required: false)
     <ejs-scripts></ejs-scripts>
 </body>
