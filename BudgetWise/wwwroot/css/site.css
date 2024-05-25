@@ -206,7 +206,7 @@ section {
     .main-content {
         top: 0;
         transition: margin-left 0.3s ease, width 0.3s ease;
-        margin-left: 200px;
+        /*margin-left: 200px;*/
     }
     .main-content-logged-in {
         margin-left: 200px;
