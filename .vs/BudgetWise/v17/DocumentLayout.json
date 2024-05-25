@@ -36,10 +36,9 @@
               "RelativeDocumentMoniker": "BudgetWise\\Views\\Shared\\_SideBar.cshtml",
               "ToolTip": "C:\\Users\\taylo\\Documents\\GitHub\\BudgetWise\\BudgetWise\\Views\\Shared\\_SideBar.cshtml",
               "RelativeToolTip": "BudgetWise\\Views\\Shared\\_SideBar.cshtml",
-              "ViewState": "AQIAACQAAAAAAAAAAAAAADIAAAAaAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-05-25T19:14:12.97Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-25T19:14:12.97Z"
             },
             {
               "$type": "Document",
@@ -49,7 +48,7 @@
               "RelativeDocumentMoniker": "BudgetWise\\Views\\Shared\\_Layout.cshtml",
               "ToolTip": "C:\\Users\\taylo\\Documents\\GitHub\\BudgetWise\\BudgetWise\\Views\\Shared\\_Layout.cshtml",
               "RelativeToolTip": "BudgetWise\\Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAEUAAAAAAAAA",
+              "ViewState": "AQIAAJ8AAAAAAAAAAAAAAGQAAAAvAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-05-25T19:05:41.312Z",
               "EditorCaption": ""
@@ -64,8 +63,7 @@
               "RelativeToolTip": "BudgetWise\\wwwroot\\css\\site.css",
               "ViewState": "AQIAANwAAAAAAAAAAAAWwOQAAAAcAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2024-05-25T18:58:56.288Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-25T18:58:56.288Z"
             }
           ]
         }
