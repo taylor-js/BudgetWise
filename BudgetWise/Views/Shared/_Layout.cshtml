@@ -31,7 +31,7 @@
     </script>
 
 </head>
-<body class="e-bigger d-flex min-vh-100 expanded">
+<body class="e-bigger">
     <!-- Navbar -->
     <nav class="navbar navbar-expand navbar-light fixed-top">
         <div class="container-fluid">
@@ -66,6 +66,8 @@
     {
         <partial name="_SideBar.cshtml" />
     }
+    @* @((User is not null && User.Identity is not null && User.Identity.IsAuthenticated) ? "main-content-logged-in" : "") *@
+
     <div class="main-content @((User is not null && User.Identity is not null && User.Identity.IsAuthenticated) ? "main-content-logged-in" : "")">
         <div class="container mt-4">
             <div class="row justify-content-center">
