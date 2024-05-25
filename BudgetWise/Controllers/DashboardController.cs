@@ -32,12 +32,12 @@ namespace BudgetWise.Controllers
             ViewBag.TotalIncome = await GetTotalIncome();
             ViewBag.TotalExpense = await GetTotalExpense();
             ViewBag.Balance = await GetBalance();
-            ViewBag.TreemapData = await GetTreemapData();
-            ViewBag.BarChartData = await GetBarChartData();
-            ViewBag.MonthlyTrendChartData = await GetMonthlyTrendChartData();
-            ViewBag.RadarChartData = await GetRadarChartData();
-            ViewBag.StackedColumnChartData = await GetStackedColumnChartData();
-            ViewBag.StackedAreaChartData = await GetStackedAreaChartData();
+            ViewBag.TreemapData = await GetTreemapData() ?? new List<object>();
+            ViewBag.BarChartData = await GetBarChartData() ?? new List<BarChartData>();
+            ViewBag.MonthlyTrendChartData = await GetMonthlyTrendChartData() ?? new List<MonthlyTrendData>();
+            ViewBag.RadarChartData = await GetRadarChartData() ?? new RadarChartData { ExpenseData = new List<RadarData>(), IncomeData = new List<RadarData>() };
+            ViewBag.StackedColumnChartData = await GetStackedColumnChartData() ?? new List<object>();
+            ViewBag.StackedAreaChartData = await GetStackedAreaChartData() ?? new List<object>();
 
             return View();
         }
@@ -105,7 +105,13 @@ namespace BudgetWise.Controllers
             return String.Format(culture, "{0:C0}", Balance);
         }
         //Treemap: Expense by Category - Last 7 Days
-        private async Task<object> GetTreemapData()
+        private async Task<List<object>> GetTreemapData()
+        {
+            // Ensure non-null return value
+            var data = await GetTreemapDataImplementation();
+            return data ?? new List<object>();
+        }
+        private async Task<List<object>> GetTreemapDataImplementation()
         {
             DateTime StartDate7Days = DateTime.UtcNow.Date.AddDays(-6);
             DateTime EndDate7Days = DateTime.UtcNow.Date;
@@ -128,10 +134,10 @@ namespace BudgetWise.Controllers
                 .OrderByDescending(l => l.amount)
                 .ToList();
 
-            return TreemapData;
+            return TreemapData.Cast<object>().ToList();
         }
-        //Bar Chart: Income vs Expense - Last 7 Days
-        private async Task<object> GetBarChartData()
+        // Bar Chart: Income vs Expense - Last 7 Days
+        private async Task<List<BarChartData>> GetBarChartData()
         {
             DateTime StartDate7Days = DateTime.UtcNow.Date.AddDays(-6);
             DateTime EndDate7Days = DateTime.UtcNow.Date;
@@ -148,7 +154,8 @@ namespace BudgetWise.Controllers
                 .Select(k => new BarChartData()
                 {
                     day = k.First().Date.ToString("MMM-dd-yyyy"),
-                    income = k.Sum(l => l.Amount)
+                    income = k.Sum(l => l.Amount),
+                    expense = 0
                 })
                 .ToList();
 
@@ -158,31 +165,40 @@ namespace BudgetWise.Controllers
                 .Select(k => new BarChartData()
                 {
                     day = k.First().Date.ToString("MMM-dd-yyyy"),
+                    income = 0,
                     expense = k.Sum(l => l.Amount)
                 })
                 .ToList();
 
-            string[] Last7Days = Enumerable.Range(0, 7)
+            var Last7Days = Enumerable.Range(0, 7)
                 .Select(i => StartDate7Days.AddDays(i).ToString("MMM-dd-yyyy"))
                 .ToArray();
 
-            var BarChartData = from day in Last7Days
-                               join income in BarChartIncomeSummary on day equals income.day into dayIncomeJoined
-                               from income in dayIncomeJoined.DefaultIfEmpty()
-                               join expense in BarChartExpenseSummary on day equals expense.day into expenseJoined
-                               from expense in expenseJoined.DefaultIfEmpty()
-                               select new
-                               {
-                                   day = day,
-                                   income = income == null ? 0 : income.income,
-                                   expense = expense == null ? 0 : expense.expense,
-                               };
+            var BarChartData = Last7Days
+                .GroupJoin(BarChartIncomeSummary, day => day, income => income.day, (day, income) => new { day, income })
+                .SelectMany(
+                    x => x.income.DefaultIfEmpty(new BarChartData { day = x.day, income = 0, expense = 0 }),
+                    (x, income) => new { x.day, income })
+                .GroupJoin(BarChartExpenseSummary, x => x.day, expense => expense.day, (x, expense) => new { x.day, x.income, expense })
+                .SelectMany(
+                    x => x.expense.DefaultIfEmpty(new BarChartData { day = x.day, income = 0, expense = 0 }),
+                    (x, expense) => new BarChartData
+                    {
+                        day = x.day,
+                        income = x.income.income,
+                        expense = expense.expense
+                    })
+                .ToList();
 
             return BarChartData;
         }
-        
         //Line Chart (3 Lines): Monthly Trend - Last 12 Months from First Entry
         private async Task<List<MonthlyTrendData>> GetMonthlyTrendChartData()
+        {
+            var data = await GetMonthlyTrendChartDataImplementation();
+            return data ?? new List<MonthlyTrendData>();
+        }
+        private async Task<List<MonthlyTrendData>> GetMonthlyTrendChartDataImplementation()
         {
             DateTime StartDate12Months = DateTime.UtcNow.Date.AddMonths(-11);
             DateTime EndDate12Months = DateTime.UtcNow.Date;
@@ -193,13 +209,11 @@ namespace BudgetWise.Controllers
                 .Where(y => y.Date >= StartDate12Months && y.Date <= EndDate12Months && y.UserId == userId)
                 .ToListAsync();
 
-            // Find the earliest month with transactions
             DateTime? earliestTransactionDate = SelectedTransactions12Months
                 .OrderBy(t => t.Date)
                 .Select(t => t.Date)
                 .FirstOrDefault();
 
-            // If there is no transaction in the last 12 months, keep the start date as is
             if (earliestTransactionDate.HasValue)
             {
                 StartDate12Months = earliestTransactionDate.Value;
@@ -230,9 +244,13 @@ namespace BudgetWise.Controllers
 
             return MonthlyTrendChartData;
         }
-
         //Expense Distribution - Across Different Categories
         private async Task<RadarChartData> GetRadarChartData()
+        {
+            var data = await GetRadarChartDataImplementation();
+            return data ?? new RadarChartData { ExpenseData = new List<RadarData>(), IncomeData = new List<RadarData>() };
+        }
+        private async Task<RadarChartData> GetRadarChartDataImplementation()
         {
             DateTime StartDate12Months = DateTime.UtcNow.Date.AddMonths(-11);
             DateTime EndDate12Months = DateTime.UtcNow.Date;
@@ -243,7 +261,6 @@ namespace BudgetWise.Controllers
                 .Where(y => y.Date >= StartDate12Months && y.Date <= EndDate12Months && y.UserId == userId)
                 .ToListAsync();
 
-            // Ensure the date range covers transactions
             DateTime? earliestTransactionDate = SelectedTransactions12Months
                 .OrderBy(t => t.Date)
                 .Select(t => t.Date)
@@ -254,7 +271,6 @@ namespace BudgetWise.Controllers
                 StartDate12Months = earliestTransactionDate.Value;
             }
 
-            // Separate and aggregate data
             var expenseData = SelectedTransactions12Months
                 .Where(t => t.Category?.Type == "Expense")
                 .GroupBy(t => t.Category?.Title)
@@ -275,17 +291,19 @@ namespace BudgetWise.Controllers
                 })
                 .ToList();
 
-            var radarChartData = new RadarChartData
+            return new RadarChartData
             {
                 ExpenseData = expenseData,
                 IncomeData = incomeData
             };
-
-            return radarChartData;
         }
-
         // Stacked Column Chart: Income vs Expense - Last 30 Days
-        private async Task<object> GetStackedColumnChartData()
+        private async Task<List<object>> GetStackedColumnChartData()
+        {
+            var data = await GetStackedColumnChartDataImplementation();
+            return data ?? new List<object>();
+        }
+        private async Task<List<object>> GetStackedColumnChartDataImplementation()
         {
             DateTime StartDate30Days = DateTime.UtcNow.Date.AddDays(-29);
             DateTime EndDate30Days = DateTime.UtcNow.Date;
@@ -314,10 +332,15 @@ namespace BudgetWise.Controllers
                 .OrderBy(x => x.Date)
                 .ToList();
 
-            return StackedColumnChartData;
+            return StackedColumnChartData.Cast<object>().ToList();
         }
         //Staked Area Chart: Income vs Expense - Last 12 Months from First Entry
-        private async Task<object> GetStackedAreaChartData()
+        private async Task<List<object>> GetStackedAreaChartData()
+        {
+            var data = await GetStackedAreaChartDataImplementation();
+            return data ?? new List<object>();
+        }
+        private async Task<List<object>> GetStackedAreaChartDataImplementation()
         {
             DateTime StartDate12Months = DateTime.UtcNow.Date.AddMonths(-11);
             DateTime EndDate12Months = DateTime.UtcNow.Date;
@@ -328,20 +351,18 @@ namespace BudgetWise.Controllers
                 .Where(y => y.Date >= StartDate12Months && y.Date <= EndDate12Months && y.UserId == userId)
                 .ToListAsync();
 
-            // Find the earliest month with transactions
             DateTime? earliestTransactionDate = SelectedTransactions12Months
                 .OrderBy(t => t.Date)
                 .Select(t => t.Date)
                 .FirstOrDefault();
 
-            // If there is an earlier transaction date, adjust the start date
             if (earliestTransactionDate.HasValue && earliestTransactionDate.Value < StartDate12Months)
             {
                 StartDate12Months = new DateTime(earliestTransactionDate.Value.Year, earliestTransactionDate.Value.Month, 1);
             }
 
             var StackedAreaChartData = SelectedTransactions12Months
-                .Where(t => t.Date >= StartDate12Months) // Filter transactions from the adjusted start date
+                .Where(t => t.Date >= StartDate12Months)
                 .GroupBy(t => new { Month = t.Date.ToString("MMM yyyy"), Type = t.Category?.Type ?? "Unknown" })
                 .Select(g => new
                 {
@@ -361,7 +382,7 @@ namespace BudgetWise.Controllers
                 .OrderBy(x => DateTime.ParseExact(x.Month, "MMM yyyy", CultureInfo.InvariantCulture))
                 .ToList();
 
-            return StackedAreaChartData;
+            return StackedAreaChartData.Cast<object>().ToList();
         }
     }
 
