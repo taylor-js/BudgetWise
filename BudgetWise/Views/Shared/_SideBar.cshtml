@@ -1,1 +1,54 @@
-﻿
+﻿@{
+    List<Object> menuItems = new List<Object>();
+    menuItems.Add(new
+    {
+        text = "General",
+        separator = true,
+    });
+    menuItems.Add(new
+    {
+        text = "Dashboard",
+        url = Url.Action("Index", "Dashboard"),
+        iconCss = "fa-solid fa-chart-line",
+    });
+    menuItems.Add(new
+    {
+        text = "Categories",
+        url = Url.Action("Index", "Category"),
+        iconCss = "fa-solid fa-list-ul",
+    });
+    menuItems.Add(new
+    {
+        text = "Transactions",
+        iconCss = "fa-solid fa-arrow-right-arrow-left",
+        url = Url.Action("Index", "Transaction")
+    });
+    menuItems.Add(new
+    {
+        text = "Extras",
+        separator = true,
+    });
+    menuItems.Add(new
+    {
+        text = "Export Report",
+        iconCss = "fa-solid fa-chart-simple",
+        url = Url.Action("Excel", "ExportReport")
+    });
+    menuItems.Add(new
+    {
+        text = "About this App",
+        iconCss = "fa-solid fa-address-card",
+        url = Url.Action("About", "Home")
+    });
+    menuItems.Add(new
+    {
+        text = "Settings",
+        iconCss = "fa-solid fa-gear",
+        url = "/Identity/Account/Manage"
+    });
+}
+<ejs-sidebar id="sidebar" enableDock="false" mediaQuery="(min-width: 768px)" enableGestures="false">
+    <e-content-template>
+        <ejs-menu id="menu" items="menuItems" orientation="Vertical" hamburgerMode></ejs-menu>
+    </e-content-template>
+</ejs-sidebar>
