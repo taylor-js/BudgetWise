@@ -34,7 +34,6 @@ namespace BudgetWise.Controllers
             ViewBag.Balance = await GetBalance();
             ViewBag.TreemapData = await GetTreemapData();
             ViewBag.BarChartData = await GetBarChartData();
-            ViewBag.HeatmapChartData = await GetHeatmapChartData();
             ViewBag.MonthlyTrendChartData = await GetMonthlyTrendChartData();
             ViewBag.RadarChartData = await GetRadarChartData();
             ViewBag.StackedColumnChartData = await GetStackedColumnChartData();
@@ -181,43 +180,7 @@ namespace BudgetWise.Controllers
 
             return BarChartData;
         }
-        // Heatmap: Transaction Amounts - By Category and Month from First Entry
-        private async Task<HeatmapData> GetHeatmapChartData()
-        {
-            DateTime StartDate12Months = DateTime.UtcNow.Date.AddMonths(-11);
-            DateTime EndDate12Months = DateTime.UtcNow.Date;
-            string userId = _userManager.GetUserId(User) ?? string.Empty;
-
-            List<Transaction> SelectedTransactions12Months = await _context.Transactions
-                .Include(x => x.Category)
-                .Where(y => y.Date >= StartDate12Months && y.Date <= EndDate12Months && y.UserId == userId)
-                .ToListAsync();
-
-            var heatmapData = SelectedTransactions12Months
-                .GroupBy(t => new { Month = t.Date.ToString("MMM yyyy"), Category = t.Category?.Title ?? "Unknown" })
-                .Select(g => new { Month = g.Key.Month, Category = g.Key.Category, Amount = g.Sum(t => t.Amount) })
-                .ToList();
-
-            string[] xLabels = heatmapData.Select(d => d.Month).Distinct().ToArray();
-            string[] yLabels = heatmapData.Select(d => d.Category).Distinct().ToArray();
-
-            int[,] data = new int[xLabels.Length, yLabels.Length];
-            foreach (var item in heatmapData)
-            {
-                int xIndex = Array.IndexOf(xLabels, item.Month);
-                int yIndex = Array.IndexOf(yLabels, item.Category);
-                data[xIndex, yIndex] = (int)item.Amount; // Convert to integer
-            }
-
-            var formattedHeatmapData = new HeatmapData
-            {
-                Data = data,
-                XLabels = xLabels,
-                YLabels = yLabels,
-            };
-
-            return formattedHeatmapData;
-        }
+        
         //Line Chart (3 Lines): Monthly Trend - Last 12 Months from First Entry
         private async Task<List<MonthlyTrendData>> GetMonthlyTrendChartData()
         {
@@ -415,13 +378,6 @@ namespace BudgetWise.Controllers
         public string day;
         public int income;
         public int expense;
-    }
-
-    public class HeatmapData
-    {
-        public int[,] Data { get; set; }
-        public string[] XLabels { get; set; }
-        public string[] YLabels { get; set; }
     }
 
     public class RadarChartData

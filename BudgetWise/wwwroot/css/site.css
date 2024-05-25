@@ -25,20 +25,6 @@ body {
     color: #ffffff; /* White text color */
 }
 
-body {
-    height: 100% !important;
-    background-color: #12161d;
-    color: #fff;
-    overflow-x: hidden;
-    overflow-y: auto;
-}
-
-@media (max-width: 767.98px) {
-    body.sidebar-open {
-        overflow: hidden;
-    }
-}
-
 
 h1, h2, h3, h4, h5, h6 {
     color: #fff;
@@ -97,33 +83,37 @@ section {
     color: inherit;
 }
 
-
+.e-bigger .e-menu-wrapper ul .e-menu-item, .e-bigger.e-menu-wrapper ul .e-menu-item, 
+.e-bigger .e-menu-container ul .e-menu-item, .e-bigger.e-menu-container ul .e-menu-item{
+    line-height:50px;
+}
+#menu .e-menu-item.e-separator {
+    line-height:25px;
+}
 /* Menu */
 #menu {
     width: 100% !important;
     height: 100% !important;
     background-color: inherit;
     overflow-y: hidden;
-    padding-top: 80px;
+    padding-top: 80px!important;
 }
 
-    #menu .e-menu-item:not(.e-separator) {
-        height: 100% !important;
-    }
+#menu .e-menu-item:not(.e-separator) {
+    height: 100% !important;
+}
 
-    #menu .e-menu-item {
-        box-sizing: border-box;
-    }
+#menu .e-menu-item {
+    box-sizing: border-box;
+}
 
-        #menu .e-menu-item a {
-            width: 100% !important;
-            color: rgb(171, 163, 152);
-            font-weight: 300;
-            box-sizing: border-box;
-            margin-top: 30px;
-            margin-bottom: 30px;
-            line-height:60px;
-        }
+#menu .e-menu-item a {
+    width: 100% !important;
+    color: rgb(171, 163, 152);
+    font-weight: 300;
+    box-sizing: border-box;
+    height:30px;
+}
 
 .e-anchor-wrap {
     width: 100% !important;
@@ -139,17 +129,15 @@ section {
 
 #menu .e-menu-item.e-separator {
     border: none;
-    margin: 5px 5px;
-    padding: 0 20px;
     text-transform: uppercase;
     font-weight: bold;
     font-size: 13px;
     color: #65da41;
 }
 
-    #menu .e-menu-item.e-separator:not(:first-child) {
-        background-color: inherit;
-    }
+#menu .e-menu-item.e-separator:not(:first-child) {
+    background-color: inherit;
+}
 
 /* Added CSS for dropdowns */
 #menu .e-menu-item .e-ul {
@@ -170,127 +158,100 @@ section {
     height: 30px;
 }
 
-/* Sidebar */
-
-.sidebar {
-    flex-grow: 1;
-    width: 100%;
-    height: 100% !important;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    transition: transform 0.3s ease;
-    display: flex;
-    transform: translateX(-100%);
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-}
-
-    .sidebar::-webkit-scrollbar {
-        display: none; /* Chrome, Safari, and Opera */
-    }
-
-    .sidebar .e-menu-wrapper .e-hamburger .e-control .e-menu {
-        width: 100% !important;
-        height: 100% !important;
-        background-color: #12161d;
-    }
-
-.e-menu-wrapper, .e-menu-container {
-    border-radius: 0px !important;
-}
-
-.sidebar .e-menu-wrapper {
-    width: 100% !important;
-    background-color: #12161d;
-}
-
-.e-sidebar {
-    width: 100% !important;
-    position: absolute;
-    background-color: #12161d;
-    overflow-y: auto; /*The issue is here*/
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-}
-
-    .e-sidebar::-webkit-scrollbar {
-        display: none; /* Chrome, Safari, and Opera */
-    }
-
-.wrapper {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    overflow-y: auto;
-}
-
 /*Main Content & Sidebar*/
+
 .main-content {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    transition: margin-left 0.3s ease;
-    margin-top: 60px !important;
     border-left: 2px solid rgba(75, 82, 85, 0.24);
-    height: 100% !important;
+    overflow-y: auto;
+    transition: margin-left 0.3s ease;
+    padding-top: 60px;
 }
-
-@media (min-width: 768px) {
-    .sidebar {
-        width: 200px;
-        transform: translateX(0);
-    }
-
-        .sidebar.open {
-            transform: translateX(-100%);
-        }
-
-        .sidebar .e-menu-wrapper {
-            width: 200px !important;
-        }
-
-    .e-sidebar {
-        width: inherit;
-    }
-
-    .wrapper {
-        width: auto;
-        min-height: 100vh;
-        overflow-x: hidden;
-        overflow-y: hidden;
-        margin-left: 0;
-        transition: margin-left 0.3s ease;
-    }
-
-        .wrapper.open {
-            margin-left: 200px;
-        }
-
-    .main-content {
-        margin-left: 0;
-    }
+/* Sidebar */
+/*e-control e-sidebar e-lib e-left e-transition e-open e-over*/
+/*e-control e-sidebar e-lib e-left e-transition e-close e-over*/
+#sidebar .e-menu-wrapper {
+    background-color: #12161d;
 }
-
-@media (max-width: 767px) {
-    .sidebar {
-        width: 100% !important;
-        height: 100% !important;
-        transform: translateX(-100%); /* Sidebar should be closed by default on smaller screens */
-        overflow-y: auto;
-    }
-
-        .sidebar.open {
-            width: 100% !important;
-            height: 100% !important;
-            transform: translateX(0); /* Sidebar opens on mobile when toggled */
-        }
+.e-menu-wrapper, .e-menu-container {
+    border-radius: 0px !important;
 }
 
 #sidebar-toggler-layout {
     font-size: 1.5rem;
     cursor: pointer;
+}
+
+
+/*Desktop*/
+@media (min-width: 768px) {
+    #sidebar {
+        width: 200px !important;
+        position: absolute;
+        background-color: #12161d;
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+    }
+    #sidebar.e-open + .main-content {
+        margin-left: 200px;
+        width: calc(100% - 200px);
+    }
+
+    #sidebar.e-close + .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+    .main-content {
+        top: 0;
+        transition: margin-left 0.3s ease, width 0.3s ease;
+        margin-left: 200px;
+    }
+    .main-content-logged-in {
+        margin-left: 200px;
+        width: calc(100%-200px);
+        border-left: 2px solid rgba(75, 82, 85, 0.24);
+    }
+}
+
+/*Mobile*/
+@media (max-width: 767px) {
+    #sidebar {
+        width:100%!important;
+        position: fixed;
+        background-color: #12161d;
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+        overflow: hidden !important;
+        width: 0;
+        transition: width 0.3s ease, transform 0.3s ease;
+        transform: translateX(-100%);
+    }
+
+    #sidebar.e-open {
+        width: 100%;
+        transform: translateX(0);
+    }
+
+    #sidebar.e-close {
+        width: 0;
+        transform: translateX(-100%);
+    }
+    #sidebar.e-sidebar.e-right.e-close {
+        transform: translateX(0%);
+    }
+    .e-sidebar.e-left.e-close{
+        visibility:visible!important;
+    }
+    .main-content {
+        margin-left: 0px;
+        width: 100% !important;
+        top: 0;
+    }
+    body.sidebar-open {
+        overflow: hidden;
+    }
 }
 
 /* Navbar */
@@ -342,7 +303,6 @@ nav.navbar i {
 
 @media (max-width: 991.98px) {
     nav.navbar .navbar-collapse {
-        position: fixed;
         top: 60px;
         right: 0;
         bottom: 0;
@@ -832,49 +792,6 @@ a {
     color: #65da41;
 }
 
-#heatmap {
-    position: relative;
-}
-
-@media (max-width: 767.98px) {
-    #heatmap {
-        width: 1000px;
-    }
-
-    .scrollable-heatmap-mobile::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-    }
-
-    .scrollable-heatmap-mobile::-webkit-scrollbar-track {
-        background-color: #1a222b;
-        border-radius: 4px;
-    }
-
-    .scrollable-heatmap-mobile::-webkit-scrollbar-thumb {
-        background-color: #555;
-        border-radius: 4px;
-    }
-
-        .scrollable-heatmap-mobile::-webkit-scrollbar-thumb:hover {
-            background-color: #888;
-        }
-
-    .scrollable-heatmap-mobile {
-        scrollbar-width: thin;
-        scrollbar-color: #555 #1a222b;
-        overflow-x: scroll !important;
-        position: relative;
-    }
-
-        .scrollable-heatmap-mobile:hover {
-            scrollbar-width: thin;
-        }
-
-    .scrollable-heatmap-mobile {
-        overflow-x: scroll;
-    }
-}
 
 /* Ensure the tooltip container adjusts to fit its content */
 .e-control .e-tooltip.e-control.e-tooltip.e-lib {
