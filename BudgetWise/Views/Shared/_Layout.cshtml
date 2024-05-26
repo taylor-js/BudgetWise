@@ -60,48 +60,48 @@
             </div>
         </div>
     </nav>
-    @if (User is not null && User.Identity is not null && User.Identity.IsAuthenticated)
-    {
-        <partial name="_SideBar.cshtml" />
-    }
-    @* @((User is not null && User.Identity is not null && User.Identity.IsAuthenticated) ? "main-content-logged-in" : "") *@
-
-    <div class="main-content @((User is not null && User.Identity is not null && User.Identity.IsAuthenticated) ? "main-content-logged-in" : "")">
-        <div class="container mt-4">
-            <div class="row justify-content-center">
-                <main role="main" class="pb-3">
-                    @if (ViewData["isDashboard"] == null)
-                    {
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="d-flex flex-column mb-3">
-                                    <div class="d-flex mb-1">
-                                        <div class="d-flex d-block w-100 justify-content-between mb-1 align-items-center">
-                                            <h3 class="fw-bold my-0">@ViewData["PageTitle"]</h3>
-                                            <div class="">
-                                                @if (ViewData["PageActionText"] != null &&
-                                               (ViewContext.RouteData.Values["controller"]?.ToString() == "Category" ||
-                                               ViewContext.RouteData.Values["controller"]?.ToString() == "Transaction"))
-                                                {
-                                                    <a class="btn btn-success btn-custom responsive-button" href="@ViewData["PageActionUrl"]">
-                                                        <i class="fa fa-plus" aria-hidden="true"></i> &nbsp @ViewData["PageActionText"]
-                                                    </a>
-                                                }
+    <div class="main-container">
+        @if (User is not null && User.Identity is not null && User.Identity.IsAuthenticated)
+        {
+            <partial name="_SideBar.cshtml" />
+        }
+        <div class="main-content @((User is not null && User.Identity is not null && User.Identity.IsAuthenticated) ? "main-content-logged-in" : "")">
+            <div class="container mt-4">
+                <div class="row justify-content-center">
+                    <main role="main" class="pb-3">
+                        @if (ViewData["isDashboard"] == null)
+                        {
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="d-flex flex-column mb-3">
+                                        <div class="d-flex mb-1">
+                                            <div class="d-flex d-block w-100 justify-content-between mb-1 align-items-center">
+                                                <h3 class="fw-bold my-0">@ViewData["PageTitle"]</h3>
+                                                <div class="">
+                                                    @if (ViewData["PageActionText"] != null &&
+                                                   (ViewContext.RouteData.Values["controller"]?.ToString() == "Category" ||
+                                                   ViewContext.RouteData.Values["controller"]?.ToString() == "Transaction"))
+                                                    {
+                                                        <a class="btn btn-success btn-custom responsive-button" href="@ViewData["PageActionUrl"]">
+                                                            <i class="fa fa-plus" aria-hidden="true"></i> &nbsp @ViewData["PageActionText"]
+                                                        </a>
+                                                    }
+                                                </div>
                                             </div>
                                         </div>
+                                        @* Breadcrumb rendering *@
+                                        <ejs-breadcrumb id="breadcrumb" separatorTemplate="@Html.Raw("<span class='fa-solid fa-angle-right'></span>")" enableNavigation="false"></ejs-breadcrumb>
                                     </div>
-                                    @* Breadcrumb rendering *@
-                                    <ejs-breadcrumb id="breadcrumb" separatorTemplate="@Html.Raw("<span class='fa-solid fa-angle-right'></span>")" enableNavigation="false"></ejs-breadcrumb>
                                 </div>
                             </div>
-                        </div>
-                    }
-                    @RenderBody()
-                </main>
+                        }
+                        @RenderBody()
+                    </main>
+                </div>
             </div>
         </div>
     </div>
-
+    
     <script type="text/javascript" asp-append-version="true" src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script type="text/javascript" asp-append-version="true" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script type="text/javascript" asp-append-version="true" src="https://cdn.syncfusion.com/ej2/25.2.3/dist/ej2.min.js"></script>

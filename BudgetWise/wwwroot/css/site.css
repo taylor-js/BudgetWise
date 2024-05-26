@@ -159,7 +159,9 @@ section {
 }
 
 /*Main Content & Sidebar*/
-
+.main-container {
+    display: flex;
+}
 .main-content {
     flex-grow: 1;
     display: flex;
@@ -168,7 +170,11 @@ section {
     overflow-y: auto;
     transition: margin-left 0.3s ease;
     padding-top: 60px;
+    flex: 1;
+    overflow-y: auto;
 }
+
+
 /* Sidebar */
 /*e-control e-sidebar e-lib e-left e-transition e-open e-over*/
 /*e-control e-sidebar e-lib e-left e-transition e-close e-over*/
@@ -189,29 +195,40 @@ section {
 @media (min-width: 768px) {
     #sidebar {
         width: 200px !important;
-        position: absolute;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
         background-color: #12161d;
         -ms-overflow-style: none; /* IE and Edge */
         scrollbar-width: none; /* Firefox */
+        transition: transform 0.3s ease;
+        z-index: 1000;
     }
-    #sidebar.e-open + .main-content {
+    .e-sidebar.e-left.e-close {
+        visibility: visible;
+    }
+        #sidebar.e-close {
+            transform: translateX(-200px);
+        }
+
+    .main-content {
         margin-left: 200px;
         width: calc(100% - 200px);
+        transition: margin-left 0.3s ease, width 0.3s ease;
     }
 
-    #sidebar.e-close + .main-content {
-        margin-left: 0;
-        width: 100%;
-    }
-    .main-content {
-        top: 0;
-        transition: margin-left 0.3s ease, width 0.3s ease;
-        /*margin-left: 200px;*/
-    }
     .main-content-logged-in {
         margin-left: 200px;
-        width: calc(100%-200px);
+        width: calc(100% - 200px);
         border-left: 2px solid rgba(75, 82, 85, 0.24);
+        transition: margin-left 0.3s ease, width 0.3s ease;
+    }
+
+    #sidebar.e-close + .main-content,
+    #sidebar.e-close + .main-content-logged-in {
+        margin-left: 0;
+        width: 100%;
     }
 }
 /*Mobile*/
@@ -777,46 +794,4 @@ a {
 
 .card-header .nav-item .nav-link {
     color: #65da41;
-}
-
-
-/* Ensure the tooltip container adjusts to fit its content */
-.e-control .e-tooltip.e-control.e-tooltip.e-lib {
-    display: inline-block !important; /* Ensure it fits its content */
-    width: auto !important; /* Allow the width to be determined by its content */
-    max-width: 100% !important; /* Ensure it doesn't exceed the container's width */
-    white-space: nowrap !important; /* Prevent text from wrapping */
-    padding: 0 !important; /* Remove any default padding */
-    box-sizing: border-box; /* Include padding and border in the element's total width */
-    overflow: visible !important; /* Ensure overflow content is visible */
-}
-
-.custom-tooltip {
-    background-color: rgba(18, 22, 29, 0.8);
-    color: #ffffff;
-    font-family: Inter;
-    font-size: 14px;
-    padding: 10px;
-    width: auto !important;
-    position: absolute;
-    max-width: calc(100vw - 20px); /* Ensure tooltip doesn't overflow horizontally */
-    max-height: calc(100vh - 20px); /* Ensure tooltip doesn't overflow vertically */
-    z-index: 9999; /* Ensure tooltip is on top */
-    transform: translateX(-100%) translateY(-100%); /* Position tooltip above and to the left of the cursor */
-    border-radius: 4px;
-    overflow: visible;
-}
-
-.tooltip-header {
-    font-weight: bold;
-    margin-bottom: 5px;
-    border-bottom: 1px solid #ffffff;
-}
-
-.e-treemap-container {
-    position: relative;
-}
-
-#heatmap {
-    position: relative;
 }
