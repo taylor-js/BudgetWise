@@ -176,8 +176,6 @@ section {
 
 
 /* Sidebar */
-/*e-control e-sidebar e-lib e-left e-transition e-open e-over*/
-/*e-control e-sidebar e-lib e-left e-transition e-close e-over*/
 #sidebar .e-menu-wrapper {
     background-color: #12161d;
 }
@@ -208,9 +206,9 @@ section {
     .e-sidebar.e-left.e-close {
         visibility: visible;
     }
-        #sidebar.e-close {
-            transform: translateX(-200px);
-        }
+    #sidebar.e-close {
+        transform: translateX(-200px);
+    }
 
     .main-content {
         width: calc(100% - 200px);
@@ -285,10 +283,10 @@ nav.navbar .nav-link {
     padding: 0.5rem 1rem;
 }
 
-    nav.navbar .nav-link:hover,
-    nav.navbar .nav-link:focus {
-        color: rgba(255, 255, 255, 0.75);
-    }
+nav.navbar .nav-link:hover,
+nav.navbar .nav-link:focus {
+    color: rgba(255, 255, 255, 0.75);
+}
 
 nav.navbar i {
     padding: 10px;
@@ -297,12 +295,12 @@ nav.navbar i {
     cursor: pointer;
 }
 
-    nav.navbar i:hover,
-    nav.navbar img:hover {
-        cursor: pointer;
-        background-color: #48545f14;
-        transform: scale(1.05) translateZ(0px);
-    }
+nav.navbar i:hover,
+nav.navbar img:hover {
+    cursor: pointer;
+    background-color: #48545f14;
+    transform: scale(1.05) translateZ(0px);
+}
 
 @media (max-width: 991.98px) {
     nav.navbar .navbar-collapse {
@@ -316,10 +314,10 @@ nav.navbar i {
         transition: 0.3s;
     }
 
-        nav.navbar .navbar-collapse.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    nav.navbar .navbar-collapse.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
 
     nav.navbar .navbar-nav {
         padding: 1rem;
@@ -367,16 +365,16 @@ img.profile-pic {
     overflow: hidden;
 }
 
-    .profile-wrapper .profile-pic {
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        object-fit: cover;
-    }
+.profile-wrapper .profile-pic {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
 
-    .profile-wrapper .titles {
-        line-height: 1;
-    }
+.profile-wrapper .titles {
+    line-height: 1;
+}
 /* Widgets */
 .widget {
     border-radius: 1rem;
@@ -385,44 +383,44 @@ img.profile-pic {
     height: 100%;
 }
 
-    .widget.summary > div:first-child {
-        background-color: #222b33;
-        padding: 1rem;
-        border-top-left-radius: 1rem;
-        border-bottom-left-radius: 1rem;
-    }
+.widget.summary > div:first-child {
+    background-color: #222b33;
+    padding: 1rem;
+    border-top-left-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+}
 
-        .widget.summary > div:first-child i {
-            font-weight: bold;
-        }
+.widget.summary > div:first-child i {
+    font-weight: bold;
+}
 
-    .widget.income > div:first-child {
-        color: #65da41;
-    }
+.widget.income > div:first-child {
+    color: #65da41;
+}
 
-    .widget.expense > div:first-child {
-        color: #ff4e48;
-    }
+.widget.expense > div:first-child {
+    color: #ff4e48;
+}
 
-    .widget.balance > div:first-child {
-        color: #2aa1ff;
-    }
+.widget.balance > div:first-child {
+    color: #2aa1ff;
+}
 
-    .widget.chart {
-        padding: 5px;
-        max-width: 100%;
-    }
+.widget.chart {
+    padding: 5px;
+    max-width: 100%;
+}
 
 @media (max-width: 767.98px) {
     .widget.summary {
         flex-direction: column; /* Change flex direction to column on mobile */
     }
 
-        .widget.summary > div:last-child {
-            border-bottom-left-radius: 1rem; /* Add border radius to bottom left on mobile */
-            border-bottom-right-radius: 1rem; /* Add border radius to bottom right on mobile
-    padding: 1rem; /* Add padding to the content on mobile */
-        }
+    .widget.summary > div:last-child {
+        border-bottom-left-radius: 1rem; /* Add border radius to bottom left on mobile */
+        border-bottom-right-radius: 1rem; /* Add border radius to bottom right on mobile
+        padding: 1rem; /* Add padding to the content on mobile */
+    }
 
     .widget .lead {
         font-size: 1rem;
@@ -524,9 +522,9 @@ a.btn-custom {
     width: 100%;
 }
 
-    .e-btn-group.custom-rbt-group .e-btn {
-        width: 50%;
-    }
+.e-btn-group.custom-rbt-group .e-btn {
+    width: 50%;
+}
 
 .custom-rbt-group label.e-btn {
     box-shadow: none !important;
@@ -585,9 +583,9 @@ a.btn-custom {
     scrollbar-width: none; /* Firefox */
 }
 
-    .e-content::-webkit-scrollbar {
-        display: none; /* Chrome, Safari, and Opera */
-    }
+.e-content::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Opera */
+}
 
 .e-pagercontainer .e-icons {
     background-color: #1a222b;
@@ -600,19 +598,19 @@ a.btn-custom {
     padding: 15px !important;
 }
 
-    .e-pager .e-numericitem:not(.e-currentitem) {
-        border: none !important;
-    }
+.e-pager .e-numericitem:not(.e-currentitem) {
+    border: none !important;
+}
 
-    .e-pager .e-numericitem:hover {
-        color: #fff;
-    }
+.e-pager .e-numericitem:hover {
+    color: #fff;
+}
 
-    .e-pager .e-numericitem.e-currentitem {
-        color: #fff;
-        border: none !important;
-        background-color: #31373d;
-    }
+.e-pager .e-numericitem.e-currentitem {
+    color: #fff;
+    border: none !important;
+    background-color: #31373d;
+}
 
 .e-pager div.e-icons:not(.e-disable) {
     color: #fff;
@@ -655,29 +653,29 @@ a.btn-custom {
     padding: 8px;
 }
 
-    .e-grid .e-toolbar .e-toolbar-items {
-        background-color: #222b33;
-    }
+.e-grid .e-toolbar .e-toolbar-items {
+    background-color: #222b33;
+}
 
-    .e-grid .e-toolbar .e-toolbar-item.e-search-wrapper {
-        margin-left: auto;
-    }
+.e-grid .e-toolbar .e-toolbar-item.e-search-wrapper {
+    margin-left: auto;
+}
 
-    .e-grid .e-toolbar .e-search .e-input-group {
-        background-color: #fff;
-        border-radius: 4px;
-    }
+.e-grid .e-toolbar .e-search .e-input-group {
+    background-color: #fff;
+    border-radius: 4px;
+}
 
-        .e-grid .e-toolbar .e-search .e-input-group .e-input {
-            height: 30px;
-            padding: 4px 8px;
-            font-size: 14px;
-            color: #333;
-        }
+.e-grid .e-toolbar .e-search .e-input-group .e-input {
+    height: 30px;
+    padding: 4px 8px;
+    font-size: 14px;
+    color: #333;
+}
 
-        .e-grid .e-toolbar .e-search .e-input-group .e-input-group-icon {
-            color: #999;
-        }
+.e-grid .e-toolbar .e-search .e-input-group .e-input-group-icon {
+    color: #999;
+}
 
 .action-icons {
     display: flex;
@@ -687,28 +685,28 @@ a.btn-custom {
     height: 100%;
 }
 
-    .action-icons .btn {
-        padding: 5px;
-        font-size: 14px;
-    }
+.action-icons .btn {
+    padding: 5px;
+    font-size: 14px;
+}
 
-    .action-icons a,
-    .action-icons button {
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        padding: 5px;
-        margin-right: 5px;
-    }
+.action-icons a,
+.action-icons button {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    margin-right: 5px;
+}
 
-        .action-icons a:hover,
-        .action-icons button:hover {
-            border-color: #fff;
-        }
+.action-icons a:hover,
+.action-icons button:hover {
+    border-color: #fff;
+}
 
-            .action-icons a:hover i,
-            .action-icons button:hover i {
-                color: inherit;
-            }
+.action-icons a:hover i,
+.action-icons button:hover i {
+    color: inherit;
+}
 
 /* Miscellaneous */
 footer {
@@ -768,10 +766,10 @@ footer {
     background-color: #222b33;
 }
 
-    .custom-nav-link:hover {
-        background-color: #222b33 !important;
-        color: white !important;
-    }
+.custom-nav-link:hover {
+    background-color: #222b33 !important;
+    color: white !important;
+}
 
 .custom-nav-item {
     margin-bottom: 10px;
@@ -786,10 +784,10 @@ a {
     color: black;
 }
 
-    .custom-button-color:hover {
-        background-color: #4ba130;
-        color: black;
-    }
+.custom-button-color:hover {
+    background-color: #4ba130;
+    color: black;
+}
 
 .card-header .nav-item .nav-link {
     color: #65da41;
