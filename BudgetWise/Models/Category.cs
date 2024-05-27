@@ -45,5 +45,14 @@ namespace BudgetWise.Models
         }
         public string UserId { get; set; }
         //public ApplicationUser User { get; set; }
+
+        [NotMapped]
+        public int MinAmount { get; set; }
+
+        [NotMapped]
+        public int MaxAmount { get; set; }
+
+        [NotMapped]
+        public int MaxFrequencyPerDay { get; set; }
     }
 }

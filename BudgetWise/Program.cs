@@ -45,14 +45,6 @@ builder.Services.ConfigureApplicationCookie(options =>
     };
 });
 
-
-// Configure authentication cookies
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    options.Cookie.SameSite = SameSiteMode.None;
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Ensure cookies are sent over HTTPS
-});
-
 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Mgo+DSMBMAY9C3t2UFhhQlJBfV5AQmBIYVp/TGpJfl96cVxMZVVBJAtUQF1hTX5WdkNjXH5edHxUR2VU");
 
 var app = builder.Build();
@@ -73,19 +65,26 @@ app.UseCookiePolicy(); // Add this line to apply the cookie policy
 CultureInfo.DefaultThreadCurrentCulture = CultureInfo.GetCultureInfo("en-US");
 CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.GetCultureInfo("en-US");
 
+// Configure routes
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Dashboard}/{action=Index}/{id?}");
+    pattern: "{controller=DemoDashboard}/{action=Demo}/{id?}");
+
+app.MapControllerRoute(
+    name: "dashboard",
+    pattern: "Dashboard/{action=Index}/{id?}",
+    defaults: new { controller = "Dashboard" });
 
 app.MapControllerRoute(
     name: "category",
-    pattern: "{controller=Category}/{action=Index}/{id?}",
-    defaults: new { controller = "Category", action = "Index" });
+    pattern: "Category/{action=Index}/{id?}",
+    defaults: new { controller = "Category" });
 
 app.MapControllerRoute(
     name: "transaction",
-    pattern: "{controller=Transaction}/{action=Index}/{id?}",
-    defaults: new { controller = "Transaction", action = "Index" });
+    pattern: "Transaction/{action=Index}/{id?}",
+    defaults: new { controller = "Transaction" });
 
 app.MapRazorPages();
+
 app.Run();

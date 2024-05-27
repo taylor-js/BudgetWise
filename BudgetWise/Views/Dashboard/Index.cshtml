@@ -3,7 +3,7 @@
 @using BudgetWise.Controllers;
 @{
     ViewData["isDashboard"] = true;
-    var treemapData = ViewBag.TreemapData as IEnumerable<dynamic>;
+    var treemapData = ViewBag.TreemapData as IEnumerable<object>;
     var barChartData = ViewBag.BarChartData as IEnumerable<BarChartData>;
     var monthlyTrendChartData = ViewBag.MonthlyTrendChartData as IEnumerable<MonthlyTrendData>;
     var radarChartData = ViewBag.RadarChartData as RadarChartData;
@@ -178,8 +178,9 @@
             <div class="px-4 pb-4">
                 @if (radarChartData != null && radarChartData.ExpenseData.Any() && radarChartData.IncomeData.Any())
                 {
-                    <ejs-chart id="radar-chart" width="100%" height="100%" palettes='@(new string[] {"#e61f1f", "#2cb850"})' >
-                        <e-chart-primaryxaxis visible="false" labelFormat="${value}" valueType="Category" interval="2" labelRotation="0" labelIntersectAction="Trim" crossesAt="1" isInversed="true">
+                    <ejs-chart id="radar-chart" width="100%" height="100%" palettes='@(new string[] {"#e61f1f", "#2cb850"})'>
+                        @* axisLabelRender="truncateLabel" tooltipRender="tooltipRender" *@
+                        <e-chart-primaryxaxis visible="false" labelFormat="${value}" valueType="Category" interval="2" labelRotation="0" labelIntersectAction="None" labelPlacement="OnTicks" crossesAt="1" isInversed="true" maximumLabelWidth="70" edgeLabelPlacement="Shift">
                             <e-majorgridlines width="0"></e-majorgridlines>
                             <e-labelstyle color="#ffffff"></e-labelstyle>
                         </e-chart-primaryxaxis>
@@ -205,7 +206,7 @@
                             <e-tooltipsettings-textstyle color="#ffffff" fontFamily="inherit" size="15px"></e-tooltipsettings-textstyle>
                         </e-chart-tooltipsettings>
                         @* <e-chart-zoomsettings enableMouseWheelZooming="true" enablePinchZooming="true" enableSelectionZooming="true" enablePan="true" enableScrollbar="true"></e-chart-zoomsettings> *@
-                        <e-chart-margin left="0" right="0" top="0" bottom="0"></e-chart-margin>
+                        <e-chart-margin left="20" right="20" top="20" bottom="20"></e-chart-margin>
                     </ejs-chart>
                 }
                 else
@@ -302,3 +303,22 @@
         </div>
     </div>
 </div>
+
+<script>
+    function truncateLabel(args) {
+        var maxLength = 4; // Set your desired max length for labels
+        var label = args.text;
+        if (label.length > maxLength) {
+            args.text = label.substring(0, maxLength) + '...';
+        }
+    }
+
+    function tooltipRender(args) {
+        var tooltip = args.text;
+        var series = args.series;
+        var pointIndex = args.point.index;
+        var category = series.dataSource[pointIndex].Category;
+        var amount = series.dataSource[pointIndex].Amount;
+        args.text = category + '<br/>' + amount;
+    }
+</script>

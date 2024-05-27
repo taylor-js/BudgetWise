@@ -192,57 +192,42 @@ namespace BudgetWise.Controllers
 
             return BarChartData;
         }
-        //Line Chart (3 Lines): Monthly Trend - Last 12 Months from First Entry
-        private async Task<List<MonthlyTrendData>> GetMonthlyTrendChartData()
+        // Stacked Column Chart: Income vs Expense - Last 30 Days
+        private async Task<List<object>> GetStackedColumnChartData()
         {
-            var data = await GetMonthlyTrendChartDataImplementation();
-            return data ?? new List<MonthlyTrendData>();
+            var data = await GetStackedColumnChartDataImplementation();
+            return data ?? new List<object>();
         }
-        private async Task<List<MonthlyTrendData>> GetMonthlyTrendChartDataImplementation()
+        private async Task<List<object>> GetStackedColumnChartDataImplementation()
         {
-            DateTime StartDate12Months = DateTime.UtcNow.Date.AddMonths(-11);
-            DateTime EndDate12Months = DateTime.UtcNow.Date;
+            DateTime StartDate30Days = DateTime.UtcNow.Date.AddDays(-29);
+            DateTime EndDate30Days = DateTime.UtcNow.Date;
             string userId = _userManager.GetUserId(User) ?? string.Empty;
 
-            List<Transaction> SelectedTransactions12Months = await _context.Transactions
+            List<Transaction> SelectedTransactions30Days = await _context.Transactions
                 .Include(x => x.Category)
-                .Where(y => y.Date >= StartDate12Months && y.Date <= EndDate12Months && y.UserId == userId)
+                .Where(y => y.Date >= StartDate30Days && y.Date <= EndDate30Days && y.UserId == userId)
                 .ToListAsync();
 
-            DateTime? earliestTransactionDate = SelectedTransactions12Months
-                .OrderBy(t => t.Date)
-                .Select(t => t.Date)
-                .FirstOrDefault();
-
-            if (earliestTransactionDate.HasValue)
-            {
-                StartDate12Months = earliestTransactionDate.Value;
-            }
-
-            List<MonthlyTrendData> MonthlyTrendChartData = new List<MonthlyTrendData>();
-
-            for (DateTime date = StartDate12Months; date <= EndDate12Months; date = date.AddMonths(1))
-            {
-                int TotalIncome = SelectedTransactions12Months
-                    .Where(i => i.Category?.Type == "Income" && i.Date.Month == date.Month && i.Date.Year == date.Year)
-                    .Sum(j => j.Amount);
-
-                int TotalExpense = SelectedTransactions12Months
-                    .Where(i => i.Category?.Type == "Expense" && i.Date.Month == date.Month && i.Date.Year == date.Year)
-                    .Sum(j => j.Amount);
-
-                int Balance = TotalIncome - TotalExpense;
-
-                MonthlyTrendChartData.Add(new MonthlyTrendData
+            var StackedColumnChartData = SelectedTransactions30Days
+                .GroupBy(t => new { t.Date, Type = t.Category?.Type ?? "Unknown" })
+                .Select(g => new
                 {
-                    Month = date.ToString("MMM yyyy"),
-                    Income = TotalIncome,
-                    Expense = TotalExpense,
-                    Balance = Balance
-                });
-            }
+                    Date = g.Key.Date,
+                    Type = g.Key.Type,
+                    Amount = g.Sum(t => t.Amount)
+                })
+                .GroupBy(x => x.Date)
+                .Select(y => new
+                {
+                    Date = y.Key,
+                    Income = y.Where(z => z.Type == "Income").Sum(z => z.Amount),
+                    Expense = y.Where(z => z.Type == "Expense").Sum(z => z.Amount)
+                })
+                .OrderBy(x => x.Date)
+                .ToList();
 
-            return MonthlyTrendChartData;
+            return StackedColumnChartData.Cast<object>().ToList();
         }
         //Expense Distribution - Across Different Categories
         private async Task<RadarChartData> GetRadarChartData()
@@ -297,43 +282,60 @@ namespace BudgetWise.Controllers
                 IncomeData = incomeData
             };
         }
-        // Stacked Column Chart: Income vs Expense - Last 30 Days
-        private async Task<List<object>> GetStackedColumnChartData()
+        //Line Chart (3 Lines): Monthly Trend - Last 12 Months from First Entry
+        private async Task<List<MonthlyTrendData>> GetMonthlyTrendChartData()
         {
-            var data = await GetStackedColumnChartDataImplementation();
-            return data ?? new List<object>();
+            var data = await GetMonthlyTrendChartDataImplementation();
+            return data ?? new List<MonthlyTrendData>();
         }
-        private async Task<List<object>> GetStackedColumnChartDataImplementation()
+        private async Task<List<MonthlyTrendData>> GetMonthlyTrendChartDataImplementation()
         {
-            DateTime StartDate30Days = DateTime.UtcNow.Date.AddDays(-29);
-            DateTime EndDate30Days = DateTime.UtcNow.Date;
+            DateTime StartDate12Months = DateTime.UtcNow.Date.AddMonths(-11);
+            DateTime EndDate12Months = DateTime.UtcNow.Date;
             string userId = _userManager.GetUserId(User) ?? string.Empty;
 
-            List<Transaction> SelectedTransactions30Days = await _context.Transactions
+            List<Transaction> SelectedTransactions12Months = await _context.Transactions
                 .Include(x => x.Category)
-                .Where(y => y.Date >= StartDate30Days && y.Date <= EndDate30Days && y.UserId == userId)
+                .Where(y => y.Date >= StartDate12Months && y.Date <= EndDate12Months && y.UserId == userId)
                 .ToListAsync();
 
-            var StackedColumnChartData = SelectedTransactions30Days
-                .GroupBy(t => new { t.Date, Type = t.Category?.Type ?? "Unknown" })
-                .Select(g => new
-                {
-                    Date = g.Key.Date,
-                    Type = g.Key.Type,
-                    Amount = g.Sum(t => t.Amount)
-                })
-                .GroupBy(x => x.Date)
-                .Select(y => new
-                {
-                    Date = y.Key,
-                    Income = y.Where(z => z.Type == "Income").Sum(z => z.Amount),
-                    Expense = y.Where(z => z.Type == "Expense").Sum(z => z.Amount)
-                })
-                .OrderBy(x => x.Date)
-                .ToList();
+            DateTime? earliestTransactionDate = SelectedTransactions12Months
+                .OrderBy(t => t.Date)
+                .Select(t => t.Date)
+                .FirstOrDefault();
 
-            return StackedColumnChartData.Cast<object>().ToList();
+            if (earliestTransactionDate.HasValue)
+            {
+                StartDate12Months = earliestTransactionDate.Value;
+            }
+
+            List<MonthlyTrendData> MonthlyTrendChartData = new List<MonthlyTrendData>();
+
+            for (DateTime date = StartDate12Months; date <= EndDate12Months; date = date.AddMonths(1))
+            {
+                int TotalIncome = SelectedTransactions12Months
+                    .Where(i => i.Category?.Type == "Income" && i.Date.Month == date.Month && i.Date.Year == date.Year)
+                    .Sum(j => j.Amount);
+
+                int TotalExpense = SelectedTransactions12Months
+                    .Where(i => i.Category?.Type == "Expense" && i.Date.Month == date.Month && i.Date.Year == date.Year)
+                    .Sum(j => j.Amount);
+
+                int Balance = TotalIncome - TotalExpense;
+
+                MonthlyTrendChartData.Add(new MonthlyTrendData
+                {
+                    Month = date.ToString("MMM yyyy"),
+                    Income = TotalIncome,
+                    Expense = TotalExpense,
+                    Balance = Balance
+                });
+            }
+
+            return MonthlyTrendChartData;
         }
+        
+        
         //Staked Area Chart: Income vs Expense - Last 12 Months from First Entry
         private async Task<List<object>> GetStackedAreaChartData()
         {

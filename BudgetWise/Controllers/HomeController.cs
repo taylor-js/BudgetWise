@@ -18,8 +18,14 @@ namespace BudgetWise.Controllers
 
         public IActionResult Index()
         {
-            //ViewData["UserID"] = _userManager.GetUserId(User);
-            return View();
+            if (User is not null && User.Identity is not null && User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Dashboard");
+            }
+            else
+            {
+                return RedirectToAction("Index", "DemoDashboard");
+            }
         }
 
         public IActionResult About()

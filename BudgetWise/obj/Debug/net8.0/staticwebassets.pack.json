@@ -21,6 +21,14 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\taylo\\Documents\\GitHub\\BudgetWise\\BudgetWise\\wwwroot\\js\\app.js",
+      "PackagePath": "staticwebassets\\js\\app.js"
+    },
+    {
+      "Id": "C:\\Users\\taylo\\Documents\\GitHub\\BudgetWise\\BudgetWise\\wwwroot\\js\\app.js.map",
+      "PackagePath": "staticwebassets\\js\\app.js.map"
+    },
+    {
       "Id": "C:\\Users\\taylo\\Documents\\GitHub\\BudgetWise\\BudgetWise\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },

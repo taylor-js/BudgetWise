@@ -47,6 +47,7 @@
           "Microsoft.EntityFrameworkCore.Tools": "8.0.5",
           "Microsoft.Extensions.Configuration": "8.0.0",
           "Microsoft.Extensions.Configuration.UserSecrets": "8.0.0",
+          "Microsoft.TypeScript.MSBuild": "5.4.4",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "8.0.2",
           "Npgsql": "8.0.3",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "8.0.4",
@@ -2125,6 +2126,7 @@
           "lib/netstandard2.0/Microsoft.SqlServer.Server.dll": {}
         }
       },
+      "Microsoft.TypeScript.MSBuild/5.4.4": {},
       "Microsoft.VisualStudio.Web.CodeGeneration/8.0.2": {
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection": "8.0.0",
@@ -6323,6 +6325,13 @@
       "sha512": "sha512-N4KeF3cpcm1PUHym1RmakkzfkEv3GRMyofVv40uXsQhCQeglr2OHNcUk2WOG51AKpGO8ynGpo9M/kFXSzghwug==",
       "path": "microsoft.sqlserver.server/1.0.0",
       "hashPath": "microsoft.sqlserver.server.1.0.0.nupkg.sha512"
+    },
+    "Microsoft.TypeScript.MSBuild/5.4.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-v7rhit0iI/xf8PAuUlkJoBHRGV6dO3Sv/J9y3h6HFrCMOb90w0RYUp4Cb4xu2zFhDfrG9T62Ut5Lar39X/VrTA==",
+      "path": "microsoft.typescript.msbuild/5.4.4",
+      "hashPath": "microsoft.typescript.msbuild.5.4.4.nupkg.sha512"
     },
     "Microsoft.VisualStudio.Web.CodeGeneration/8.0.2": {
       "type": "package",

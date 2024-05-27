@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "3YeAca8WGoUQWjndDziqMhJlXfPKvCXk5y9//XiSXzYUQ7bReCsPYuHjkmV2W7OLiamMTxX+FBhViKF3rqrx8g==",
+  "dgSpecHash": "4pjyEWCYOq/cVBu5KAr4DQuFw3LrYifWG5/4Fr45ZferICXFD+JPzHBDipQ1pzFFlnQhjYo0QewW9xjmSYkTkg==",
   "success": true,
   "projectFilePath": "C:\\Users\\taylo\\Documents\\GitHub\\BudgetWise\\BudgetWise\\BudgetWise.csproj",
   "expectedPackageFiles": [
@@ -130,6 +130,7 @@
     "C:\\Users\\taylo\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
     "C:\\Users\\taylo\\.nuget\\packages\\microsoft.netcore.targets\\1.1.3\\microsoft.netcore.targets.1.1.3.nupkg.sha512",
     "C:\\Users\\taylo\\.nuget\\packages\\microsoft.sqlserver.server\\1.0.0\\microsoft.sqlserver.server.1.0.0.nupkg.sha512",
+    "C:\\Users\\taylo\\.nuget\\packages\\microsoft.typescript.msbuild\\5.4.4\\microsoft.typescript.msbuild.5.4.4.nupkg.sha512",
     "C:\\Users\\taylo\\.nuget\\packages\\microsoft.visualstudio.web.codegeneration\\8.0.2\\microsoft.visualstudio.web.codegeneration.8.0.2.nupkg.sha512",
     "C:\\Users\\taylo\\.nuget\\packages\\microsoft.visualstudio.web.codegeneration.core\\8.0.2\\microsoft.visualstudio.web.codegeneration.core.8.0.2.nupkg.sha512",
     "C:\\Users\\taylo\\.nuget\\packages\\microsoft.visualstudio.web.codegeneration.design\\8.0.2\\microsoft.visualstudio.web.codegeneration.design.8.0.2.nupkg.sha512",
