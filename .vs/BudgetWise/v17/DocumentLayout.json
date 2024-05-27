@@ -46,8 +46,7 @@
               "RelativeToolTip": "BudgetWise\\Controllers\\DashboardController.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAMEAAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-25T22:05:58.081Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-25T22:05:58.081Z"
             },
             {
               "$type": "Document",
@@ -59,8 +58,7 @@
               "RelativeToolTip": "BudgetWise\\Views\\Dashboard\\Index.cshtml",
               "ViewState": "AQIAAJ8AAAAAAAAAAAAwwLUAAAB0AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-05-25T22:00:29.884Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-25T22:00:29.884Z"
             },
             {
               "$type": "Document",
@@ -72,8 +70,7 @@
               "RelativeToolTip": "BudgetWise\\Views\\Shared\\_SideBar.cshtml",
               "ViewState": "AQIAACkAAAAAAAAAAAAcwDUAAAAOAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-05-25T19:14:12.97Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-25T19:14:12.97Z"
             },
             {
               "$type": "Document",
@@ -83,7 +80,7 @@
               "RelativeDocumentMoniker": "BudgetWise\\Views\\Shared\\_Layout.cshtml",
               "ToolTip": "C:\\Users\\taylo\\Documents\\GitHub\\BudgetWise\\BudgetWise\\Views\\Shared\\_Layout.cshtml",
               "RelativeToolTip": "BudgetWise\\Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AQIAADcAAAAAAAAAAAAuwEIAAAAJAAAA",
+              "ViewState": "AQIAADcAAAAAAAAAAAAuwEsAAABJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-05-25T19:05:41.312Z",
               "EditorCaption": ""
@@ -96,7 +93,7 @@
               "RelativeDocumentMoniker": "BudgetWise\\wwwroot\\css\\site.css",
               "ToolTip": "C:\\Users\\taylo\\Documents\\GitHub\\BudgetWise\\BudgetWise\\wwwroot\\css\\site.css",
               "RelativeToolTip": "BudgetWise\\wwwroot\\css\\site.css",
-              "ViewState": "AQIAAA4DAAAAAAAAAAAAAB0DAAAAAAAA",
+              "ViewState": "AQIAAMwAAAAAAAAAAAAAAOAAAAAFAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
               "WhenOpened": "2024-05-25T18:58:56.288Z",
               "EditorCaption": ""

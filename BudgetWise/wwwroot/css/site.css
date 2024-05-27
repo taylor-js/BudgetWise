@@ -213,7 +213,6 @@ section {
         }
 
     .main-content {
-        margin-left: 200px;
         width: calc(100% - 200px);
         transition: margin-left 0.3s ease, width 0.3s ease;
     }
