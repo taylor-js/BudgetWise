@@ -35,7 +35,7 @@ namespace BudgetWise.Controllers
             ViewBag.TreemapData = await GetTreemapData() ?? new List<object>();
             ViewBag.BarChartData = await GetBarChartData() ?? new List<BarChartData>();
             ViewBag.MonthlyTrendChartData = await GetMonthlyTrendChartData() ?? new List<MonthlyTrendData>();
-            ViewBag.RadarChartData = await GetRadarChartData() ?? new RadarChartData { ExpenseData = new List<RadarData>(), IncomeData = new List<RadarData>() };
+            ViewBag.bubbleChartData = await GetBubbleChartData() ?? new List<BubbleChartData>();
             ViewBag.StackedColumnChartData = await GetStackedColumnChartData() ?? new List<object>();
             ViewBag.StackedAreaChartData = await GetStackedAreaChartData() ?? new List<object>();
 
@@ -44,57 +44,86 @@ namespace BudgetWise.Controllers
 
         private async Task<string> GetTotalIncome()
         {
-            DateTime StartDate7Days = DateTime.UtcNow.Date.AddDays(-6);
-            DateTime EndDate7Days = DateTime.UtcNow.Date;
             string userId = _userManager.GetUserId(User) ?? string.Empty;
 
-            List<Transaction> SelectedTransactions7Days = await _context.Transactions
+            List<Transaction> SelectedTransactions = await _context.Transactions
                 .Include(x => x.Category)
-                .Where(y => y.Date >= StartDate7Days && y.Date <= EndDate7Days && y.UserId == userId)
+                .Where(y => y.UserId == userId)
+                .OrderBy(y => y.Date)
                 .ToListAsync();
 
-            int TotalIncome = SelectedTransactions7Days
-                .Where(i => i.Category?.Type == "Income")
+            DateTime? earliestDate = SelectedTransactions.FirstOrDefault()?.Date;
+
+            if (earliestDate == null)
+            {
+                return 0.ToString("C0");
+            }
+
+            DateTime StartDate = earliestDate.Value;
+            DateTime EndDate = DateTime.UtcNow.Date;
+
+            int TotalIncome = SelectedTransactions
+                .Where(i => i.Date >= StartDate && i.Date <= EndDate && i.Category?.Type == "Income")
                 .Sum(j => j.Amount);
 
             return TotalIncome.ToString("C0");
         }
 
+
         private async Task<string> GetTotalExpense()
         {
-            DateTime StartDate7Days = DateTime.UtcNow.Date.AddDays(-6);
-            DateTime EndDate7Days = DateTime.UtcNow.Date;
             string userId = _userManager.GetUserId(User) ?? string.Empty;
 
-            List<Transaction> SelectedTransactions7Days = await _context.Transactions
+            List<Transaction> SelectedTransactions = await _context.Transactions
                 .Include(x => x.Category)
-                .Where(y => y.Date >= StartDate7Days && y.Date <= EndDate7Days && y.UserId == userId)
+                .Where(y => y.UserId == userId)
+                .OrderBy(y => y.Date)
                 .ToListAsync();
 
-            int TotalExpense = SelectedTransactions7Days
-                .Where(i => i.Category?.Type == "Expense")
+            DateTime? earliestDate = SelectedTransactions.FirstOrDefault()?.Date;
+
+            if (earliestDate == null)
+            {
+                return 0.ToString("C0");
+            }
+
+            DateTime StartDate = earliestDate.Value;
+            DateTime EndDate = DateTime.UtcNow.Date;
+
+            int TotalExpense = SelectedTransactions
+                .Where(i => i.Date >= StartDate && i.Date <= EndDate && i.Category?.Type == "Expense")
                 .Sum(j => j.Amount);
 
             return TotalExpense.ToString("C0");
         }
 
+
         private async Task<string> GetBalance()
         {
-            DateTime StartDate7Days = DateTime.UtcNow.Date.AddDays(-6);
-            DateTime EndDate7Days = DateTime.UtcNow.Date;
             string userId = _userManager.GetUserId(User) ?? string.Empty;
 
-            List<Transaction> SelectedTransactions7Days = await _context.Transactions
+            List<Transaction> SelectedTransactions = await _context.Transactions
                 .Include(x => x.Category)
-                .Where(y => y.Date >= StartDate7Days && y.Date <= EndDate7Days && y.UserId == userId)
+                .Where(y => y.UserId == userId)
+                .OrderBy(y => y.Date)
                 .ToListAsync();
 
-            int TotalIncome = SelectedTransactions7Days
-                .Where(i => i.Category?.Type == "Income")
+            DateTime? earliestDate = SelectedTransactions.FirstOrDefault()?.Date;
+
+            if (earliestDate == null)
+            {
+                return 0.ToString("C0");
+            }
+
+            DateTime StartDate = earliestDate.Value;
+            DateTime EndDate = DateTime.UtcNow.Date;
+
+            int TotalIncome = SelectedTransactions
+                .Where(i => i.Date >= StartDate && i.Date <= EndDate && i.Category?.Type == "Income")
                 .Sum(j => j.Amount);
 
-            int TotalExpense = SelectedTransactions7Days
-                .Where(i => i.Category?.Type == "Expense")
+            int TotalExpense = SelectedTransactions
+                .Where(i => i.Date >= StartDate && i.Date <= EndDate && i.Category?.Type == "Expense")
                 .Sum(j => j.Amount);
 
             int Balance = TotalIncome - TotalExpense;
@@ -104,6 +133,7 @@ namespace BudgetWise.Controllers
 
             return String.Format(culture, "{0:C0}", Balance);
         }
+
         //Treemap: Expense by Category - Last 7 Days
         private async Task<List<object>> GetTreemapData()
         {
@@ -139,6 +169,12 @@ namespace BudgetWise.Controllers
         // Bar Chart: Income vs Expense - Last 7 Days
         private async Task<List<BarChartData>> GetBarChartData()
         {
+            var data = await GetBarChartDataImplementation();
+            return data ?? new List<BarChartData>();
+        }
+
+        private async Task<List<BarChartData>> GetBarChartDataImplementation()
+        {
             DateTime StartDate7Days = DateTime.UtcNow.Date.AddDays(-6);
             DateTime EndDate7Days = DateTime.UtcNow.Date;
             string userId = _userManager.GetUserId(User) ?? string.Empty;
@@ -148,47 +184,18 @@ namespace BudgetWise.Controllers
                 .Where(y => y.Date >= StartDate7Days && y.Date <= EndDate7Days && y.UserId == userId)
                 .ToListAsync();
 
-            List<BarChartData> BarChartIncomeSummary = SelectedTransactions7Days
-                .Where(i => i.Category?.Type == "Income")
-                .GroupBy(j => j.Date)
-                .Select(k => new BarChartData()
+            var BarChartData = SelectedTransactions7Days
+                .GroupBy(t => t.Date)
+                .Select(g => new BarChartData
                 {
-                    day = k.First().Date.ToString("MMM-dd-yyyy"),
-                    income = k.Sum(l => l.Amount),
-                    expense = 0
+                    date = g.Key,
+                    day = g.Key.ToString("dd MMM"),
+                    income = g.Where(t => t.Category?.Type == "Income").Sum(t => t.Amount),
+                    expense = g.Where(t => t.Category?.Type == "Expense").Sum(t => t.Amount)
                 })
                 .ToList();
 
-            List<BarChartData> BarChartExpenseSummary = SelectedTransactions7Days
-                .Where(i => i.Category?.Type == "Expense")
-                .GroupBy(j => j.Date)
-                .Select(k => new BarChartData()
-                {
-                    day = k.First().Date.ToString("MMM-dd-yyyy"),
-                    income = 0,
-                    expense = k.Sum(l => l.Amount)
-                })
-                .ToList();
-
-            var Last7Days = Enumerable.Range(0, 7)
-                .Select(i => StartDate7Days.AddDays(i).ToString("MMM-dd-yyyy"))
-                .ToArray();
-
-            var BarChartData = Last7Days
-                .GroupJoin(BarChartIncomeSummary, day => day, income => income.day, (day, income) => new { day, income })
-                .SelectMany(
-                    x => x.income.DefaultIfEmpty(new BarChartData { day = x.day, income = 0, expense = 0 }),
-                    (x, income) => new { x.day, income })
-                .GroupJoin(BarChartExpenseSummary, x => x.day, expense => expense.day, (x, expense) => new { x.day, x.income, expense })
-                .SelectMany(
-                    x => x.expense.DefaultIfEmpty(new BarChartData { day = x.day, income = 0, expense = 0 }),
-                    (x, expense) => new BarChartData
-                    {
-                        day = x.day,
-                        income = x.income.income,
-                        expense = expense.expense
-                    })
-                .ToList();
+            BarChartData = BarChartData.OrderBy(d => d.date).ToList();
 
             return BarChartData;
         }
@@ -229,13 +236,14 @@ namespace BudgetWise.Controllers
 
             return StackedColumnChartData.Cast<object>().ToList();
         }
-        //Expense Distribution - Across Different Categories
-        private async Task<RadarChartData> GetRadarChartData()
+        // Bubble chart
+        private async Task<List<BubbleChartData>> GetBubbleChartData()
         {
-            var data = await GetRadarChartDataImplementation();
-            return data ?? new RadarChartData { ExpenseData = new List<RadarData>(), IncomeData = new List<RadarData>() };
+            var data = await GetBubbleChartDataImplementation();
+            return data ?? new List<BubbleChartData>();
         }
-        private async Task<RadarChartData> GetRadarChartDataImplementation()
+
+        private async Task<List<BubbleChartData>> GetBubbleChartDataImplementation()
         {
             DateTime StartDate12Months = DateTime.UtcNow.Date.AddMonths(-11);
             DateTime EndDate12Months = DateTime.UtcNow.Date;
@@ -256,31 +264,20 @@ namespace BudgetWise.Controllers
                 StartDate12Months = earliestTransactionDate.Value;
             }
 
-            var expenseData = SelectedTransactions12Months
-                .Where(t => t.Category?.Type == "Expense")
-                .GroupBy(t => t.Category?.Title)
-                .Select(g => new RadarData
+            var BubbleChartData = SelectedTransactions12Months
+                .Where(t => t.Date >= StartDate12Months)
+                .GroupBy(t => new { t.Category?.Title, t.Category?.Type })
+                .Select(g => new BubbleChartData
                 {
-                    Category = g.Key ?? "Unknown",
-                    Amount = g.Sum(t => t.Amount)
+                    category = g.Key.Title ?? "Unknown",
+                    type = g.Key.Type ?? "Unknown",
+                    amount = g.Sum(t => t.Amount),
+                    size = g.Count()
                 })
+                .OrderBy(d => d.size)
                 .ToList();
 
-            var incomeData = SelectedTransactions12Months
-                .Where(t => t.Category?.Type == "Income")
-                .GroupBy(t => t.Category?.Title)
-                .Select(g => new RadarData
-                {
-                    Category = g.Key ?? "Unknown",
-                    Amount = g.Sum(t => t.Amount)
-                })
-                .ToList();
-
-            return new RadarChartData
-            {
-                ExpenseData = expenseData,
-                IncomeData = incomeData
-            };
+            return BubbleChartData;
         }
         //Line Chart (3 Lines): Monthly Trend - Last 12 Months from First Entry
         private async Task<List<MonthlyTrendData>> GetMonthlyTrendChartData()
@@ -398,20 +395,17 @@ namespace BudgetWise.Controllers
 
     public class BarChartData
     {
+        public DateTime date { get; set; }
         public string day;
         public int income;
         public int expense;
     }
 
-    public class RadarChartData
+    public class BubbleChartData
     {
-        public List<RadarData> ExpenseData { get; set; }
-        public List<RadarData> IncomeData { get; set; }
-    }
-
-    public class RadarData
-    {
-        public string Category { get; set; }
-        public int Amount { get; set; }
+        public string category;
+        public string type;
+        public int amount;
+        public int size;
     }
 }

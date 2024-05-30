@@ -6,7 +6,7 @@
     var treemapData = ViewBag.TreemapData as IEnumerable<object>;
     var barChartData = ViewBag.BarChartData as IEnumerable<BarChartData>;
     var monthlyTrendChartData = ViewBag.MonthlyTrendChartData as IEnumerable<MonthlyTrendData>;
-    var radarChartData = ViewBag.RadarChartData as RadarChartData;
+    var bubbleChartData = ViewBag.BubbleChartData as IEnumerable<BubbleChartData>;
     var stackedColumnChartData = ViewBag.StackedColumnChartData as IEnumerable<dynamic>;
     var stackedAreaChartData = ViewBag.StackedAreaChartData as IEnumerable<dynamic>;
 }
@@ -88,32 +88,31 @@
             <div class="px-4 pb-4">
                 @if (barChartData != null && barChartData.Any())
                 {
-                    <ejs-chart id="bar-chart" background="#1a222b" palettes='@(new string[] {"#65da41", "#ff4e48"})' width="auto" height="100%">
-                        <e-chart-primaryxaxis valueType="Category">
+                    <ejs-chart id="bar-chart" background="#1a222b" palettes='@(new string[] {"#65da41", "#ff4e48"})' width="100%" height="100%">
+                        <e-chart-primaryxaxis valueType="Category" labelRotation="90">
                             <e-majorgridlines width="0"></e-majorgridlines>
                             <e-majorticklines width="0"></e-majorticklines>
-                            <e-labelstyle color="#ffffff"></e-labelstyle>
+                            <e-labelstyle color="#ffffff" textAlignment="Far"></e-labelstyle>
                         </e-chart-primaryxaxis>
-                        <e-chart-primaryyaxis labelFormat="c1" labelRotation="90">
+                        <e-chart-primaryyaxis labelFormat="c0">
                             <e-majorgridlines width="1" color="#32414d" dashArray="3,5"></e-majorgridlines>
-                            <e-majorticklines width="1"></e-majorticklines>
+                            <e-majorticklines width="0"></e-majorticklines>
+                            <e-linestyle width="0"></e-linestyle>
                             <e-labelstyle color="#ffffff"></e-labelstyle>
                         </e-chart-primaryyaxis>
-                        <e-chart-chartarea>
-                            <e-chartarea-border width="0"></e-chartarea-border>
-                        </e-chart-chartarea>
                         <e-series-collection>
-                            <e-series dataSource="@barChartData" xName="day" yName="income" name="Income" type="@Syncfusion.EJ2.Charts.ChartSeriesType.Bar" width="100"></e-series>
-                            <e-series dataSource="@barChartData" xName="day" yName="expense" name="Expense" type="@Syncfusion.EJ2.Charts.ChartSeriesType.Bar" width="100"></e-series>
+                            <e-series dataSource="@barChartData" xName="day" yName="income" type="@Syncfusion.EJ2.Charts.ChartSeriesType.Column" name="Income"></e-series>
+                            <e-series dataSource="@barChartData" xName="day" yName="expense" type="@Syncfusion.EJ2.Charts.ChartSeriesType.Column" name="Expense"></e-series>
                         </e-series-collection>
                         <e-chart-legendsettings position="Top" alignment="Far" toggleVisibility="false">
-                            <e-legendsettings-textstyle Color="#fff" Size="auto"></e-legendsettings-textstyle>
+                            <e-legendsettings-textstyle color="#ffffff"></e-legendsettings-textstyle>
                         </e-chart-legendsettings>
                         <e-chart-tooltipsettings enable="true" shared="true" fill="#12161d" format="@("${series.name}: ${point.y}")">
                             <e-tooltipsettings-border width="1"></e-tooltipsettings-border>
                             <e-tooltipsettings-textstyle color="#ffffff" fontFamily="inherit" size="15px"></e-tooltipsettings-textstyle>
                         </e-chart-tooltipsettings>
                     </ejs-chart>
+
                 }
                 else
                 {
@@ -138,7 +137,7 @@
                         <e-chart-primaryxaxis valueType="DateTime" labelRotation="90" labelFormat="MMM-dd" intervalType="Days" edgeLabelPlacement="Shift">
                             <e-majorgridlines width="0"></e-majorgridlines>
                             <e-majorticklines width="0"></e-majorticklines>
-                            <e-labelstyle color="#ffffff"></e-labelstyle>
+                            <e-labelstyle color="#ffffff" textAlignment="Far"></e-labelstyle>
                         </e-chart-primaryxaxis>
                         <e-chart-primaryyaxis labelFormat="c1">
                             <e-majorgridlines width="1" color="#32414d" dashArray="3,5"></e-majorgridlines>
@@ -161,6 +160,7 @@
                             <e-tooltipsettings-textstyle color="#ffffff" fontFamily="inherit" size="15px"></e-tooltipsettings-textstyle>
                         </e-chart-tooltipsettings>
                     </ejs-chart>
+
                 }
                 else
                 {
@@ -172,46 +172,46 @@
     <div class="col-12 col-md-6 mb-4">
         <div class="widget chart">
             <div class="p-4">
-                <h5 class="fw-bold">Income & Expense</h5>
+                <h5 class="fw-bold">Number of Transactions</h5>
                 <h6>Last 12 Months From First Entry</h6>
             </div>
             <div class="px-4 pb-4">
-                @if (radarChartData != null && radarChartData.ExpenseData.Any() && radarChartData.IncomeData.Any())
+                @if (bubbleChartData != null && bubbleChartData.Any())
                 {
-                    <ejs-chart id="radar-chart" width="100%" height="100%" palettes='@(new string[] {"#e61f1f", "#2cb850"})'>
-                        @* axisLabelRender="truncateLabel" tooltipRender="tooltipRender" *@
-                        <e-chart-primaryxaxis visible="false" labelFormat="${value}" valueType="Category" interval="2" labelRotation="0" labelIntersectAction="None" labelPlacement="OnTicks" crossesAt="1" isInversed="true" maximumLabelWidth="70" edgeLabelPlacement="Shift">
+                    <ejs-chart id="bubble-chart" background="#1a222b" width="100%" height="100%">
+                        <e-chart-primaryxaxis visible="false" valueType="Category" title="Category" labelRotation="90"
+                                              interval="2" labelIntersectAction="Hide" labelPlacement="OnTicks"
+                                              crossesAt="1" isInversed="true" maximumLabelWidth="70" edgeLabelPlacement="Shift">
                             <e-majorgridlines width="0"></e-majorgridlines>
+                            <e-majorticklines width="0"></e-majorticklines>
                             <e-labelstyle color="#ffffff"></e-labelstyle>
                         </e-chart-primaryxaxis>
-                        <e-chart-primaryyaxis labelFormat="c1">
+                        <e-chart-primaryyaxis labelFormat="c0">
                             <e-majorgridlines width="1" color="#32414d" dashArray="3,5"></e-majorgridlines>
                             <e-majorticklines width="0"></e-majorticklines>
                             <e-linestyle width="0"></e-linestyle>
                             <e-labelstyle color="#ffffff"></e-labelstyle>
                         </e-chart-primaryyaxis>
                         <e-series-collection>
-                            <e-series dataSource="@radarChartData.ExpenseData" xName="Category" yName="Amount" type="@Syncfusion.EJ2.Charts.ChartSeriesType.Radar" drawType="@Syncfusion.EJ2.Charts.ChartDrawType.Line" name="Expense">
-                                <e-series-marker visible="true"></e-series-marker>
+                            <e-series dataSource="@bubbleChartData.Where(d => d.type == "Income")" xName="category" yName="amount" size="size" name="Income" type="@Syncfusion.EJ2.Charts.ChartSeriesType.Bubble" fill="#65da41">
+                                <e-series-marker width="10" height="10" opacity="0.8"></e-series-marker>
                             </e-series>
-                            <e-series dataSource="@radarChartData.IncomeData" xName="Category" yName="Amount" type="@Syncfusion.EJ2.Charts.ChartSeriesType.Radar" drawType="@Syncfusion.EJ2.Charts.ChartDrawType.Line" name="Income">
-                                <e-series-marker visible="true"></e-series-marker>
+                            <e-series dataSource="@bubbleChartData.Where(d => d.type == "Expense")" xName="category" yName="amount" size="size" name="Expense" type="@Syncfusion.EJ2.Charts.ChartSeriesType.Bubble" fill="#ff4e48">
+                                <e-series-marker width="10" height="10" opacity="0.8"></e-series-marker>
                             </e-series>
                         </e-series-collection>
-                        <e-chart-legendsettings visible="true" position="Top" toggleVisibility="true">
+                        <e-chart-legendsettings position="Top" alignment="Far" toggleVisibility="false">
                             <e-legendsettings-textstyle color="#ffffff"></e-legendsettings-textstyle>
                         </e-chart-legendsettings>
-                        <e-chart-tooltipsettings enable="true" shared="false" fill="#12161d" format="@("${point.x} <br/>${point.y}")">
+                        <e-chart-tooltipsettings enable="true" shared="false" fill="#12161d" format="@("${point.x}<br/>Amount: ${point.y}<br/>Transactions: ${point.size}")">
                             <e-tooltipsettings-border width="1"></e-tooltipsettings-border>
                             <e-tooltipsettings-textstyle color="#ffffff" fontFamily="inherit" size="15px"></e-tooltipsettings-textstyle>
                         </e-chart-tooltipsettings>
-                        @* <e-chart-zoomsettings enableMouseWheelZooming="true" enablePinchZooming="true" enableSelectionZooming="true" enablePan="true" enableScrollbar="true"></e-chart-zoomsettings> *@
-                        <e-chart-margin left="20" right="20" top="20" bottom="20"></e-chart-margin>
                     </ejs-chart>
                 }
                 else
                 {
-                    <p>No data available for the Radar Chart.</p>
+                    <p>No data available for the Bubble Chart.</p>
                 }
             </div>
         </div>
@@ -230,7 +230,7 @@
                 {
                     <ejs-chart id="monthly-trend-chart" background="#1a222b" palettes='@(new string[] {"#2cb850", "#e61f1f", "#ffa500"})' width="100%" height="100%">
                         <e-chart-primaryxaxis labelFormat="MMM yyyy" valueType="Category" labelRotation="90">
-                            <e-labelstyle color="#ffffff"></e-labelstyle>
+                            <e-labelstyle color="#ffffff" textAlignment="Far"></e-labelstyle>
                         </e-chart-primaryxaxis>
                         <e-chart-primaryyaxis labelFormat="c1">
                             <e-majorgridlines width="1" color="#32414d" dashArray="3,5"></e-majorgridlines>
@@ -271,7 +271,7 @@
                         <e-chart-primaryxaxis labelRotation="90" valueType="Category" labelFormat="MMM yyyy">
                             <e-majorgridlines width="0"></e-majorgridlines>
                             <e-majorticklines width="0"></e-majorticklines>
-                            <e-labelstyle color="#ffffff"></e-labelstyle>
+                            <e-labelstyle color="#ffffff" textAlignment="Far"></e-labelstyle>
                         </e-chart-primaryxaxis>
                         <e-chart-primaryyaxis labelFormat="c1">
                             <e-majorgridlines width="1" color="#32414d" dashArray="3,5"></e-majorgridlines>
@@ -303,22 +303,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    function truncateLabel(args) {
-        var maxLength = 4; // Set your desired max length for labels
-        var label = args.text;
-        if (label.length > maxLength) {
-            args.text = label.substring(0, maxLength) + '...';
-        }
-    }
-
-    function tooltipRender(args) {
-        var tooltip = args.text;
-        var series = args.series;
-        var pointIndex = args.point.index;
-        var category = series.dataSource[pointIndex].Category;
-        var amount = series.dataSource[pointIndex].Amount;
-        args.text = category + '<br/>' + amount;
-    }
-</script>

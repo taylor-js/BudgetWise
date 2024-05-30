@@ -25,12 +25,6 @@ namespace BudgetWise.Controllers
 
         public async Task<IActionResult> Demo()
         {
-            var breadcrumbItems = new List<BreadcrumbItem>
-            {
-                new BreadcrumbItem { Text = "Home", Url = Url.Action("Index", "Home") },
-                new BreadcrumbItem { Text = "DemoDashboard", Url = Url.Action("Index", "DemoDashboard") },
-                new BreadcrumbItem { Text = "Demo", Url = Url.Action("Demo", "DemoDashboard") }
-            };
             if (User is not null && User.Identity is not null && User.Identity.IsAuthenticated)
             {
                 var user = await _userManager.GetUserAsync(User);
@@ -46,11 +40,10 @@ namespace BudgetWise.Controllers
             ViewBag.TreemapData = GetDemoTreemapData(demoTransactions);
             ViewBag.BarChartData = GetDemoBarChartData(demoTransactions);
             ViewBag.MonthlyTrendChartData = GetDemoMonthlyTrendChartData(demoTransactions);
-            ViewBag.RadarChartData = GetDemoRadarChartData(demoTransactions);
+            ViewBag.BubbleChartData = GetDemoBubbleChartData(demoTransactions);
             ViewBag.StackedColumnChartData = GetDemoStackedColumnChartData(demoTransactions);
             ViewBag.StackedAreaChartData = GetDemoStackedAreaChartData(demoTransactions);
 
-            ViewBag.BreadcrumbItems = breadcrumbItems;
             return View("Demo");
         }
 
@@ -140,7 +133,9 @@ namespace BudgetWise.Controllers
                 }
             }
 
-            // Generate initial transactions
+            // Alternate between generating income and expense transactions
+            bool generateIncomeNext = true;
+
             for (int i = 0; i < count; i++)
             {
                 Category category;
@@ -149,7 +144,7 @@ namespace BudgetWise.Controllers
 
                 do
                 {
-                    category = categories[random.Next(categories.Count)];
+                    category = generateIncomeNext ? incomeCategories[random.Next(incomeCategories.Count)] : expenseCategories[random.Next(expenseCategories.Count)];
                     date = DateTime.UtcNow.AddDays(-random.Next(0, 365)).Date;
                     attempts++;
 
@@ -176,10 +171,12 @@ namespace BudgetWise.Controllers
                 if (category.Type == "Income")
                 {
                     totalIncome += amount;
+                    generateIncomeNext = false; // Next transaction should be an expense
                 }
                 else
                 {
                     totalExpense += amount;
+                    generateIncomeNext = true; // Next transaction should be an income
                 }
             }
 
@@ -226,6 +223,7 @@ namespace BudgetWise.Controllers
         }
 
 
+
         private string CalculateTotalIncome(List<Transaction> transactions)
         {
             var totalIncome = transactions.Where(t => t.Category?.Type == "Income").Sum(t => t.Amount);
@@ -248,78 +246,53 @@ namespace BudgetWise.Controllers
         //Expense by Category - Last 7 Days
         private List<object> GetDemoTreemapData(List<Transaction> transactions)
         {
-            DateTime startDate7Days = DateTime.UtcNow.Date.AddDays(-6);
-            DateTime endDate7Days = DateTime.UtcNow.Date;
+            DateTime StartDate7Days = DateTime.UtcNow.Date.AddDays(-6);
+            DateTime EndDate7Days = DateTime.UtcNow.Date;
 
-            return transactions
-                .Where(t => t.Category?.Type == "Expense" && t.Date >= startDate7Days && t.Date <= endDate7Days)
-                .GroupBy(t => t.Category?.Title)
-                .Select(g => new
-                {
-                    categoryTitleWithIcon = g.First().Category?.Icon + " " + g.Key,
-                    amount = g.Sum(t => t.Amount),
-                    formattedAmount = g.Sum(t => t.Amount).ToString("C0")
-                })
-                .OrderByDescending(g => g.amount)
-                .Cast<object>()
+            List<Transaction> SelectedTransactions7Days = transactions
+                .Where(y => y.Date >= StartDate7Days && y.Date <= EndDate7Days)
                 .ToList();
+
+            var TreemapData = SelectedTransactions7Days
+                .Where(i => i.Category?.Type == "Expense")
+                .GroupBy(j => j.Category?.CategoryId)
+                .Select(k => new
+                {
+                    categoryTitleWithIcon = k.First().Category?.Icon + " " + k.First().Category?.Title,
+                    amount = k.Sum(j => j.Amount),
+                    formattedAmount = k.Sum(j => j.Amount).ToString("C0")
+                })
+                .OrderByDescending(l => l.amount)
+                .ToList();
+
+            return TreemapData.Cast<object>().ToList();
         }
 
-        //Income vs Expense - Last 7 Days
+        //Income vs Expense - Last 7 Days - Bar chart
         private List<BarChartData> GetDemoBarChartData(List<Transaction> transactions)
         {
             DateTime StartDate7Days = DateTime.UtcNow.Date.AddDays(-6);
             DateTime EndDate7Days = DateTime.UtcNow.Date;
 
-            var selectedTransactions7Days = transactions
-                .Where(t => t.Date >= StartDate7Days && t.Date <= EndDate7Days)
+            List<Transaction> SelectedTransactions7Days = transactions
+                .Where(y => y.Date >= StartDate7Days && y.Date <= EndDate7Days)
                 .ToList();
 
-            var incomeSummary = selectedTransactions7Days
-                .Where(t => t.Category?.Type == "Income")
-                .GroupBy(t => t.Date.Date)
+            var BarChartData = SelectedTransactions7Days
+                .GroupBy(t => t.Date)
                 .Select(g => new BarChartData
                 {
-                    day = g.Key.ToString("MMM-dd-yyyy"),
-                    income = g.Sum(t => t.Amount),
-                    expense = 0
+                    date = g.Key,
+                    day = g.Key.ToString("dd MMM"),
+                    income = g.Where(t => t.Category?.Type == "Income").Sum(t => t.Amount),
+                    expense = g.Where(t => t.Category?.Type == "Expense").Sum(t => t.Amount)
                 })
                 .ToList();
 
-            var expenseSummary = selectedTransactions7Days
-            .Where(t => t.Category?.Type == "Expense")
-            .GroupBy(t => t.Date.Date)
-            .Select(g => new BarChartData
-            {
-                day = g.Key.ToString("MMM-dd-yyyy"),
-                income = 0,
-                expense = g.Sum(t => t.Amount)
-            })
-            .ToList();
+            BarChartData = BarChartData.OrderBy(d => d.date).ToList();
 
-            var last7Days = Enumerable.Range(0, 7)
-                .Select(i => StartDate7Days.AddDays(i).ToString("MMM-dd-yyyy"))
-                .ToArray();
-
-            var barChartData = last7Days
-                .GroupJoin(incomeSummary, day => day, income => income.day, (day, income) => new { day, income })
-                .SelectMany(
-                    x => x.income.DefaultIfEmpty(new BarChartData { day = x.day, income = 0, expense = 0 }),
-                    (x, income) => new { x.day, income })
-                .GroupJoin(expenseSummary, x => x.day, expense => expense.day, (x, expense) => new { x.day, x.income, expense })
-                .SelectMany(
-                    x => x.expense.DefaultIfEmpty(new BarChartData { day = x.day, income = 0, expense = 0 }),
-                    (x, expense) => new BarChartData
-                    {
-                        day = x.day,
-                        income = x.income.income,
-                        expense = expense.expense
-                    })
-                .ToList();
-
-            return barChartData;
+            return BarChartData;
         }
-
         //Income vs Expense - Last 30 Days
         private List<object> GetDemoStackedColumnChartData(List<Transaction> transactions)
         {
@@ -350,52 +323,42 @@ namespace BudgetWise.Controllers
 
             return stackedColumnChartData.Cast<object>().ToList();
         }
-        // Income & Expense - Last 12 Months From First Entry
-        private RadarChartData GetDemoRadarChartData(List<Transaction> transactions)
+        // Income & Expense - Last 12 Months From First Entry - Bubble chart
+        private List<BubbleChartData> GetDemoBubbleChartData(List<Transaction> transactions)
         {
             DateTime StartDate12Months = DateTime.UtcNow.Date.AddMonths(-11);
             DateTime EndDate12Months = DateTime.UtcNow.Date;
 
-            var selectedTransactions12Months = transactions
-                .Where(t => t.Date >= StartDate12Months && t.Date <= EndDate12Months)
+            List<Transaction> SelectedTransactions12Months = transactions
+                .Where(y => y.Date >= StartDate12Months && y.Date <= EndDate12Months)
                 .ToList();
 
-            DateTime? earliestTransactionDate = selectedTransactions12Months
+            DateTime? earliestTransactionDate = SelectedTransactions12Months
                 .OrderBy(t => t.Date)
                 .Select(t => t.Date)
                 .FirstOrDefault();
 
-            if (earliestTransactionDate.HasValue && earliestTransactionDate.Value < StartDate12Months)
+            if (earliestTransactionDate.HasValue)
             {
-                StartDate12Months = new DateTime(earliestTransactionDate.Value.Year, earliestTransactionDate.Value.Month, 1);
+                StartDate12Months = earliestTransactionDate.Value;
             }
 
-            var expenseData = selectedTransactions12Months
-                .Where(t => t.Category?.Type == "Expense")
-                .GroupBy(t => t.Category?.Title)
-                .Select(g => new RadarData
+            var BubbleChartData = SelectedTransactions12Months
+                .Where(t => t.Date >= StartDate12Months)
+                .GroupBy(t => new { t.Category?.Title, t.Category?.Type })
+                .Select(g => new BubbleChartData
                 {
-                    Category = g.Key ?? "Unknown",
-                    Amount = g.Sum(t => t.Amount)
+                    category = g.Key.Title ?? "Unknown",
+                    type = g.Key.Type ?? "Unknown",
+                    amount = g.Sum(t => t.Amount),
+                    size = g.Count()
                 })
+                .OrderBy(d => d.size)
                 .ToList();
 
-            var incomeData = selectedTransactions12Months
-                .Where(t => t.Category?.Type == "Income")
-                .GroupBy(t => t.Category?.Title)
-                .Select(g => new RadarData
-                {
-                    Category = g.Key ?? "Unknown",
-                    Amount = g.Sum(t => t.Amount)
-                })
-                .ToList();
-
-            return new RadarChartData
-            {
-                ExpenseData = expenseData,
-                IncomeData = incomeData
-            };
+            return BubbleChartData;
         }
+
         // Monthly Trend - Last 12 Months from First Entry
         private List<MonthlyTrendData> GetDemoMonthlyTrendChartData(List<Transaction> transactions)
         {
