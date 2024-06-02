@@ -29,6 +29,8 @@ namespace BudgetWise.Controllers
 
         public async Task<IActionResult> Index()
         {
+            ViewData["isDashboard"] = true;
+
             ViewBag.TotalIncome = await GetTotalIncome();
             ViewBag.TotalExpense = await GetTotalExpense();
             ViewBag.Balance = await GetBalance();
@@ -135,13 +137,13 @@ namespace BudgetWise.Controllers
         }
 
         //Treemap: Expense by Category - Last 7 Days
-        private async Task<List<object>> GetTreemapData()
+        /*private async Task<List<object>> GetTreemapData()
         {
             // Ensure non-null return value
             var data = await GetTreemapDataImplementation();
             return data ?? new List<object>();
-        }
-        private async Task<List<object>> GetTreemapDataImplementation()
+        }*/
+        private async Task<List<object>> GetTreemapData()
         {
             DateTime StartDate7Days = DateTime.UtcNow.Date.AddDays(-6);
             DateTime EndDate7Days = DateTime.UtcNow.Date;
@@ -164,16 +166,16 @@ namespace BudgetWise.Controllers
                 .OrderByDescending(l => l.amount)
                 .ToList();
 
-            return TreemapData.Cast<object>().ToList();
+            return TreemapData.Cast<object>().ToList() ?? new List<object>(); ;
         }
         // Bar Chart: Income vs Expense - Last 7 Days
-        private async Task<List<BarChartData>> GetBarChartData()
+        /*private async Task<List<BarChartData>> GetBarChartData()
         {
             var data = await GetBarChartDataImplementation();
             return data ?? new List<BarChartData>();
-        }
+        }*/
 
-        private async Task<List<BarChartData>> GetBarChartDataImplementation()
+        private async Task<List<BarChartData>> GetBarChartData()
         {
             DateTime StartDate7Days = DateTime.UtcNow.Date.AddDays(-6);
             DateTime EndDate7Days = DateTime.UtcNow.Date;
@@ -189,7 +191,7 @@ namespace BudgetWise.Controllers
                 .Select(g => new BarChartData
                 {
                     date = g.Key,
-                    day = g.Key.ToString("dd MMM"),
+                    day = g.Key.ToString("MMM dd"),
                     income = g.Where(t => t.Category?.Type == "Income").Sum(t => t.Amount),
                     expense = g.Where(t => t.Category?.Type == "Expense").Sum(t => t.Amount)
                 })
@@ -197,15 +199,15 @@ namespace BudgetWise.Controllers
 
             BarChartData = BarChartData.OrderBy(d => d.date).ToList();
 
-            return BarChartData;
+            return BarChartData ?? new List<BarChartData>();
         }
         // Stacked Column Chart: Income vs Expense - Last 30 Days
-        private async Task<List<object>> GetStackedColumnChartData()
+        /*private async Task<List<object>> GetStackedColumnChartData()
         {
             var data = await GetStackedColumnChartDataImplementation();
             return data ?? new List<object>();
-        }
-        private async Task<List<object>> GetStackedColumnChartDataImplementation()
+        }*/
+        private async Task<List<object>> GetStackedColumnChartData()
         {
             DateTime StartDate30Days = DateTime.UtcNow.Date.AddDays(-29);
             DateTime EndDate30Days = DateTime.UtcNow.Date;
@@ -234,16 +236,16 @@ namespace BudgetWise.Controllers
                 .OrderBy(x => x.Date)
                 .ToList();
 
-            return StackedColumnChartData.Cast<object>().ToList();
+            return StackedColumnChartData.Cast<object>().ToList() ?? new List<object>();
         }
         // Bubble chart
-        private async Task<List<BubbleChartData>> GetBubbleChartData()
+        /*private async Task<List<BubbleChartData>> GetBubbleChartData()
         {
             var data = await GetBubbleChartDataImplementation();
             return data ?? new List<BubbleChartData>();
-        }
+        }*/
 
-        private async Task<List<BubbleChartData>> GetBubbleChartDataImplementation()
+        private async Task<List<BubbleChartData>> GetBubbleChartData()
         {
             DateTime StartDate12Months = DateTime.UtcNow.Date.AddMonths(-11);
             DateTime EndDate12Months = DateTime.UtcNow.Date;
@@ -277,15 +279,15 @@ namespace BudgetWise.Controllers
                 .OrderBy(d => d.size)
                 .ToList();
 
-            return BubbleChartData;
+            return BubbleChartData ?? new List<BubbleChartData>();
         }
         //Line Chart (3 Lines): Monthly Trend - Last 12 Months from First Entry
-        private async Task<List<MonthlyTrendData>> GetMonthlyTrendChartData()
+        /*private async Task<List<MonthlyTrendData>> GetMonthlyTrendChartData()
         {
             var data = await GetMonthlyTrendChartDataImplementation();
             return data ?? new List<MonthlyTrendData>();
-        }
-        private async Task<List<MonthlyTrendData>> GetMonthlyTrendChartDataImplementation()
+        }*/
+        private async Task<List<MonthlyTrendData>> GetMonthlyTrendChartData()
         {
             DateTime StartDate12Months = DateTime.UtcNow.Date.AddMonths(-11);
             DateTime EndDate12Months = DateTime.UtcNow.Date;
@@ -329,17 +331,17 @@ namespace BudgetWise.Controllers
                 });
             }
 
-            return MonthlyTrendChartData;
+            return MonthlyTrendChartData ?? new List<MonthlyTrendData>();
         }
         
         
         //Staked Area Chart: Income vs Expense - Last 12 Months from First Entry
-        private async Task<List<object>> GetStackedAreaChartData()
+        /*private async Task<List<object>> GetStackedAreaChartData()
         {
             var data = await GetStackedAreaChartDataImplementation();
             return data ?? new List<object>();
-        }
-        private async Task<List<object>> GetStackedAreaChartDataImplementation()
+        }*/
+        private async Task<List<object>> GetStackedAreaChartData()
         {
             DateTime StartDate12Months = DateTime.UtcNow.Date.AddMonths(-11);
             DateTime EndDate12Months = DateTime.UtcNow.Date;
@@ -381,7 +383,7 @@ namespace BudgetWise.Controllers
                 .OrderBy(x => DateTime.ParseExact(x.Month, "MMM yyyy", CultureInfo.InvariantCulture))
                 .ToList();
 
-            return StackedAreaChartData.Cast<object>().ToList();
+            return StackedAreaChartData.Cast<object>().ToList() ?? new List<object>();
         }
     }
 

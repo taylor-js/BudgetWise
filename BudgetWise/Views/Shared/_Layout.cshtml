@@ -34,7 +34,7 @@
     <nav class="navbar navbar-expand navbar-light fixed-top">
         <div class="container-fluid">
             <div class="d-flex align-items-center">
-                <a class="navbar-brand d-flex align-items-center ms-2" href="/">
+                <a class="navbar-brand d-flex align-items-center ms-2" href="/DemoDashboard/Demo">
                     <img src="~/favicon-32x32.png" alt="Logo" class="logo-img navbar-icon" />
                     <span class="logo-text ms-2 d-none d-lg-block">BudgetWise</span>
                     <span class="logo-text ms-2 d-lg-none">BW</span>
@@ -62,7 +62,7 @@
             <div class="container mt-4">
                 <div class="row justify-content-center">
                     <main role="main" class="pb-3">
-                        @if (ViewData["isDashboard"] == null)
+                        @if (ViewData["isDashboard"] == null || ViewContext.RouteData.Values["controller"]?.ToString() == "DemoDashboard")
                         {
                             <div class="row">
                                 <div class="col-md-12">
@@ -72,8 +72,7 @@
                                                 <h3 class="fw-bold my-0">@ViewData["PageTitle"]</h3>
                                                 <div class="">
                                                     @if (ViewData["PageActionText"] != null &&
-                                                   (ViewContext.RouteData.Values["controller"]?.ToString() == "Category" ||
-                                                   ViewContext.RouteData.Values["controller"]?.ToString() == "Transaction"))
+                                                    (ViewContext.RouteData.Values["controller"]?.ToString() == "Category" || ViewContext.RouteData.Values["controller"]?.ToString() == "Transaction"))
                                                     {
                                                         <a class="btn btn-success btn-custom responsive-button" href="@ViewData["PageActionUrl"]">
                                                             <i class="fa fa-plus" aria-hidden="true"></i> &nbsp @ViewData["PageActionText"]

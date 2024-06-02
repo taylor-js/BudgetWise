@@ -12,6 +12,10 @@ html {
     }
 }
 
+text{
+    color:white!important;
+}
+
 body {
     height: 100% !important;
     background-color: #12161d;
@@ -380,6 +384,7 @@ img.profile-pic {
     border-radius: 1rem;
     border-radius: 0.5rem;
     background-color: #1a222b;
+    width: 100%;
     height: 100%;
 }
 
@@ -444,8 +449,8 @@ img.profile-pic {
         font-size: 1.25rem !important;
     }
 
-    #treemap, #bar-chart, #monthly-trend-chart, #stacked-column-chart, #stacked-area-chart {
-        height: 300px !important;
+    #treemap, #bar-chart, #stacked-column-chart, #bubble-chart, #monthly-trend-chart, #stacked-area-chart {
+        height: 100% !important;
     }
 }
 
@@ -454,8 +459,8 @@ img.profile-pic {
         font-size: 1.5rem !important;
     }
 
-    #treemap, #bar-chart, #monthly-trend-chart, #stacked-column-chart, #stacked-area-chart {
-        height: 350px !important;
+    #treemap, #bar-chart, #stacked-column-chart, #bubble-chart, #monthly-trend-chart, #stacked-area-chart {
+        height: 100% !important;
     }
 }
 
@@ -473,13 +478,6 @@ img.profile-pic {
 
 .ejs-accumulationchart {
     margin: auto;
-}
-
-#radar-chart .e-chart .e-axis-labels text {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 500px; /* Adjust width as needed */
 }
 
 

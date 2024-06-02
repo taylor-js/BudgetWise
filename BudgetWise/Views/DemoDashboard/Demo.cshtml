@@ -2,15 +2,14 @@
 @using Syncfusion.EJ2.HeatMap;
 @using BudgetWise.Controllers;
 @{
+    ViewData["isDashboard"] = null;
     ViewData["PageTitle"] = "Demonstration - Register/Login to Visualize your Finances";
-    ViewData["PageActionText"] = "Demo";
-    ViewData["PageActionUrl"] = "/DemoDashboard/Demo/";
 
     var treemapData = ViewBag.TreemapData as IEnumerable<object>;
     var barChartData = ViewBag.BarChartData as IEnumerable<BarChartData>;
-    var monthlyTrendChartData = ViewBag.MonthlyTrendChartData as IEnumerable<MonthlyTrendData>;
-    var bubbleChartData = ViewBag.BubbleChartData as IEnumerable<BubbleChartData>;
     var stackedColumnChartData = ViewBag.StackedColumnChartData as IEnumerable<dynamic>;
+    var bubbleChartData = ViewBag.BubbleChartData as IEnumerable<BubbleChartData>;
+    var monthlyTrendChartData = ViewBag.MonthlyTrendChartData as IEnumerable<MonthlyTrendData>;
     var stackedAreaChartData = ViewBag.StackedAreaChartData as IEnumerable<dynamic>;
 }
 
@@ -92,12 +91,12 @@
                 @if (barChartData != null && barChartData.Any())
                 {
                     <ejs-chart id="bar-chart" background="#1a222b" palettes='@(new string[] {"#65da41", "#ff4e48"})' width="100%" height="100%">
-                        <e-chart-primaryxaxis valueType="Category" labelRotation="90">
+                        <e-chart-primaryxaxis valueType="Category" labelRotation="90" LabelIntersectAction="Rotate90" title="Day" titleStyle="@(new Syncfusion.EJ2.Charts.ChartFont { Color = "white" })">
                             <e-majorgridlines width="0"></e-majorgridlines>
                             <e-majorticklines width="0"></e-majorticklines>
-                            <e-labelstyle color="#ffffff" angle="90" textAlignment="Far" rotation="90"></e-labelstyle>
+                            <e-labelstyle color="#ffffff" textAlignment="Center"></e-labelstyle>
                         </e-chart-primaryxaxis>
-                        <e-chart-primaryyaxis labelFormat="c0">
+                        <e-chart-primaryyaxis labelFormat="c0" title="Amount" titleStyle="@(new Syncfusion.EJ2.Charts.ChartFont { Color = "white" })">
                             <e-majorgridlines width="1" color="#32414d" dashArray="3,5"></e-majorgridlines>
                             <e-majorticklines width="0"></e-majorticklines>
                             <e-linestyle width="0"></e-linestyle>
@@ -137,12 +136,13 @@
                 @if (stackedColumnChartData != null && stackedColumnChartData.Any())
                 {
                     <ejs-chart id="stacked-column-chart" background="#1a222b" palettes='@(new string[] {"#65da41", "#ff4e48"})' width="100%" height="100%">
-                        <e-chart-primaryxaxis valueType="DateTime" labelRotation="90" labelFormat="MMM-dd" intervalType="Days" edgeLabelPlacement="Shift">
+                        <e-chart-primaryxaxis valueType="DateTime" title="Day" titleStyle="@(new Syncfusion.EJ2.Charts.ChartFont { Color = "white" })"
+                                              labelRotation="90" LabelIntersectAction="Rotate90" labelFormat="MMM-dd" intervalType="Days" edgeLabelPlacement="Shift">
                             <e-majorgridlines width="0"></e-majorgridlines>
                             <e-majorticklines width="0"></e-majorticklines>
-                            <e-labelstyle color="#ffffff" angle="90" textAlignment="Far" rotation="90"></e-labelstyle>
+                            <e-labelstyle color="#ffffff" textAlignment="Center"></e-labelstyle>
                         </e-chart-primaryxaxis>
-                        <e-chart-primaryyaxis labelFormat="c1">
+                        <e-chart-primaryyaxis labelFormat="c1" title="Amount" titleStyle="@(new Syncfusion.EJ2.Charts.ChartFont { Color = "white" })">
                             <e-majorgridlines width="1" color="#32414d" dashArray="3,5"></e-majorgridlines>
                             <e-majorticklines width="0"></e-majorticklines>
                             <e-linestyle width="0"></e-linestyle>
@@ -182,31 +182,30 @@
                 @if (bubbleChartData != null && bubbleChartData.Any())
                 {
                     <ejs-chart id="bubble-chart" background="#1a222b" width="100%" height="100%">
-                        <e-chart-primaryxaxis visible="false" valueType="Category" title="Category" labelRotation="90"
-                                              interval="2" labelIntersectAction="Hide" labelPlacement="OnTicks"
-                                              crossesAt="1" isInversed="true" maximumLabelWidth="70" edgeLabelPlacement="Shift">
+                        <e-chart-primaryxaxis visible="true" title="Transaction Count" titleStyle="@(new Syncfusion.EJ2.Charts.ChartFont { Color = "white" })" labelRotation="0"
+                                              interval="3" enableTrim="true" labelIntersectAction="Trim" maximumLabelWidth="40" labelPlacement="OnTicks">
                             <e-majorgridlines width="0"></e-majorgridlines>
                             <e-majorticklines width="0"></e-majorticklines>
                             <e-labelstyle color="#ffffff"></e-labelstyle>
                         </e-chart-primaryxaxis>
-                        <e-chart-primaryyaxis labelFormat="c0">
+                        <e-chart-primaryyaxis labelFormat="c0" title="Amount" titleStyle="@(new Syncfusion.EJ2.Charts.ChartFont { Color = "white" })">
                             <e-majorgridlines width="1" color="#32414d" dashArray="3,5"></e-majorgridlines>
                             <e-majorticklines width="0"></e-majorticklines>
                             <e-linestyle width="0"></e-linestyle>
                             <e-labelstyle color="#ffffff"></e-labelstyle>
                         </e-chart-primaryyaxis>
                         <e-series-collection>
-                            <e-series dataSource="@bubbleChartData.Where(d => d.type == "Income")" xName="category" yName="amount" size="size" name="Income" type="@Syncfusion.EJ2.Charts.ChartSeriesType.Bubble" fill="#65da41">
-                                <e-series-marker width="10" height="10" opacity="0.8"></e-series-marker>
-                            </e-series>
-                            <e-series dataSource="@bubbleChartData.Where(d => d.type == "Expense")" xName="category" yName="amount" size="size" name="Expense" type="@Syncfusion.EJ2.Charts.ChartSeriesType.Bubble" fill="#ff4e48">
-                                <e-series-marker width="10" height="10" opacity="0.8"></e-series-marker>
-                            </e-series>
+                            @foreach (var typeGroup in bubbleChartData.GroupBy(d => d.type))
+                            {
+                                <e-series dataSource="@typeGroup.OrderBy(d => d.size)" xName="size" yName="amount" size="size" name="@typeGroup.Key" type="@Syncfusion.EJ2.Charts.ChartSeriesType.Bubble" fill="@((typeGroup.Key == "Income") ? "#65da41" : "#ff4e48")" tooltipMappingName="category">
+                                    <e-series-marker width="10" height="10" opacity="0.8"></e-series-marker>
+                                </e-series>
+                            }
                         </e-series-collection>
                         <e-chart-legendsettings position="Top" alignment="Far" toggleVisibility="false">
                             <e-legendsettings-textstyle color="#ffffff"></e-legendsettings-textstyle>
                         </e-chart-legendsettings>
-                        <e-chart-tooltipsettings enable="true" shared="false" fill="#12161d" format="@("${point.x}<br/>Amount: ${point.y}<br/>Transactions: ${point.size}")">
+                        <e-chart-tooltipsettings enable="true" shared="false" fill="#12161d" format="Category: ${point.tooltip}<br/>Amount: ${point.y}<br/>Transactions: ${point.size}">
                             <e-tooltipsettings-border width="1"></e-tooltipsettings-border>
                             <e-tooltipsettings-textstyle color="#ffffff" fontFamily="inherit" size="15px"></e-tooltipsettings-textstyle>
                         </e-chart-tooltipsettings>
@@ -229,13 +228,15 @@
                 <h6>Last 12 Months from First Entry</h6>
             </div>
             <div class="px-4 pb-4">
-                @if (monthlyTrendChartData != null && monthlyTrendChartData.Any())
+                @if (monthlyTrendChartData != null && monthlyTrendChartData.Any() && monthlyTrendChartData.Any(data => data.Income != 0 || data.Expense != 0 || data.Balance != 0))
                 {
                     <ejs-chart id="monthly-trend-chart" background="#1a222b" palettes='@(new string[] {"#2cb850", "#e61f1f", "#ffa500"})' width="100%" height="100%">
-                        <e-chart-primaryxaxis labelFormat="MMM yyyy" valueType="Category" labelRotation="90">
-                            <e-labelstyle color="#ffffff" angle="90" textAlignment="Far" rotation="90"></e-labelstyle>
+                        <e-chart-primaryxaxis valueType="Category" labelRotation="90" LabelIntersectAction="Rotate90" title="Month" titleStyle="@(new Syncfusion.EJ2.Charts.ChartFont { Color = "white" })">
+                            <e-majorgridlines width="0"></e-majorgridlines>
+                            <e-majorticklines width="0"></e-majorticklines>
+                            <e-labelstyle color="#ffffff" textAlignment="Center"></e-labelstyle>
                         </e-chart-primaryxaxis>
-                        <e-chart-primaryyaxis labelFormat="c1">
+                        <e-chart-primaryyaxis labelFormat="c1" title="Amount" titleStyle="@(new Syncfusion.EJ2.Charts.ChartFont { Color = "white" })">
                             <e-majorgridlines width="1" color="#32414d" dashArray="3,5"></e-majorgridlines>
                             <e-majorticklines width="1"></e-majorticklines>
                             <e-labelstyle color="#ffffff"></e-labelstyle>
@@ -271,12 +272,12 @@
                 @if (stackedAreaChartData != null && stackedAreaChartData.Any())
                 {
                     <ejs-chart id="stacked-area-chart" background="#1a222b" palettes='@(new string[] {"#65da41", "#ff4e48"})' width="100%" height="100%">
-                        <e-chart-primaryxaxis labelRotation="90" valueType="Category" labelFormat="MMM yyyy">
+                        <e-chart-primaryxaxis valueType="Category" title="Month" titleStyle="@(new Syncfusion.EJ2.Charts.ChartFont { Color = "white" })" labelRotation="90" LabelIntersectAction="Rotate90">
                             <e-majorgridlines width="0"></e-majorgridlines>
                             <e-majorticklines width="0"></e-majorticklines>
-                            <e-labelstyle color="#ffffff" angle="90" textAlignment="Far" rotation="90"></e-labelstyle>
+                            <e-labelstyle color="#ffffff" textAlignment="Center"></e-labelstyle>
                         </e-chart-primaryxaxis>
-                        <e-chart-primaryyaxis labelFormat="c1">
+                        <e-chart-primaryyaxis labelFormat="c1" title="Amount" titleStyle="@(new Syncfusion.EJ2.Charts.ChartFont { Color = "white" })">
                             <e-majorgridlines width="1" color="#32414d" dashArray="3,5"></e-majorgridlines>
                             <e-majorticklines width="0"></e-majorticklines>
                             <e-linestyle width="0"></e-linestyle>

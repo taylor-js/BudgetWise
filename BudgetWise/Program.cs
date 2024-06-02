@@ -41,6 +41,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Events.OnRedirectToLogin = opt =>
     {
         opt.HttpContext.Response.Redirect("/Identity/Account/Login");
+        //opt.HttpContext.Response.Redirect("/DemoDashboard/Demo");
         return Task.FromResult(0);
     };
 });
@@ -69,6 +70,12 @@ CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.GetCultureInfo("en-US");
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=DemoDashboard}/{action=Demo}/{id?}");
+
+app.MapGet("/", context =>
+{
+    context.Response.Redirect("/DemoDashboard/Demo", permanent: true);
+    return Task.CompletedTask;
+});
 
 app.MapControllerRoute(
     name: "dashboard",

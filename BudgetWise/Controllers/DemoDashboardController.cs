@@ -25,6 +25,7 @@ namespace BudgetWise.Controllers
 
         public async Task<IActionResult> Demo()
         {
+            ViewData["isDashboard"] = null;
             if (User is not null && User.Identity is not null && User.Identity.IsAuthenticated)
             {
                 var user = await _userManager.GetUserAsync(User);
@@ -34,9 +35,9 @@ namespace BudgetWise.Controllers
             var demoCategories = GetDemoCategories();
             var demoTransactions = GenerateDemoTransactions(500, demoCategories);
 
-            ViewBag.TotalIncome = CalculateTotalIncome(demoTransactions);
-            ViewBag.TotalExpense = CalculateTotalExpense(demoTransactions);
-            ViewBag.Balance = CalculateBalance(demoTransactions);
+            ViewBag.TotalIncome = CalculateTotalDemoIncome(demoTransactions);
+            ViewBag.TotalExpense = CalculateTotalDemoExpense(demoTransactions);
+            ViewBag.Balance = CalculateDemoBalance(demoTransactions);
             ViewBag.TreemapData = GetDemoTreemapData(demoTransactions);
             ViewBag.BarChartData = GetDemoBarChartData(demoTransactions);
             ViewBag.MonthlyTrendChartData = GetDemoMonthlyTrendChartData(demoTransactions);
@@ -106,34 +107,35 @@ namespace BudgetWise.Controllers
             var incomeCategories = categories.Where(c => c.Type == "Income").ToList();
             var expenseCategories = categories.Where(c => c.Type == "Expense").ToList();
 
-            // Total income and expense amounts
             decimal totalIncome = 0;
             decimal totalExpense = 0;
 
-            // Track used categories to ensure at least 10 distinct categories in the last 7 days
-            var usedCategoriesLast7Days = new HashSet<int>();
+            var usedCategories = new HashSet<int>();
+            var last7DaysCategories = new Dictionary<DateTime, HashSet<int>>();
 
-            // Helper function to add a transaction
             void AddTransaction(Category category, decimal amount, DateTime date)
             {
                 transactions.Add(new Transaction
                 {
                     TransactionId = transactions.Count + 1,
                     CategoryId = category.CategoryId,
-                    Category = category, // Set the navigation property
+                    Category = category,
                     Amount = (int)amount,
                     Note = $"Demo note {transactions.Count + 1}",
                     Date = date,
-                    UserId = "demo-user" // Keep a static user ID for demo purposes
+                    UserId = "demo-user"
                 });
 
-                if ((DateTime.UtcNow - date).Days <= 7)
+                usedCategories.Add(category.CategoryId);
+
+                if (!last7DaysCategories.ContainsKey(date))
                 {
-                    usedCategoriesLast7Days.Add(category.CategoryId);
+                    last7DaysCategories[date] = new HashSet<int>();
                 }
+
+                last7DaysCategories[date].Add(category.CategoryId);
             }
 
-            // Alternate between generating income and expense transactions
             bool generateIncomeNext = true;
 
             for (int i = 0; i < count; i++)
@@ -148,9 +150,12 @@ namespace BudgetWise.Controllers
                     date = DateTime.UtcNow.AddDays(-random.Next(0, 365)).Date;
                     attempts++;
 
-                    if (attempts > 1000)
-                        throw new Exception("Unable to generate transactions within the specified frequency limits.");
-                } while (transactionCounts.ContainsKey(date) && transactionCounts[date] >= maxTransactionsPerDay);
+                    if (attempts > 2000) // Increase the attempts limit
+                    {
+                        category = generateIncomeNext ? incomeCategories[random.Next(incomeCategories.Count)] : expenseCategories[random.Next(expenseCategories.Count)];
+                        break;
+                    }
+                } while ((transactionCounts.ContainsKey(date) && transactionCounts[date] >= maxTransactionsPerDay) || usedCategories.Contains(category.CategoryId));
 
                 if (!transactionCounts.ContainsKey(date))
                 {
@@ -163,7 +168,7 @@ namespace BudgetWise.Controllers
 
                 if (category.Type == "Expense" && totalExpense + amount >= totalIncome)
                 {
-                    amount = (int)(totalIncome - totalExpense - 1); // Adjust amount to be less than the remaining income
+                    amount = (int)(totalIncome - totalExpense - 1);
                 }
 
                 AddTransaction(category, amount, date);
@@ -171,23 +176,25 @@ namespace BudgetWise.Controllers
                 if (category.Type == "Income")
                 {
                     totalIncome += amount;
-                    generateIncomeNext = false; // Next transaction should be an expense
+                    generateIncomeNext = false;
                 }
                 else
                 {
                     totalExpense += amount;
-                    generateIncomeNext = true; // Next transaction should be an income
+                    generateIncomeNext = true;
                 }
             }
 
-            // Ensure at least 10 distinct categories in the last 7 days
-            while (usedCategoriesLast7Days.Count < 10)
+            var last7Days = Enumerable.Range(0, 7).Select(i => DateTime.UtcNow.AddDays(-i).Date).ToList();
+            var allUsedCategories = new HashSet<int>(last7Days.SelectMany(date => last7DaysCategories.ContainsKey(date) ? last7DaysCategories[date] : new HashSet<int>()));
+
+            while (allUsedCategories.Count < 10)
             {
                 var category = categories[random.Next(categories.Count)];
-                if (!usedCategoriesLast7Days.Contains(category.CategoryId))
+                if (!allUsedCategories.Contains(category.CategoryId))
                 {
                     var amount = random.Next(category.MinAmount, category.MaxAmount + 1);
-                    var date = DateTime.UtcNow.AddDays(-random.Next(0, 7)).Date;
+                    var date = last7Days[random.Next(last7Days.Count)];
 
                     if (transactionCounts.ContainsKey(date) && transactionCounts[date] >= maxTransactionsPerDay)
                     {
@@ -200,17 +207,23 @@ namespace BudgetWise.Controllers
                     }
 
                     transactionCounts[date]++;
-
                     AddTransaction(category, amount, date);
-                    totalIncome += category.Type == "Income" ? amount : 0;
-                    totalExpense += category.Type == "Expense" ? amount : 0;
+
+                    if (category.Type == "Income")
+                    {
+                        totalIncome += amount;
+                    }
+                    else
+                    {
+                        totalExpense += amount;
+                    }
+
+                    allUsedCategories.Add(category.CategoryId);
                 }
             }
 
-            // Adjust if total expense is still zero or income is not greater than expense
             if (totalExpense == 0 || totalIncome <= totalExpense)
             {
-                // Add one more income transaction to ensure balance
                 var category = incomeCategories[random.Next(incomeCategories.Count)];
                 var amount = random.Next(category.MinAmount, category.MaxAmount + 1);
                 var date = DateTime.UtcNow.AddDays(-random.Next(0, 365)).Date;
@@ -223,26 +236,84 @@ namespace BudgetWise.Controllers
         }
 
 
-
-        private string CalculateTotalIncome(List<Transaction> transactions)
+        private string CalculateTotalDemoIncome(List<Transaction> transactions)
         {
-            var totalIncome = transactions.Where(t => t.Category?.Type == "Income").Sum(t => t.Amount);
-            return totalIncome.ToString("C0");
+            List<Transaction> SelectedTransactions = transactions
+                .OrderBy(y => y.Date)
+                .ToList();
+
+            DateTime? earliestDate = SelectedTransactions.FirstOrDefault()?.Date;
+
+            if (earliestDate == null)
+            {
+                return 0.ToString("C0");
+            }
+
+            DateTime StartDate = earliestDate.Value;
+            DateTime EndDate = DateTime.UtcNow.Date;
+
+            int TotalIncome = SelectedTransactions
+                .Where(i => i.Date >= StartDate && i.Date <= EndDate && i.Category?.Type == "Income")
+                .Sum(j => j.Amount);
+
+            return TotalIncome.ToString("C0");
         }
 
-        private string CalculateTotalExpense(List<Transaction> transactions)
+        private string CalculateTotalDemoExpense(List<Transaction> transactions)
         {
-            var totalExpense = transactions.Where(t => t.Category?.Type == "Expense").Sum(t => t.Amount);
-            return totalExpense.ToString("C0");
+            List<Transaction> SelectedTransactions = transactions
+                .OrderBy(y => y.Date)
+                .ToList();
+
+            DateTime? earliestDate = SelectedTransactions.FirstOrDefault()?.Date;
+
+            if (earliestDate == null)
+            {
+                return 0.ToString("C0");
+            }
+
+            DateTime StartDate = earliestDate.Value;
+            DateTime EndDate = DateTime.UtcNow.Date;
+
+            int TotalExpense = SelectedTransactions
+                .Where(i => i.Date >= StartDate && i.Date <= EndDate && i.Category?.Type == "Expense")
+                .Sum(j => j.Amount);
+
+            return TotalExpense.ToString("C0");
         }
 
-        private string CalculateBalance(List<Transaction> transactions)
+        private string CalculateDemoBalance(List<Transaction> transactions)
         {
-            var totalIncome = transactions.Where(t => t.Category?.Type == "Income").Sum(t => t.Amount);
-            var totalExpense = transactions.Where(t => t.Category?.Type == "Expense").Sum(t => t.Amount);
-            var balance = totalIncome - totalExpense;
-            return balance.ToString("C0");
+            List<Transaction> SelectedTransactions = transactions
+                .OrderBy(y => y.Date)
+                .ToList();
+
+            DateTime? earliestDate = SelectedTransactions.FirstOrDefault()?.Date;
+
+            if (earliestDate == null)
+            {
+                return 0.ToString("C0");
+            }
+
+            DateTime StartDate = earliestDate.Value;
+            DateTime EndDate = DateTime.UtcNow.Date;
+
+            int TotalIncome = SelectedTransactions
+                .Where(i => i.Date >= StartDate && i.Date <= EndDate && i.Category?.Type == "Income")
+                .Sum(j => j.Amount);
+
+            int TotalExpense = SelectedTransactions
+                .Where(i => i.Date >= StartDate && i.Date <= EndDate && i.Category?.Type == "Expense")
+                .Sum(j => j.Amount);
+
+            int Balance = TotalIncome - TotalExpense;
+
+            CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
+            culture.NumberFormat.CurrencyNegativePattern = 1;
+
+            return String.Format(culture, "{0:C0}", Balance);
         }
+
         //Expense by Category - Last 7 Days
         private List<object> GetDemoTreemapData(List<Transaction> transactions)
         {
@@ -283,7 +354,7 @@ namespace BudgetWise.Controllers
                 .Select(g => new BarChartData
                 {
                     date = g.Key,
-                    day = g.Key.ToString("dd MMM"),
+                    day = g.Key.ToString("MMM dd"),
                     income = g.Where(t => t.Category?.Type == "Income").Sum(t => t.Amount),
                     expense = g.Where(t => t.Category?.Type == "Expense").Sum(t => t.Amount)
                 })
