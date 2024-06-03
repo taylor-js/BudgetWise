@@ -354,11 +354,12 @@ namespace BudgetWise.Controllers
             // Logging for debugging
             barChartData.ForEach(data =>
             {
-                Console.WriteLine($"Date: {data.date}, Day: {data.day}, Income: {data.income}, Expense: {data.expense}");
+                Console.WriteLine($"BarChart - Date: {data.date}, Day: {data.day}, Income: {data.income}, Expense: {data.expense}");
             });
 
             return barChartData;
         }
+
 
         // Income vs Expense - Last 30 Days
         private List<object> GetDemoStackedColumnChartData(List<Transaction> transactions)
@@ -391,7 +392,7 @@ namespace BudgetWise.Controllers
             // Logging for debugging
             stackedColumnChartData.ForEach(data =>
             {
-                Console.WriteLine($"Date: {data.Date}, Income: {data.Income}, Expense: {data.Expense}");
+                Console.WriteLine($"StackedColumn - Date: {data.Date}, Income: {data.Income}, Expense: {data.Expense}");
             });
 
             return stackedColumnChartData.Cast<object>().ToList();
