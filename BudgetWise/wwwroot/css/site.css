@@ -170,14 +170,15 @@ section {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    border-left: 2px solid rgba(75, 82, 85, 0.24);
     overflow-y: auto;
     transition: margin-left 0.3s ease;
     padding-top: 60px;
     flex: 1;
     overflow-y: auto;
 }
-
+#sidebar {
+    border-right: 2px solid rgba(75, 82, 85, 0.24);
+}
 
 /* Sidebar */
 #sidebar .e-menu-wrapper {
@@ -222,7 +223,6 @@ section {
     .main-content-logged-in {
         margin-left: 200px;
         width: calc(100% - 200px);
-        border-left: 2px solid rgba(75, 82, 85, 0.24);
         transition: margin-left 0.3s ease, width 0.3s ease;
     }
 
