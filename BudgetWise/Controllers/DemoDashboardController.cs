@@ -100,7 +100,7 @@ namespace BudgetWise.Controllers
 
         private List<Transaction> GenerateDemoTransactions(int count, List<Category> categories, int maxTransactionsPerDay = 10)
         {
-            var random = new Random();
+            var random = new Random(12345); // Fixed seed for reproducibility
             var transactions = new List<Transaction>();
             var transactionCounts = new Dictionary<DateTime, int>();
 
@@ -122,7 +122,7 @@ namespace BudgetWise.Controllers
                     Category = category,
                     Amount = (int)amount,
                     Note = $"Demo note {transactions.Count + 1}",
-                    Date = date.Date, // Remove time component
+                    Date = date, // Keep as local time
                     UserId = "demo-user"
                 });
 
@@ -147,7 +147,7 @@ namespace BudgetWise.Controllers
                 do
                 {
                     category = generateIncomeNext ? incomeCategories[random.Next(incomeCategories.Count)] : expenseCategories[random.Next(expenseCategories.Count)];
-                    date = DateTime.Today.AddDays(-random.Next(0, 366)); // Use DateTime.Today and include today
+                    date = DateTime.Today.AddDays(-random.Next(0, 366)); // Use DateTime.Today
                     attempts++;
 
                     if (attempts > 2000) // Increase the attempts limit
@@ -226,14 +226,21 @@ namespace BudgetWise.Controllers
             {
                 var category = incomeCategories[random.Next(incomeCategories.Count)];
                 var amount = random.Next(category.MinAmount, category.MaxAmount + 1);
-                var date = DateTime.Today.AddDays(-random.Next(0, 366)); // Use DateTime.Today and include today
+                var date = DateTime.Today.AddDays(-random.Next(0, 366)); // Use DateTime.Today
 
                 AddTransaction(category, amount, date);
                 totalIncome += amount;
             }
 
+            // Logging for debugging
+            transactions.ForEach(t =>
+            {
+                Console.WriteLine($"Transaction: Id={t.TransactionId}, CategoryId={t.CategoryId}, Amount={t.Amount}, Date={t.Date}");
+            });
+
             return transactions;
         }
+
 
         private string CalculateTotalDemoIncome(List<Transaction> transactions)
         {
@@ -364,7 +371,7 @@ namespace BudgetWise.Controllers
 
             var stackedColumnChartData = transactions
                 .Where(t => t.Date.Date >= startDate && t.Date.Date <= endDate)
-                .GroupBy(t => new { t.Date.Date, Type = t.Category?.Type ?? "Unknown" })
+                .GroupBy(t => new { Date = t.Date.Date, Type = t.Category?.Type ?? "Unknown" })
                 .Select(g => new
                 {
                     Date = g.Key.Date,
