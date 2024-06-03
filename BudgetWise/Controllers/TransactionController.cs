@@ -25,15 +25,17 @@ namespace BudgetWise.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = _userManager.GetUserId(User);
+            var today = DateTime.SpecifyKind(DateTime.Today, DateTimeKind.Unspecified); // Ensure kind is Unspecified
+
             var transactions = await _context.Transactions
                 .Include(t => t.Category)
-                .Where(t => t.UserId == userId)
+                .Where(t => t.UserId == userId && t.Date <= today)
                 .OrderByDescending(d => d.Date)
-                .Where(d => d.Date <= DateTime.UtcNow)
                 .ToListAsync();
 
             return View(transactions);
         }
+
 
         // GET: Transaction/Create
         [HttpGet]
@@ -60,7 +62,7 @@ namespace BudgetWise.Controllers
             }
         }
 
-        // POST: Transaction/Create
+        // POST: Transaction/AddOrEdit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddOrEdit([Bind("TransactionId,CategoryId,Amount,Note,Date,UserId")] Transaction transaction)
@@ -71,10 +73,10 @@ namespace BudgetWise.Controllers
                 if (userId != null)
                 {
                     transaction.UserId = userId ?? string.Empty;
-                    if (transaction.Date.Kind == DateTimeKind.Unspecified)
-                    {
-                        transaction.Date = DateTime.SpecifyKind(transaction.Date, DateTimeKind.Utc);
-                    }
+
+                    // Strip time component and set the kind to Unspecified
+                    transaction.Date = DateTime.SpecifyKind(transaction.Date.Date, DateTimeKind.Unspecified);
+
                     if (transaction.TransactionId == 0)
                     {
                         _context.Add(transaction);
@@ -86,22 +88,25 @@ namespace BudgetWise.Controllers
                         {
                             return NotFound();
                         }
+
                         existingTransaction.Amount = transaction.Amount;
                         existingTransaction.Note = transaction.Note;
                         existingTransaction.Date = transaction.Date;
                         existingTransaction.UserId = userId ?? string.Empty;
+
                         _context.Update(existingTransaction);
                     }
+
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
                 else
                 {
                     // Handle the case when userId is null
-                    // You can add appropriate error handling or redirection logic here
                     ModelState.AddModelError("", "User ID is missing.");
                 }
             }
+
             PopulateCategories();
             return View(transaction);
         }

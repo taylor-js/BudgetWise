@@ -47,114 +47,85 @@ namespace BudgetWise.Controllers
         private async Task<string> GetTotalIncome()
         {
             string userId = _userManager.GetUserId(User) ?? string.Empty;
-
-            List<Transaction> SelectedTransactions = await _context.Transactions
+            List<Transaction> selectedTransactions = await _context.Transactions
                 .Include(x => x.Category)
                 .Where(y => y.UserId == userId)
                 .OrderBy(y => y.Date)
                 .ToListAsync();
-
-            DateTime? earliestDate = SelectedTransactions.FirstOrDefault()?.Date;
-
+            DateTime? earliestDate = selectedTransactions.FirstOrDefault()?.Date;
             if (earliestDate == null)
             {
                 return 0.ToString("C0");
             }
-
-            DateTime StartDate = earliestDate.Value;
-            DateTime EndDate = DateTime.UtcNow.Date;
-
-            int TotalIncome = SelectedTransactions
-                .Where(i => i.Date >= StartDate && i.Date <= EndDate && i.Category?.Type == "Income")
+            DateTime startDate = earliestDate.Value;
+            DateTime endDate = DateTime.Today;
+            int totalIncome = selectedTransactions
+                .Where(i => i.Date.Date >= startDate && i.Date.Date <= endDate && i.Category?.Type == "Income")
                 .Sum(j => j.Amount);
-
-            return TotalIncome.ToString("C0");
+            return totalIncome.ToString("C0");
         }
-
 
         private async Task<string> GetTotalExpense()
         {
             string userId = _userManager.GetUserId(User) ?? string.Empty;
-
-            List<Transaction> SelectedTransactions = await _context.Transactions
+            List<Transaction> selectedTransactions = await _context.Transactions
                 .Include(x => x.Category)
                 .Where(y => y.UserId == userId)
                 .OrderBy(y => y.Date)
                 .ToListAsync();
-
-            DateTime? earliestDate = SelectedTransactions.FirstOrDefault()?.Date;
-
+            DateTime? earliestDate = selectedTransactions.FirstOrDefault()?.Date;
             if (earliestDate == null)
             {
                 return 0.ToString("C0");
             }
-
-            DateTime StartDate = earliestDate.Value;
-            DateTime EndDate = DateTime.UtcNow.Date;
-
-            int TotalExpense = SelectedTransactions
-                .Where(i => i.Date >= StartDate && i.Date <= EndDate && i.Category?.Type == "Expense")
+            DateTime startDate = earliestDate.Value;
+            DateTime endDate = DateTime.Today;
+            int totalExpense = selectedTransactions
+                .Where(i => i.Date.Date >= startDate && i.Date.Date <= endDate && i.Category?.Type == "Expense")
                 .Sum(j => j.Amount);
-
-            return TotalExpense.ToString("C0");
+            return totalExpense.ToString("C0");
         }
-
 
         private async Task<string> GetBalance()
         {
             string userId = _userManager.GetUserId(User) ?? string.Empty;
-
-            List<Transaction> SelectedTransactions = await _context.Transactions
+            List<Transaction> selectedTransactions = await _context.Transactions
                 .Include(x => x.Category)
                 .Where(y => y.UserId == userId)
                 .OrderBy(y => y.Date)
                 .ToListAsync();
-
-            DateTime? earliestDate = SelectedTransactions.FirstOrDefault()?.Date;
-
+            DateTime? earliestDate = selectedTransactions.FirstOrDefault()?.Date;
             if (earliestDate == null)
             {
                 return 0.ToString("C0");
             }
-
-            DateTime StartDate = earliestDate.Value;
-            DateTime EndDate = DateTime.UtcNow.Date;
-
-            int TotalIncome = SelectedTransactions
-                .Where(i => i.Date >= StartDate && i.Date <= EndDate && i.Category?.Type == "Income")
+            DateTime startDate = earliestDate.Value;
+            DateTime endDate = DateTime.Today;
+            int totalIncome = selectedTransactions
+                .Where(i => i.Date.Date >= startDate && i.Date.Date <= endDate && i.Category?.Type == "Income")
                 .Sum(j => j.Amount);
-
-            int TotalExpense = SelectedTransactions
-                .Where(i => i.Date >= StartDate && i.Date <= EndDate && i.Category?.Type == "Expense")
+            int totalExpense = selectedTransactions
+                .Where(i => i.Date.Date >= startDate && i.Date.Date <= endDate && i.Category?.Type == "Expense")
                 .Sum(j => j.Amount);
-
-            int Balance = TotalIncome - TotalExpense;
-
+            int balance = totalIncome - totalExpense;
             CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
             culture.NumberFormat.CurrencyNegativePattern = 1;
-
-            return String.Format(culture, "{0:C0}", Balance);
+            return String.Format(culture, "{0:C0}", balance);
         }
 
         //Treemap: Expense by Category - Last 7 Days
-        /*private async Task<List<object>> GetTreemapData()
-        {
-            // Ensure non-null return value
-            var data = await GetTreemapDataImplementation();
-            return data ?? new List<object>();
-        }*/
         private async Task<List<object>> GetTreemapData()
         {
-            DateTime StartDate7Days = DateTime.UtcNow.Date.AddDays(-6);
-            DateTime EndDate7Days = DateTime.UtcNow.Date;
+            DateTime startDate = DateTime.Today.AddDays(-6);
+            DateTime endDate = DateTime.Today;
             string userId = _userManager.GetUserId(User) ?? string.Empty;
 
-            List<Transaction> SelectedTransactions7Days = await _context.Transactions
+            List<Transaction> selectedTransactions = await _context.Transactions
                 .Include(x => x.Category)
-                .Where(y => y.Date >= StartDate7Days && y.Date <= EndDate7Days && y.UserId == userId)
+                .Where(y => y.Date.Date >= startDate && y.Date.Date <= endDate && y.UserId == userId)
                 .ToListAsync();
 
-            var TreemapData = SelectedTransactions7Days
+            var treemapData = selectedTransactions
                 .Where(i => i.Category?.Type == "Expense")
                 .GroupBy(j => j.Category?.CategoryId)
                 .Select(k => new
@@ -166,28 +137,26 @@ namespace BudgetWise.Controllers
                 .OrderByDescending(l => l.amount)
                 .ToList();
 
-            return TreemapData.Cast<object>().ToList() ?? new List<object>(); ;
+            return treemapData.Cast<object>().ToList() ?? new List<object>();
         }
-        // Bar Chart: Income vs Expense - Last 7 Days
-        /*private async Task<List<BarChartData>> GetBarChartData()
-        {
-            var data = await GetBarChartDataImplementation();
-            return data ?? new List<BarChartData>();
-        }*/
 
+        // Bar Chart: Income vs Expense - Last 7 Days
         private async Task<List<BarChartData>> GetBarChartData()
         {
-            DateTime StartDate7Days = DateTime.UtcNow.Date.AddDays(-6);
-            DateTime EndDate7Days = DateTime.UtcNow.Date;
+            DateTime startDate = DateTime.Today.AddDays(-6); // Last 7 days including today
+            DateTime endDate = DateTime.Today; // Include today
             string userId = _userManager.GetUserId(User) ?? string.Empty;
 
-            List<Transaction> SelectedTransactions7Days = await _context.Transactions
+            // Logging for debugging
+            Console.WriteLine($"Start Date: {startDate}, End Date: {endDate}");
+
+            List<Transaction> selectedTransactions = await _context.Transactions
                 .Include(x => x.Category)
-                .Where(y => y.Date >= StartDate7Days && y.Date <= EndDate7Days && y.UserId == userId)
+                .Where(y => y.Date.Date >= startDate && y.Date.Date <= endDate && y.UserId == userId)
                 .ToListAsync();
 
-            var BarChartData = SelectedTransactions7Days
-                .GroupBy(t => t.Date)
+            var barChartData = selectedTransactions
+                .GroupBy(t => t.Date.Date) // Group by date only
                 .Select(g => new BarChartData
                 {
                     date = g.Key,
@@ -195,31 +164,34 @@ namespace BudgetWise.Controllers
                     income = g.Where(t => t.Category?.Type == "Income").Sum(t => t.Amount),
                     expense = g.Where(t => t.Category?.Type == "Expense").Sum(t => t.Amount)
                 })
+                .OrderBy(d => d.date)
                 .ToList();
 
-            BarChartData = BarChartData.OrderBy(d => d.date).ToList();
+            // Logging for debugging
+            barChartData.ForEach(data =>
+            {
+                Console.WriteLine($"Date: {data.date}, Day: {data.day}, Income: {data.income}, Expense: {data.expense}");
+            });
 
-            return BarChartData ?? new List<BarChartData>();
+            return barChartData ?? new List<BarChartData>();
         }
+
         // Stacked Column Chart: Income vs Expense - Last 30 Days
-        /*private async Task<List<object>> GetStackedColumnChartData()
-        {
-            var data = await GetStackedColumnChartDataImplementation();
-            return data ?? new List<object>();
-        }*/
         private async Task<List<object>> GetStackedColumnChartData()
         {
-            DateTime StartDate30Days = DateTime.UtcNow.Date.AddDays(-29);
-            DateTime EndDate30Days = DateTime.UtcNow.Date;
+            DateTime startDate = DateTime.Today.AddDays(-29);
+            DateTime endDate = DateTime.Today; // Include today
             string userId = _userManager.GetUserId(User) ?? string.Empty;
 
-            List<Transaction> SelectedTransactions30Days = await _context.Transactions
+            Console.WriteLine($"Start Date: {startDate}, End Date: {endDate}");
+
+            var selectedTransactions = await _context.Transactions
                 .Include(x => x.Category)
-                .Where(y => y.Date >= StartDate30Days && y.Date <= EndDate30Days && y.UserId == userId)
+                .Where(t => t.Date.Date >= startDate && t.Date.Date <= endDate && t.UserId == userId)
                 .ToListAsync();
 
-            var StackedColumnChartData = SelectedTransactions30Days
-                .GroupBy(t => new { t.Date, Type = t.Category?.Type ?? "Unknown" })
+            var stackedColumnChartData = selectedTransactions
+                .GroupBy(t => new { Date = t.Date.Date, Type = t.Category?.Type ?? "Unknown" })
                 .Select(g => new
                 {
                     Date = g.Key.Date,
@@ -236,38 +208,39 @@ namespace BudgetWise.Controllers
                 .OrderBy(x => x.Date)
                 .ToList();
 
-            return StackedColumnChartData.Cast<object>().ToList() ?? new List<object>();
-        }
-        // Bubble chart
-        /*private async Task<List<BubbleChartData>> GetBubbleChartData()
-        {
-            var data = await GetBubbleChartDataImplementation();
-            return data ?? new List<BubbleChartData>();
-        }*/
+            // Logging for debugging
+            stackedColumnChartData.ForEach(data =>
+            {
+                Console.WriteLine($"Date: {data.Date}, Income: {data.Income}, Expense: {data.Expense}");
+            });
 
+            return stackedColumnChartData.Cast<object>().ToList();
+        }
+
+        // Bubble chart
         private async Task<List<BubbleChartData>> GetBubbleChartData()
         {
-            DateTime StartDate12Months = DateTime.UtcNow.Date.AddMonths(-11);
-            DateTime EndDate12Months = DateTime.UtcNow.Date;
+            DateTime startDate = DateTime.Today.AddMonths(-11);
+            DateTime endDate = DateTime.Today;
             string userId = _userManager.GetUserId(User) ?? string.Empty;
 
-            List<Transaction> SelectedTransactions12Months = await _context.Transactions
+            List<Transaction> selectedTransactions = await _context.Transactions
                 .Include(x => x.Category)
-                .Where(y => y.Date >= StartDate12Months && y.Date <= EndDate12Months && y.UserId == userId)
+                .Where(y => y.Date.Date >= startDate && y.Date.Date <= endDate && y.UserId == userId)
                 .ToListAsync();
 
-            DateTime? earliestTransactionDate = SelectedTransactions12Months
+            DateTime? earliestTransactionDate = selectedTransactions
                 .OrderBy(t => t.Date)
-                .Select(t => t.Date)
+                .Select(t => t.Date.Date)
                 .FirstOrDefault();
 
             if (earliestTransactionDate.HasValue)
             {
-                StartDate12Months = earliestTransactionDate.Value;
+                startDate = earliestTransactionDate.Value;
             }
 
-            var BubbleChartData = SelectedTransactions12Months
-                .Where(t => t.Date >= StartDate12Months)
+            var bubbleChartData = selectedTransactions
+                .Where(t => t.Date.Date >= startDate)
                 .GroupBy(t => new { t.Category?.Title, t.Category?.Type })
                 .Select(g => new BubbleChartData
                 {
@@ -279,91 +252,80 @@ namespace BudgetWise.Controllers
                 .OrderBy(d => d.size)
                 .ToList();
 
-            return BubbleChartData ?? new List<BubbleChartData>();
+            return bubbleChartData ?? new List<BubbleChartData>();
         }
         //Line Chart (3 Lines): Monthly Trend - Last 12 Months from First Entry
-        /*private async Task<List<MonthlyTrendData>> GetMonthlyTrendChartData()
-        {
-            var data = await GetMonthlyTrendChartDataImplementation();
-            return data ?? new List<MonthlyTrendData>();
-        }*/
         private async Task<List<MonthlyTrendData>> GetMonthlyTrendChartData()
         {
-            DateTime StartDate12Months = DateTime.UtcNow.Date.AddMonths(-11);
-            DateTime EndDate12Months = DateTime.UtcNow.Date;
+            DateTime startDate = DateTime.Today.AddMonths(-11);
+            DateTime endDate = DateTime.Today;
             string userId = _userManager.GetUserId(User) ?? string.Empty;
 
-            List<Transaction> SelectedTransactions12Months = await _context.Transactions
+            List<Transaction> selectedTransactions = await _context.Transactions
                 .Include(x => x.Category)
-                .Where(y => y.Date >= StartDate12Months && y.Date <= EndDate12Months && y.UserId == userId)
+                .Where(y => y.Date.Date >= startDate && y.Date.Date <= endDate && y.UserId == userId)
                 .ToListAsync();
 
-            DateTime? earliestTransactionDate = SelectedTransactions12Months
+            DateTime? earliestTransactionDate = selectedTransactions
                 .OrderBy(t => t.Date)
-                .Select(t => t.Date)
+                .Select(t => t.Date.Date)
                 .FirstOrDefault();
 
             if (earliestTransactionDate.HasValue)
             {
-                StartDate12Months = earliestTransactionDate.Value;
+                startDate = earliestTransactionDate.Value;
             }
 
-            List<MonthlyTrendData> MonthlyTrendChartData = new List<MonthlyTrendData>();
+            List<MonthlyTrendData> monthlyTrendChartData = new List<MonthlyTrendData>();
 
-            for (DateTime date = StartDate12Months; date <= EndDate12Months; date = date.AddMonths(1))
+            for (DateTime date = startDate; date <= endDate; date = date.AddMonths(1))
             {
-                int TotalIncome = SelectedTransactions12Months
-                    .Where(i => i.Category?.Type == "Income" && i.Date.Month == date.Month && i.Date.Year == date.Year)
+                int totalIncome = selectedTransactions
+                    .Where(i => i.Category?.Type == "Income" && i.Date.Year == date.Year && i.Date.Month == date.Month)
                     .Sum(j => j.Amount);
 
-                int TotalExpense = SelectedTransactions12Months
-                    .Where(i => i.Category?.Type == "Expense" && i.Date.Month == date.Month && i.Date.Year == date.Year)
+                int totalExpense = selectedTransactions
+                    .Where(i => i.Category?.Type == "Expense" && i.Date.Year == date.Year && i.Date.Month == date.Month)
                     .Sum(j => j.Amount);
 
-                int Balance = TotalIncome - TotalExpense;
+                int balance = totalIncome - totalExpense;
 
-                MonthlyTrendChartData.Add(new MonthlyTrendData
+                monthlyTrendChartData.Add(new MonthlyTrendData
                 {
                     Month = date.ToString("MMM yyyy"),
-                    Income = TotalIncome,
-                    Expense = TotalExpense,
-                    Balance = Balance
+                    Income = totalIncome,
+                    Expense = totalExpense,
+                    Balance = balance
                 });
             }
 
-            return MonthlyTrendChartData ?? new List<MonthlyTrendData>();
+            return monthlyTrendChartData ?? new List<MonthlyTrendData>();
         }
-        
-        
+
         //Staked Area Chart: Income vs Expense - Last 12 Months from First Entry
-        /*private async Task<List<object>> GetStackedAreaChartData()
-        {
-            var data = await GetStackedAreaChartDataImplementation();
-            return data ?? new List<object>();
-        }*/
         private async Task<List<object>> GetStackedAreaChartData()
         {
-            DateTime StartDate12Months = DateTime.UtcNow.Date.AddMonths(-11);
-            DateTime EndDate12Months = DateTime.UtcNow.Date;
+            DateTime startDate = DateTime.Today.AddMonths(-11);
+            DateTime endDate = DateTime.Today;
             string userId = _userManager.GetUserId(User) ?? string.Empty;
 
-            List<Transaction> SelectedTransactions12Months = await _context.Transactions
+            List<Transaction> selectedTransactions = await _context.Transactions
                 .Include(x => x.Category)
-                .Where(y => y.Date >= StartDate12Months && y.Date <= EndDate12Months && y.UserId == userId)
+                .Where(y => y.Date.Date >= startDate && y.Date.Date <= endDate && y.UserId == userId)
                 .ToListAsync();
 
-            DateTime? earliestTransactionDate = SelectedTransactions12Months
+            DateTime? earliestTransactionDate = selectedTransactions
                 .OrderBy(t => t.Date)
-                .Select(t => t.Date)
+                .Select(t => t.Date.Date)
                 .FirstOrDefault();
 
-            if (earliestTransactionDate.HasValue && earliestTransactionDate.Value < StartDate12Months)
+            if (earliestTransactionDate.HasValue && earliestTransactionDate.Value < startDate)
             {
-                StartDate12Months = new DateTime(earliestTransactionDate.Value.Year, earliestTransactionDate.Value.Month, 1);
+                startDate = new DateTime(earliestTransactionDate.Value.Year, earliestTransactionDate.Value.Month, 1);
             }
 
-            var StackedAreaChartData = SelectedTransactions12Months
-                .Where(t => t.Date >= StartDate12Months)
+            var stackedAreaChartData = selectedTransactions
+                .Where(t => t.Date.Date >= startDate)
                 .GroupBy(t => new { Month = t.Date.ToString("MMM yyyy"), Type = t.Category?.Type ?? "Unknown" })
                 .Select(g => new
                 {
@@ -383,7 +345,7 @@ namespace BudgetWise.Controllers
                 .OrderBy(x => DateTime.ParseExact(x.Month, "MMM yyyy", CultureInfo.InvariantCulture))
                 .ToList();
 
-            return StackedAreaChartData.Cast<object>().ToList() ?? new List<object>();
+            return stackedAreaChartData.Cast<object>().ToList() ?? new List<object>();
         }
     }
 

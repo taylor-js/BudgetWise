@@ -68,7 +68,8 @@ namespace BudgetWise.Models
                     .HasColumnType("varchar(75)");
 
                 entity.Property(t => t.Date)
-                    .IsRequired();
+                    .IsRequired()
+                    .HasColumnType("timestamp without time zone");
 
                 entity.Property(t => t.Amount)
                     .IsRequired();
