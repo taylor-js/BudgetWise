@@ -147,7 +147,7 @@ namespace BudgetWise.Controllers
                 do
                 {
                     category = generateIncomeNext ? incomeCategories[random.Next(incomeCategories.Count)] : expenseCategories[random.Next(expenseCategories.Count)];
-                    date = DateTime.Today.AddDays(-random.Next(0, 365)); // Use DateTime.Today
+                    date = DateTime.Today.AddDays(-random.Next(0, 366)); // Use DateTime.Today and include today
                     attempts++;
 
                     if (attempts > 2000) // Increase the attempts limit
@@ -226,7 +226,7 @@ namespace BudgetWise.Controllers
             {
                 var category = incomeCategories[random.Next(incomeCategories.Count)];
                 var amount = random.Next(category.MinAmount, category.MaxAmount + 1);
-                var date = DateTime.Today.AddDays(-random.Next(0, 365)); // Use DateTime.Today
+                var date = DateTime.Today.AddDays(-random.Next(0, 366)); // Use DateTime.Today and include today
 
                 AddTransaction(category, amount, date);
                 totalIncome += amount;

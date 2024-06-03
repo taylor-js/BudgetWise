@@ -1,7 +1,16 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\taylo\\Documents\\GitHub\\BudgetWise\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{D16BCF78-356E-47A1-93AC-C8CB72F6A0CF}|BudgetWise\\BudgetWise.csproj|c:\\users\\taylo\\documents\\github\\budgetwise\\budgetwise\\controllers\\demodashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D16BCF78-356E-47A1-93AC-C8CB72F6A0CF}|BudgetWise\\BudgetWise.csproj|solutionrelative:budgetwise\\controllers\\demodashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D16BCF78-356E-47A1-93AC-C8CB72F6A0CF}|BudgetWise\\BudgetWise.csproj|c:\\users\\taylo\\documents\\github\\budgetwise\\budgetwise\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D16BCF78-356E-47A1-93AC-C8CB72F6A0CF}|BudgetWise\\BudgetWise.csproj|solutionrelative:budgetwise\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,11 +18,37 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "DashboardController.cs",
+              "DocumentMoniker": "C:\\Users\\taylo\\Documents\\GitHub\\BudgetWise\\BudgetWise\\Controllers\\DashboardController.cs",
+              "RelativeDocumentMoniker": "BudgetWise\\Controllers\\DashboardController.cs",
+              "ToolTip": "C:\\Users\\taylo\\Documents\\GitHub\\BudgetWise\\BudgetWise\\Controllers\\DashboardController.cs",
+              "RelativeToolTip": "BudgetWise\\Controllers\\DashboardController.cs",
+              "ViewState": "AQIAAJEAAAAAAAAAAADwvwAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-03T20:52:29.994Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "DemoDashboardController.cs",
+              "DocumentMoniker": "C:\\Users\\taylo\\Documents\\GitHub\\BudgetWise\\BudgetWise\\Controllers\\DemoDashboardController.cs",
+              "RelativeDocumentMoniker": "BudgetWise\\Controllers\\DemoDashboardController.cs",
+              "ToolTip": "C:\\Users\\taylo\\Documents\\GitHub\\BudgetWise\\BudgetWise\\Controllers\\DemoDashboardController.cs",
+              "RelativeToolTip": "BudgetWise\\Controllers\\DemoDashboardController.cs",
+              "ViewState": "AQIAANkAAAAAAAAAAAAiwOsAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-03T20:51:18.152Z",
+              "EditorCaption": ""
             }
           ]
         }
