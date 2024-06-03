@@ -244,6 +244,7 @@ namespace BudgetWise.Controllers
         }
 
 
+
         private string CalculateTotalDemoIncome(List<Transaction> transactions)
         {
             DateTime? earliestDate = transactions.OrderBy(t => t.Date).FirstOrDefault()?.Date;
@@ -362,15 +363,13 @@ namespace BudgetWise.Controllers
             return barChartData;
         }
 
-
         // Income vs Expense - Last 30 Days
         private List<object> GetDemoStackedColumnChartData(List<Transaction> transactions)
         {
             DateTime startDate = DateTime.Today.AddDays(-29); // Last 30 days including today
             DateTime endDate = DateTime.Today; // Include today
 
-            // Logging for debugging
-            Console.WriteLine($"Demo Stacked Column Chart - Start Date: {startDate}, End Date: {endDate}");
+            Console.WriteLine($"Start Date: {startDate}, End Date: {endDate}");
 
             var stackedColumnChartData = transactions
                 .Where(t => t.Date.Date >= startDate && t.Date.Date <= endDate)
@@ -394,12 +393,11 @@ namespace BudgetWise.Controllers
             // Logging for debugging
             stackedColumnChartData.ForEach(data =>
             {
-                Console.WriteLine($"StackedColumn - Date: {data.Date}, Income: {data.Income}, Expense: {data.Expense}");
+                Console.WriteLine($"Date: {data.Date}, Income: {data.Income}, Expense: {data.Expense}");
             });
 
             return stackedColumnChartData.Cast<object>().ToList();
         }
-
 
         // Income & Expense - Last 12 Months From First Entry - Bubble chart
         private List<BubbleChartData> GetDemoBubbleChartData(List<Transaction> transactions)
