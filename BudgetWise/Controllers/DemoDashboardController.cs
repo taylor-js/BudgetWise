@@ -115,6 +115,8 @@ namespace BudgetWise.Controllers
 
             void AddTransaction(Category category, decimal amount, DateTime date)
             {
+                Console.WriteLine($"Adding Transaction: CategoryId={category.CategoryId}, Amount={amount}, Date={date}");
+
                 transactions.Add(new Transaction
                 {
                     TransactionId = transactions.Count + 1,
@@ -122,7 +124,7 @@ namespace BudgetWise.Controllers
                     Category = category,
                     Amount = (int)amount,
                     Note = $"Demo note {transactions.Count + 1}",
-                    Date = date, // Keep as local time
+                    Date = date.Date, // Use local time
                     UserId = "demo-user"
                 });
 
@@ -147,7 +149,7 @@ namespace BudgetWise.Controllers
                 do
                 {
                     category = generateIncomeNext ? incomeCategories[random.Next(incomeCategories.Count)] : expenseCategories[random.Next(expenseCategories.Count)];
-                    date = DateTime.Today.AddDays(-random.Next(0, 366)); // Use DateTime.Today
+                    date = DateTime.Today.AddDays(-random.Next(0, 366)); // Use DateTime.Today for local dates
                     attempts++;
 
                     if (attempts > 2000) // Increase the attempts limit
