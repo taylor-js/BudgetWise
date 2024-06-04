@@ -100,7 +100,7 @@ namespace BudgetWise.Controllers
 
         private List<Transaction> GenerateDemoTransactions(int count, List<Category> categories, int maxTransactionsPerDay = 10)
         {
-            var random = new Random(12345); // Fixed seed for reproducibility
+            var random = new Random(); // No fixed seed, use the current time as the seed
             var transactions = new List<Transaction>();
             var transactionCounts = new Dictionary<DateTime, int>();
 
@@ -115,7 +115,9 @@ namespace BudgetWise.Controllers
 
             void AddTransaction(Category category, decimal amount, DateTime date)
             {
-                Console.WriteLine($"Adding Transaction: CategoryId={category.CategoryId}, Amount={amount}, Date={date}");
+                // Adjust date to America/New_York time zone
+                var localTimeZone = TimeZoneInfo.FindSystemTimeZoneById("America/New_York");
+                var localDate = TimeZoneInfo.ConvertTimeFromUtc(date.ToUniversalTime(), localTimeZone);
 
                 transactions.Add(new Transaction
                 {
@@ -124,18 +126,18 @@ namespace BudgetWise.Controllers
                     Category = category,
                     Amount = (int)amount,
                     Note = $"Demo note {transactions.Count + 1}",
-                    Date = date.Date, // Use local time
+                    Date = localDate.Date, // Store in local time
                     UserId = "demo-user"
                 });
 
                 usedCategories.Add(category.CategoryId);
 
-                if (!last7DaysCategories.ContainsKey(date))
+                if (!last7DaysCategories.ContainsKey(localDate))
                 {
-                    last7DaysCategories[date] = new HashSet<int>();
+                    last7DaysCategories[localDate] = new HashSet<int>();
                 }
 
-                last7DaysCategories[date].Add(category.CategoryId);
+                last7DaysCategories[localDate].Add(category.CategoryId);
             }
 
             bool generateIncomeNext = true;
@@ -187,7 +189,7 @@ namespace BudgetWise.Controllers
                 }
             }
 
-            var last7Days = Enumerable.Range(0, 7).Select(i => DateTime.Today.AddDays(-i)).ToList(); // Use DateTime.Today
+            var last7Days = Enumerable.Range(0, 7).Select(i => DateTime.Today.AddDays(-i)).ToList(); // Use DateTime.Today for local dates
             var allUsedCategories = new HashSet<int>(last7Days.SelectMany(date => last7DaysCategories.ContainsKey(date) ? last7DaysCategories[date] : new HashSet<int>()));
 
             while (allUsedCategories.Count < 10)
@@ -228,7 +230,7 @@ namespace BudgetWise.Controllers
             {
                 var category = incomeCategories[random.Next(incomeCategories.Count)];
                 var amount = random.Next(category.MinAmount, category.MaxAmount + 1);
-                var date = DateTime.Today.AddDays(-random.Next(0, 366)); // Use DateTime.Today
+                var date = DateTime.Today.AddDays(-random.Next(0, 366)); // Use DateTime.Today for local dates
 
                 AddTransaction(category, amount, date);
                 totalIncome += amount;
@@ -237,7 +239,8 @@ namespace BudgetWise.Controllers
             // Logging for debugging
             transactions.ForEach(t =>
             {
-                Console.WriteLine($"Transaction: Id={t.TransactionId}, CategoryId={t.CategoryId}, Amount={t.Amount}, Date={t.Date}");
+                var localDate = TimeZoneInfo.ConvertTimeFromUtc(t.Date.ToUniversalTime(), TimeZoneInfo.FindSystemTimeZoneById("America/New_York"));
+                Console.WriteLine($"Transaction: Id={t.TransactionId}, CategoryId={t.CategoryId}, Amount={t.Amount}, Date={localDate}");
             });
 
             return transactions;

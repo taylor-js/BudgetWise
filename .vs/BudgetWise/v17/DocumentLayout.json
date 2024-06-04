@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\taylo\\Documents\\GitHub\\BudgetWise\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{D16BCF78-356E-47A1-93AC-C8CB72F6A0CF}|BudgetWise\\BudgetWise.csproj|c:\\users\\taylo\\documents\\github\\budgetwise\\budgetwise\\controllers\\demodashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D16BCF78-356E-47A1-93AC-C8CB72F6A0CF}|BudgetWise\\BudgetWise.csproj|solutionrelative:budgetwise\\controllers\\demodashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{D16BCF78-356E-47A1-93AC-C8CB72F6A0CF}|BudgetWise\\BudgetWise.csproj|c:\\users\\taylo\\documents\\github\\budgetwise\\budgetwise\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
       "RelativeMoniker": "D:0:0:{D16BCF78-356E-47A1-93AC-C8CB72F6A0CF}|BudgetWise\\BudgetWise.csproj|solutionrelative:budgetwise\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     },
@@ -22,7 +26,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -30,7 +34,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
+              "Title": "DemoDashboardController.cs",
+              "DocumentMoniker": "C:\\Users\\taylo\\Documents\\GitHub\\BudgetWise\\BudgetWise\\Controllers\\DemoDashboardController.cs",
+              "RelativeDocumentMoniker": "BudgetWise\\Controllers\\DemoDashboardController.cs",
+              "ToolTip": "C:\\Users\\taylo\\Documents\\GitHub\\BudgetWise\\BudgetWise\\Controllers\\DemoDashboardController.cs",
+              "RelativeToolTip": "BudgetWise\\Controllers\\DemoDashboardController.cs",
+              "ViewState": "AQIAAF8AAAAAAAAAAAAowPcAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-04T00:02:19.49Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "C:\\Users\\taylo\\Documents\\GitHub\\BudgetWise\\BudgetWise\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "BudgetWise\\Views\\Shared\\_Layout.cshtml",
@@ -38,12 +55,11 @@
               "RelativeToolTip": "BudgetWise\\Views\\Shared\\_Layout.cshtml",
               "ViewState": "AQIAACcAAAAAAAAAAAAAADwAAACUAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-06-03T23:46:38.659Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-03T23:46:38.659Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "_SideBar.cshtml",
               "DocumentMoniker": "C:\\Users\\taylo\\Documents\\GitHub\\BudgetWise\\BudgetWise\\Views\\Shared\\_SideBar.cshtml",
               "RelativeDocumentMoniker": "BudgetWise\\Views\\Shared\\_SideBar.cshtml",
@@ -51,12 +67,11 @@
               "RelativeToolTip": "BudgetWise\\Views\\Shared\\_SideBar.cshtml",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-06-03T23:46:28.68Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-03T23:46:28.68Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "site.css",
               "DocumentMoniker": "C:\\Users\\taylo\\Documents\\GitHub\\BudgetWise\\BudgetWise\\wwwroot\\css\\site.css",
               "RelativeDocumentMoniker": "BudgetWise\\wwwroot\\css\\site.css",
