@@ -12,29 +12,30 @@
 <div class="d-flex align-items-center flex-wrap">
     @if (SignInManager.IsSignedIn(User))
     {
-        <div class="nav-item me-2" id="username-container">
-            <a id="manage" class="nav-link text-light me-2 px-0 text-truncate text-truncate-custom" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @firstName!</a>
+        <div class="nav-item" id="username-container">
+            <a id="manage" class="nav-link text-light px-0 text-truncate text-truncate-custom" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @firstName!</a>
         </div>
-        <div class="nav-item">
+        <div class="vr me-2 ms-2"></div>
+        <div class="nav-item me-2">
             <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button id="logout" type="submit" class="nav-link btn btn-link text-light border-0 me-2 px-0">Logout</button>
+                <button id="logout" type="submit" class="nav-link btn btn-link text-light border-0 px-0">Logout</button>
             </form>
         </div>
     }
     else
     {
-        <div class="nav-item me-2">
+        <div class="nav-item">
             <a class="nav-link text-light px-0" href="@Url.Action("About", "Home")">About</a>
         </div>
-        <div class="vr me-2"></div>
-        <div class="nav-item me-2">
+        <div class="vr me-2 ms-2"></div>
+        <div class="nav-item">
             <a class="nav-link text-light px-0" href="@Url.Action("Demo", "DemoDashboard")">Demo</a>
         </div>
-        <div class="vr me-2"></div>
-        <div class="nav-item me-2">
+        <div class="vr me-2 ms-2"></div>
+        <div class="nav-item">
             <a class="nav-link text-light px-0" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
         </div>
-        <div class="vr me-2"></div>
+        <div class="vr me-2 ms-2"></div>
         <div class="nav-item">
             <a class="nav-link text-light px-0" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
         </div>

@@ -52,6 +52,20 @@ namespace BudgetWise.Controllers
         {
             return new List<Category>
             {
+                new Category { CategoryId = 1, Title = "401(k)/IRA withdrawals", Icon = "💲", Type = "Income", UserId = "demo-user" ,  MinAmount = 500, MaxAmount = 5000 },
+                new Category { CategoryId = 2, Title = "Auto insurance premiums", Icon = "🚗", Type = "Expense", UserId = "demo-user" ,  MinAmount = 100, MaxAmount = 300 },
+                new Category { CategoryId = 3, Title = "Bonuses", Icon = "➕", Type = "Income", UserId = "demo-user" ,  MinAmount = 100, MaxAmount = 5000 },
+                new Category { CategoryId = 4, Title = "Brokerage account contributions", Icon = "🏦", Type = "Expense", UserId = "demo-user" ,  MinAmount = 200, MaxAmount = 1000 },
+                new Category { CategoryId = 5, Title = "Capital gains from investments", Icon = "💵", Type = "Income", UserId = "demo-user" ,  MinAmount = 50, MaxAmount = 2000 },
+                new Category { CategoryId = 6, Title = "Car fuel", Icon = "⛽", Type = "Expense", UserId = "demo-user" ,  MinAmount = 30, MaxAmount = 100 },
+                new Category { CategoryId = 7, Title = "Car insurance", Icon = "🚙", Type = "Expense", UserId = "demo-user" ,  MinAmount = 50, MaxAmount = 200 },
+                new Category { CategoryId = 8, Title = "Charitable donations", Icon = "🎁", Type = "Expense", UserId = "demo-user" ,  MinAmount = 20, MaxAmount = 200 },
+                new Category { CategoryId = 9, Title = "Clothing", Icon = "👕", Type = "Expense", UserId = "demo-user" ,  MinAmount = 20, MaxAmount = 200 },
+                new Category { CategoryId = 10, Title = "College savings fund", Icon = "🏫", Type = "Expense", UserId = "demo-user" ,  MinAmount = 50, MaxAmount = 500 },
+                new Category { CategoryId = 11, Title = "Commission", Icon = "💸", Type = "Income", UserId = "demo-user" ,  MinAmount = 100, MaxAmount = 2000 },
+                new Category { CategoryId = 12, Title = "Credit card payments", Icon = "💳", Type = "Expense", UserId = "demo-user" ,  MinAmount = 50, MaxAmount = 500 },
+                new Category { CategoryId = 13, Title = "Dental care", Icon = "🦷", Type = "Expense", UserId = "demo-user" ,  MinAmount = 50, MaxAmount = 300 },
+                new Category { CategoryId = 14, Title = "Dining out", Icon = "🍽️", Type = "Expense", UserId = "demo-user" ,  MinAmount = 10, MaxAmount = 100 },
                 new Category { CategoryId = 15, Title = "Dividends from stocks/bonds", Icon = "📈", Type = "Income", UserId = "demo-user" ,  MinAmount = 10, MaxAmount = 500 },
                 new Category { CategoryId = 16, Title = "Electricity", Icon = "💡", Type = "Expense", UserId = "demo-user" ,  MinAmount = 50, MaxAmount = 150 },
                 new Category { CategoryId = 17, Title = "Emergency fund", Icon = "🚑", Type = "Expense", UserId = "demo-user" ,  MinAmount = 100, MaxAmount = 1000 },
