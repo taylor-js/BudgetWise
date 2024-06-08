@@ -91,7 +91,7 @@
                 @if (barChartData != null && barChartData.Any())
                 {
                     <ejs-chart id="bar-chart" background="#1a222b" palettes='@(new string[] {"#65da41", "#ff4e48"})' width="100%" height="100%">
-                        <e-chart-primaryxaxis valueType="Category" labelRotation="90" LabelIntersectAction="Rotate90" title="Day" titleStyle="@(new Syncfusion.EJ2.Charts.ChartFont { Color = "white" })">
+                        <e-chart-primaryxaxis valueType="Category" labelRotation="90" labelFormat="MMM dd" LabelIntersectAction="Rotate90" title="Day" titleStyle="@(new Syncfusion.EJ2.Charts.ChartFont { Color = "white" })">
                             <e-majorgridlines width="0"></e-majorgridlines>
                             <e-majorticklines width="0"></e-majorticklines>
                             <e-labelstyle color="#ffffff" textAlignment="Center"></e-labelstyle>
@@ -137,12 +137,12 @@
                 {
                     <ejs-chart id="stacked-column-chart" background="#1a222b" palettes='@(new string[] {"#65da41", "#ff4e48"})' width="100%" height="100%">
                         <e-chart-primaryxaxis valueType="DateTime" title="Day" titleStyle="@(new Syncfusion.EJ2.Charts.ChartFont { Color = "white" })"
-                                              labelRotation="90" LabelIntersectAction="Rotate90" labelFormat="MMM-dd" intervalType="Days" edgeLabelPlacement="Shift">
+                                              labelRotation="90" LabelIntersectAction="Rotate90" labelFormat="MMM dd" intervalType="Days" edgeLabelPlacement="Shift">
                             <e-majorgridlines width="0"></e-majorgridlines>
                             <e-majorticklines width="0"></e-majorticklines>
                             <e-labelstyle color="#ffffff" textAlignment="Center"></e-labelstyle>
                         </e-chart-primaryxaxis>
-                        <e-chart-primaryyaxis labelFormat="c1" title="Amount" titleStyle="@(new Syncfusion.EJ2.Charts.ChartFont { Color = "white" })">
+                        <e-chart-primaryyaxis labelFormat="c0" title="Amount" titleStyle="@(new Syncfusion.EJ2.Charts.ChartFont { Color = "white" })">
                             <e-majorgridlines width="1" color="#32414d" dashArray="3,5"></e-majorgridlines>
                             <e-majorticklines width="0"></e-majorticklines>
                             <e-linestyle width="0"></e-linestyle>
@@ -236,7 +236,7 @@
                             <e-majorticklines width="0"></e-majorticklines>
                             <e-labelstyle color="#ffffff" textAlignment="Center"></e-labelstyle>
                         </e-chart-primaryxaxis>
-                        <e-chart-primaryyaxis labelFormat="c1" title="Amount" titleStyle="@(new Syncfusion.EJ2.Charts.ChartFont { Color = "white" })">
+                        <e-chart-primaryyaxis labelFormat="c0" title="Amount" titleStyle="@(new Syncfusion.EJ2.Charts.ChartFont { Color = "white" })">
                             <e-majorgridlines width="1" color="#32414d" dashArray="3,5"></e-majorgridlines>
                             <e-majorticklines width="1"></e-majorticklines>
                             <e-labelstyle color="#ffffff"></e-labelstyle>
@@ -277,7 +277,7 @@
                             <e-majorticklines width="0"></e-majorticklines>
                             <e-labelstyle color="#ffffff" textAlignment="Center"></e-labelstyle>
                         </e-chart-primaryxaxis>
-                        <e-chart-primaryyaxis labelFormat="c1" title="Amount" titleStyle="@(new Syncfusion.EJ2.Charts.ChartFont { Color = "white" })">
+                        <e-chart-primaryyaxis labelFormat="c0" title="Amount" titleStyle="@(new Syncfusion.EJ2.Charts.ChartFont { Color = "white" })">
                             <e-majorgridlines width="1" color="#32414d" dashArray="3,5"></e-majorgridlines>
                             <e-majorticklines width="0"></e-majorticklines>
                             <e-linestyle width="0"></e-linestyle>
