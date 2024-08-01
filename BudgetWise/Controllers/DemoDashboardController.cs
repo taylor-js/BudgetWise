@@ -258,20 +258,21 @@ namespace BudgetWise.Controllers
             }
 
             // Ensure a high balance and income at the end by adding additional income if necessary
-            while (totalIncome <= 10000 || (totalIncome - totalExpense) <= 10000)
-            {
-                var category = incomeCategories[random.Next(incomeCategories.Count)];
-                int amount = random.Next(category.MinAmount, category.MaxAmount + 1);
-                var date = DateTime.Today;
+            int finalIncomeNeeded = 10000 + random.Next(0, 5001); // Random final balance between 10000 and 15000
+            int finalBalanceNeeded = finalIncomeNeeded + totalExpense - totalIncome;
 
-                AddTransaction(category, amount, date);
-                totalIncome += amount;
+            if (finalBalanceNeeded > 0)
+            {
+                var finalIncomeCategory = incomeCategories[random.Next(incomeCategories.Count)];
+                AddTransaction(finalIncomeCategory, finalBalanceNeeded, DateTime.Today);
+                totalIncome += finalBalanceNeeded;
             }
 
-            // Add an additional 10,000 income on the very last day
-            var finalIncomeCategory = incomeCategories[random.Next(incomeCategories.Count)];
-            AddTransaction(finalIncomeCategory, 10000, DateTime.Today);
-            totalIncome += 10000;
+            // Explicitly add a high income transaction on the last day (today)
+            int highIncomeAmount = random.Next(5000, 10001); // High income value between 5000 and 10000
+            var highIncomeCategory = incomeCategories[random.Next(incomeCategories.Count)];
+            AddTransaction(highIncomeCategory, highIncomeAmount, DateTime.Today);
+            totalIncome += highIncomeAmount;
 
             // Logging for debugging
             transactions.ForEach(t =>
@@ -282,6 +283,7 @@ namespace BudgetWise.Controllers
 
             return transactions;
         }
+
 
 
 
@@ -531,7 +533,7 @@ namespace BudgetWise.Controllers
             return monthlyTrendChartData;
         }
 
-        //Income vs Expense - Last 12 Months from First Entry
+        // Income vs Expense - Last 12 Months from First Entry
         private List<object> GetDemoStackedAreaChartData(List<Transaction> transactions)
         {
             DateTime startDate = DateTime.Today.AddMonths(-11);
@@ -548,7 +550,7 @@ namespace BudgetWise.Controllers
             }
 
             var stackedAreaChartData = transactions
-                .Where(t => t.Date.Date >= startDate)
+                .Where(t => t.Date.Date >= startDate && t.Date.Date <= endDate)
                 .GroupBy(t => new { Month = t.Date.ToString("MMM yyyy"), Type = t.Category?.Type ?? "Unknown" })
                 .Select(g => new
                 {
@@ -570,6 +572,7 @@ namespace BudgetWise.Controllers
 
             return stackedAreaChartData.Cast<object>().ToList();
         }
+
 
     }
 

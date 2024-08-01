@@ -290,9 +290,9 @@ namespace BudgetWise.Controllers
                 .Select(t => t.Date.Date)
                 .FirstOrDefault();
 
-            if (earliestTransactionDate.HasValue)
+            if (earliestTransactionDate.HasValue && earliestTransactionDate.Value < startDate)
             {
-                startDate = earliestTransactionDate.Value;
+                startDate = new DateTime(earliestTransactionDate.Value.Year, earliestTransactionDate.Value.Month, 1);
             }
 
             List<MonthlyTrendData> monthlyTrendChartData = new List<MonthlyTrendData>();
@@ -318,10 +318,10 @@ namespace BudgetWise.Controllers
                 });
             }
 
-            return monthlyTrendChartData ?? new List<MonthlyTrendData>();
+            return monthlyTrendChartData;
         }
 
-        //Staked Area Chart: Income vs Expense - Last 12 Months from First Entry
+        // Staked Area Chart: Income vs Expense - Last 12 Months from First Entry
         private async Task<List<object>> GetStackedAreaChartData()
         {
             DateTime startDate = DateTime.Today.AddMonths(-11);
@@ -344,7 +344,7 @@ namespace BudgetWise.Controllers
             }
 
             var stackedAreaChartData = selectedTransactions
-                .Where(t => t.Date.Date >= startDate)
+                .Where(t => t.Date.Date >= startDate && t.Date.Date <= endDate)
                 .GroupBy(t => new { Month = t.Date.ToString("MMM yyyy"), Type = t.Category?.Type ?? "Unknown" })
                 .Select(g => new
                 {
@@ -364,8 +364,9 @@ namespace BudgetWise.Controllers
                 .OrderBy(x => DateTime.ParseExact(x.Month, "MMM yyyy", CultureInfo.InvariantCulture))
                 .ToList();
 
-            return stackedAreaChartData.Cast<object>().ToList() ?? new List<object>();
+            return stackedAreaChartData.Cast<object>().ToList();
         }
+
     }
 
     public class MonthlyTrendData

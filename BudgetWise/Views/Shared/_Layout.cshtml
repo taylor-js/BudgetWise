@@ -34,7 +34,7 @@
     <nav class="navbar navbar-expand navbar-light fixed-top">
         <div class="container-fluid">
             <div class="d-flex align-items-center">
-                <a class="navbar-brand d-flex align-items-center ms-2" href="/DemoDashboard/Demo">
+                <a class="navbar-brand d-flex align-items-center ms-2" href="/">
                     <img src="~/favicon-32x32.png" alt="Logo" class="logo-img navbar-icon" />
                     <span class="logo-text ms-2 d-none d-lg-block">BudgetWise</span>
                     <span class="logo-text ms-2 d-lg-none">BW</span>
@@ -82,7 +82,10 @@
                                             </div>
                                         </div>
                                         @* Breadcrumb rendering *@
-                                        <ejs-breadcrumb id="breadcrumb" separatorTemplate="@Html.Raw("<span class='fa-solid fa-angle-right'></span>")" enableNavigation="false"></ejs-breadcrumb>
+                                        @if (ViewContext.RouteData.Values["controller"]?.ToString() != "DemoDashboard")
+                                        {
+                                            <ejs-breadcrumb id="breadcrumb" separatorTemplate="@Html.Raw("<span class='fa-solid fa-angle-right'></span>")" enableNavigation="false"></ejs-breadcrumb>
+                                        }
                                     </div>
                                 </div>
                             </div>
