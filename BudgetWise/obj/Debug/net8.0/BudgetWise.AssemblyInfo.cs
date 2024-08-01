@@ -16,7 +16,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BudgetWise")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5b60c85fb0fe0882e6ffc88031339496d20394a6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0d510becce20da8a0dc6ca51827ce879035d7ab4")]
 [assembly: System.Reflection.AssemblyProductAttribute("BudgetWise")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BudgetWise")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

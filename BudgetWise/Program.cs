@@ -41,7 +41,6 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Events.OnRedirectToLogin = opt =>
     {
         opt.HttpContext.Response.Redirect("/Identity/Account/Login");
-        //opt.HttpContext.Response.Redirect("/DemoDashboard/Demo");
         return Task.FromResult(0);
     };
 });
@@ -54,28 +53,43 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error"); // Handle exceptions and redirect to Error page
+    app.UseHsts(); // Add HTTP Strict Transport Security (HSTS) headers for added security
 }
 
-app.UseHttpsRedirection();
+app.UseHttpsRedirection(); // Redirect HTTP to HTTPS
 app.UseStaticFiles();
 app.UseRouting();
-app.UseAuthentication(); // Add this line to ensure authentication middleware is added
+app.UseAuthentication(); // Ensure authentication middleware is added
 app.UseAuthorization();
-app.UseCookiePolicy(); // Add this line to apply the cookie policy
+app.UseCookiePolicy(); // Apply the cookie policy
 
-CultureInfo.DefaultThreadCurrentCulture = CultureInfo.GetCultureInfo("en-US");
-CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.GetCultureInfo("en-US");
+// Middleware to handle domain redirection
+app.Use(async (context, next) =>
+{
+    var request = context.Request;
+    var host = request.Host.ToString();
+
+    // Redirect from Heroku domain to custom domain
+    if (host == "budgetwise-expense-tracker-f4aae4b8ebbc.herokuapp.com")
+    {
+        var newUrl = $"https://www.budget-wise.net{request.Path}{request.QueryString}";
+        context.Response.Redirect(newUrl);
+    }
+    else
+    {
+        await next();
+    }
+});
 
 // Configure routes
 app.MapControllerRoute(
+    name: "root",
+    pattern: "",
+    defaults: new { controller = "DemoDashboard", action = "Demo" });
+
+app.MapControllerRoute(
     name: "default",
     pattern: "{controller=DemoDashboard}/{action=Demo}/{id?}");
-
-app.MapGet("/", context =>
-{
-    context.Response.Redirect("/DemoDashboard/Demo", permanent: true);
-    return Task.CompletedTask;
-});
 
 app.MapControllerRoute(
     name: "dashboard",
