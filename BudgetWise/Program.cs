@@ -72,7 +72,7 @@ app.Use(async (context, next) =>
     // Redirect from Heroku domain to custom domain
     if (host == "budgetwise-expense-tracker-f4aae4b8ebbc.herokuapp.com")
     {
-        var newUrl = $"https://budget-wise.net{request.Path}{request.QueryString}"; //https://www.budget-wise.net/
+        var newUrl = $"www.budget-wise.net{request.Path}{request.QueryString}"; //https://www.budget-wise.net/
         context.Response.Redirect(newUrl);
     }
     else
