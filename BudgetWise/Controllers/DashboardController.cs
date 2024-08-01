@@ -62,7 +62,11 @@ namespace BudgetWise.Controllers
             int totalIncome = selectedTransactions
                 .Where(i => i.Date.Date >= startDate && i.Date.Date <= endDate && i.Category?.Type == "Income")
                 .Sum(j => j.Amount);
-            return totalIncome.ToString("C0");
+
+            CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
+            culture.NumberFormat.CurrencyNegativePattern = 1;
+
+            return String.Format(culture, "{0:C0}", totalIncome);
         }
 
         private async Task<string> GetTotalExpense()
@@ -83,7 +87,11 @@ namespace BudgetWise.Controllers
             int totalExpense = selectedTransactions
                 .Where(i => i.Date.Date >= startDate && i.Date.Date <= endDate && i.Category?.Type == "Expense")
                 .Sum(j => j.Amount);
-            return totalExpense.ToString("C0");
+
+            CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
+            culture.NumberFormat.CurrencyNegativePattern = 1;
+
+            return String.Format(culture, "{0:C0}", totalExpense);
         }
 
         private async Task<string> GetBalance()
@@ -108,6 +116,7 @@ namespace BudgetWise.Controllers
                 .Where(i => i.Date.Date >= startDate && i.Date.Date <= endDate && i.Category?.Type == "Expense")
                 .Sum(j => j.Amount);
             int balance = totalIncome - totalExpense;
+
             CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
             culture.NumberFormat.CurrencyNegativePattern = 1;
             return String.Format(culture, "{0:C0}", balance);
@@ -116,15 +125,23 @@ namespace BudgetWise.Controllers
         //Treemap: Expense by Category - Last 7 Days
         private async Task<List<object>> GetTreemapData()
         {
+            // Define the start and end date for the past week
             DateTime startDate = DateTime.Today.AddDays(-6);
             DateTime endDate = DateTime.Today;
             string userId = _userManager.GetUserId(User) ?? string.Empty;
 
+            // Retrieve the transactions for the user within the specified date range
             List<Transaction> selectedTransactions = await _context.Transactions
                 .Include(x => x.Category)
                 .Where(y => y.Date.Date >= startDate && y.Date.Date <= endDate && y.UserId == userId)
                 .ToListAsync();
 
+            // Create a CultureInfo object for formatting currency values
+            CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
+            culture.NumberFormat.CurrencyNegativePattern = 1;
+
+            // Group the transactions by category, calculate the sum of amounts,
+            // and format the amount as currency using the specified culture
             var treemapData = selectedTransactions
                 .Where(i => i.Category?.Type == "Expense")
                 .GroupBy(j => j.Category?.CategoryId)
@@ -132,13 +149,15 @@ namespace BudgetWise.Controllers
                 {
                     categoryTitleWithIcon = k.First().Category?.Icon + " " + k.First().Category?.Title,
                     amount = k.Sum(j => j.Amount),
-                    formattedAmount = k.Sum(j => j.Amount).ToString("C0")
+                    formattedAmount = String.Format(culture, "{0:C0}", k.Sum(j => j.Amount))
                 })
                 .OrderByDescending(l => l.amount)
                 .ToList();
 
+            // Cast the list to a list of objects and return, or an empty list if null
             return treemapData.Cast<object>().ToList() ?? new List<object>();
         }
+
 
         // Bar Chart: Income vs Expense - Last 7 Days
         private async Task<List<BarChartData>> GetBarChartData()

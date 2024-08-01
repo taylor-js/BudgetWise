@@ -271,7 +271,7 @@
             <div class="px-4 pb-4">
                 @if (stackedAreaChartData != null && stackedAreaChartData.Any())
                 {
-                    <ejs-chart id="stacked-area-chart" background="#1a222b" palettes='@(new string[] {"#65da41", "#ff4e48"})' width="100%" height="100%">
+                    <ejs-chart id="stacked-area-chart" background="#1a222b" width="100%" height="100%">
                         <e-chart-primaryxaxis valueType="Category" title="Month" titleStyle="@(new Syncfusion.EJ2.Charts.ChartFont { Color = "white" })" labelRotation="90" LabelIntersectAction="Rotate90">
                             <e-majorgridlines width="0"></e-majorgridlines>
                             <e-majorticklines width="0"></e-majorticklines>
@@ -287,8 +287,8 @@
                             <e-chartarea-border width="0"></e-chartarea-border>
                         </e-chart-chartarea>
                         <e-series-collection>
-                            <e-series dataSource="@stackedAreaChartData" xName="Month" yName="Income" name="Income" type="@Syncfusion.EJ2.Charts.ChartSeriesType.StackingArea"></e-series>
-                            <e-series dataSource="@stackedAreaChartData" xName="Month" yName="Expense" name="Expense" type="@Syncfusion.EJ2.Charts.ChartSeriesType.StackingArea"></e-series>
+                            <e-series dataSource="@stackedAreaChartData" xName="Month" yName="Expense" name="Expense" type="@Syncfusion.EJ2.Charts.ChartSeriesType.StackingArea" fill="#ff4e48"></e-series>
+                            <e-series dataSource="@stackedAreaChartData" xName="Month" yName="Income" name="Income" type="@Syncfusion.EJ2.Charts.ChartSeriesType.StackingArea" fill="#65da41"></e-series>
                         </e-series-collection>
                         <e-chart-legendsettings position="Top" alignment="Far" toggleVisibility="false">
                             <e-legendsettings-textstyle color="#ffffff" size="14px"></e-legendsettings-textstyle>
@@ -298,6 +298,7 @@
                             <e-tooltipsettings-textstyle color="#ffffff" fontFamily="inherit" size="15px"></e-tooltipsettings-textstyle>
                         </e-chart-tooltipsettings>
                     </ejs-chart>
+
                 }
                 else
                 {

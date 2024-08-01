@@ -112,24 +112,23 @@ namespace BudgetWise.Controllers
             };
         }
 
-        private List<Transaction> GenerateDemoTransactions(int count, List<Category> categories, int maxTransactionsPerDay = 10)
+        private static List<Transaction> GenerateDemoTransactions(int count, List<Category> categories, int maxTransactionsPerDay = 10)
         {
-            var random = new Random(); // No fixed seed, use the current time as the seed
+            var random = new Random();
             var transactions = new List<Transaction>();
             var transactionCounts = new Dictionary<DateTime, int>();
 
             var incomeCategories = categories.Where(c => c.Type == "Income").ToList();
             var expenseCategories = categories.Where(c => c.Type == "Expense").ToList();
 
-            decimal totalIncome = 0;
-            decimal totalExpense = 0;
+            int totalIncome = 0;
+            int totalExpense = 0;
 
             var usedCategories = new HashSet<int>();
             var last7DaysCategories = new Dictionary<DateTime, HashSet<int>>();
 
-            void AddTransaction(Category category, decimal amount, DateTime date)
+            void AddTransaction(Category category, int amount, DateTime date)
             {
-                // Adjust date to America/New_York time zone
                 var localTimeZone = TimeZoneInfo.FindSystemTimeZoneById("America/New_York");
                 var localDate = TimeZoneInfo.ConvertTimeFromUtc(date.ToUniversalTime(), localTimeZone);
 
@@ -138,9 +137,9 @@ namespace BudgetWise.Controllers
                     TransactionId = transactions.Count + 1,
                     CategoryId = category.CategoryId,
                     Category = category,
-                    Amount = (int)amount,
+                    Amount = amount,
                     Note = $"Demo note {transactions.Count + 1}",
-                    Date = localDate.Date, // Store in local time
+                    Date = localDate.Date,
                     UserId = "demo-user"
                 });
 
@@ -165,10 +164,10 @@ namespace BudgetWise.Controllers
                 do
                 {
                     category = generateIncomeNext ? incomeCategories[random.Next(incomeCategories.Count)] : expenseCategories[random.Next(expenseCategories.Count)];
-                    date = DateTime.Today.AddDays(-random.Next(0, 366)); // Use DateTime.Today for local dates
+                    date = DateTime.Today.AddDays(-random.Next(0, 366));
                     attempts++;
 
-                    if (attempts > 2000) // Increase the attempts limit
+                    if (attempts > 2000)
                     {
                         category = generateIncomeNext ? incomeCategories[random.Next(incomeCategories.Count)] : expenseCategories[random.Next(expenseCategories.Count)];
                         break;
@@ -182,12 +181,20 @@ namespace BudgetWise.Controllers
 
                 transactionCounts[date]++;
 
-                var amount = random.Next(category.MinAmount, category.MaxAmount + 1);
+                int amount = random.Next(category.MinAmount, category.MaxAmount + 1);
 
-                if (category.Type == "Expense" && totalExpense + amount >= totalIncome)
+                // Decrease expense amounts over time
+                if (category.Type == "Expense")
                 {
-                    amount = (int)(totalIncome - totalExpense - 1);
+                    amount = (int)(amount * (1.0 - (double)i / count));
                 }
+
+                if (category.Type == "Expense" && totalExpense + amount >= totalIncome * 0.3m)
+                {
+                    amount = (int)(totalIncome * 0.3m - totalExpense - 1);
+                }
+
+                if (amount <= 0) continue;
 
                 AddTransaction(category, amount, date);
 
@@ -203,7 +210,7 @@ namespace BudgetWise.Controllers
                 }
             }
 
-            var last7Days = Enumerable.Range(0, 7).Select(i => DateTime.Today.AddDays(-i)).ToList(); // Use DateTime.Today for local dates
+            var last7Days = Enumerable.Range(0, 7).Select(i => DateTime.Today.AddDays(-i)).ToList();
             var allUsedCategories = new HashSet<int>(last7Days.SelectMany(date => last7DaysCategories.ContainsKey(date) ? last7DaysCategories[date] : new HashSet<int>()));
 
             while (allUsedCategories.Count < 10)
@@ -211,7 +218,7 @@ namespace BudgetWise.Controllers
                 var category = categories[random.Next(categories.Count)];
                 if (!allUsedCategories.Contains(category.CategoryId))
                 {
-                    var amount = random.Next(category.MinAmount, category.MaxAmount + 1);
+                    int amount = random.Next(category.MinAmount, category.MaxAmount + 1);
                     var date = last7Days[random.Next(last7Days.Count)];
 
                     if (transactionCounts.ContainsKey(date) && transactionCounts[date] >= maxTransactionsPerDay)
@@ -243,12 +250,28 @@ namespace BudgetWise.Controllers
             if (totalExpense == 0 || totalIncome <= totalExpense)
             {
                 var category = incomeCategories[random.Next(incomeCategories.Count)];
-                var amount = random.Next(category.MinAmount, category.MaxAmount + 1);
-                var date = DateTime.Today.AddDays(-random.Next(0, 366)); // Use DateTime.Today for local dates
+                int amount = random.Next(category.MinAmount, category.MaxAmount + 1);
+                var date = DateTime.Today.AddDays(-random.Next(0, 366));
 
                 AddTransaction(category, amount, date);
                 totalIncome += amount;
             }
+
+            // Ensure a high balance and income at the end by adding additional income if necessary
+            while (totalIncome <= 10000 || (totalIncome - totalExpense) <= 10000)
+            {
+                var category = incomeCategories[random.Next(incomeCategories.Count)];
+                int amount = random.Next(category.MinAmount, category.MaxAmount + 1);
+                var date = DateTime.Today;
+
+                AddTransaction(category, amount, date);
+                totalIncome += amount;
+            }
+
+            // Add an additional 10,000 income on the very last day
+            var finalIncomeCategory = incomeCategories[random.Next(incomeCategories.Count)];
+            AddTransaction(finalIncomeCategory, 10000, DateTime.Today);
+            totalIncome += 10000;
 
             // Logging for debugging
             transactions.ForEach(t =>
@@ -278,7 +301,10 @@ namespace BudgetWise.Controllers
                 .Where(i => i.Date.Date >= startDate && i.Date.Date <= endDate && i.Category?.Type == "Income")
                 .Sum(j => j.Amount);
 
-            return totalIncome.ToString("C0");
+            CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
+            culture.NumberFormat.CurrencyNegativePattern = 1;
+
+            return String.Format(culture, "{0:C0}", totalIncome);
         }
 
         private string CalculateTotalDemoExpense(List<Transaction> transactions)
@@ -297,7 +323,10 @@ namespace BudgetWise.Controllers
                 .Where(i => i.Date.Date >= startDate && i.Date.Date <= endDate && i.Category?.Type == "Expense")
                 .Sum(j => j.Amount);
 
-            return totalExpense.ToString("C0");
+            CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
+            culture.NumberFormat.CurrencyNegativePattern = 1;
+
+            return String.Format(culture, "{0:C0}", totalExpense);
         }
 
         private string CalculateDemoBalance(List<Transaction> transactions)
@@ -329,11 +358,18 @@ namespace BudgetWise.Controllers
         }
 
         //Expense by Category - Last 7 Days
-        private List<object> GetDemoTreemapData(List<Transaction> transactions)
+        private static List<object> GetDemoTreemapData(List<Transaction> transactions)
         {
+            // Define the start and end date for the past week
             DateTime startDate = DateTime.Today.AddDays(-6);
             DateTime endDate = DateTime.Today;
 
+            // Create a CultureInfo object for formatting currency values
+            CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
+            culture.NumberFormat.CurrencyNegativePattern = 1;
+
+            // Group the transactions by category, calculate the sum of amounts,
+            // and format the amount as currency using the specified culture
             var treemapData = transactions
                 .Where(t => t.Date.Date >= startDate && t.Date.Date <= endDate && t.Category?.Type == "Expense")
                 .GroupBy(j => j.Category?.CategoryId)
@@ -341,23 +377,27 @@ namespace BudgetWise.Controllers
                 {
                     categoryTitleWithIcon = k.First().Category?.Icon + " " + k.First().Category?.Title,
                     amount = k.Sum(j => j.Amount),
-                    formattedAmount = k.Sum(j => j.Amount).ToString("C0")
+                    formattedAmount = String.Format(culture, "{0:C0}", k.Sum(j => j.Amount))
                 })
                 .OrderByDescending(l => l.amount)
                 .ToList();
 
+            // Cast the list to a list of objects and return
             return treemapData.Cast<object>().ToList();
         }
 
         // Income vs Expense - Last 7 Days - Bar chart
         private List<BarChartData> GetDemoBarChartData(List<Transaction> transactions)
         {
-            DateTime startDate = DateTime.Today.AddDays(-6); // Last 7 days including today
-            DateTime endDate = DateTime.Today; // Include today
+            // Define start date as 6 days ago from today, including today
+            DateTime startDate = DateTime.Today.AddDays(-6);
+            // Define end date as today
+            DateTime endDate = DateTime.Today;
 
             // Logging for debugging
             Console.WriteLine($"Demo Bar Chart - Start Date: {startDate}, End Date: {endDate}");
 
+            // Filter and group transactions by date, then select the necessary data
             var barChartData = transactions
                 .Where(y => y.Date.Date >= startDate && y.Date.Date <= endDate)
                 .GroupBy(t => t.Date.Date) // Group by date only
@@ -377,6 +417,7 @@ namespace BudgetWise.Controllers
                 Console.WriteLine($"BarChart - Date: {data.date}, Day: {data.day}, Income: {data.income}, Expense: {data.expense}");
             });
 
+            // Return the bar chart data
             return barChartData;
         }
 
