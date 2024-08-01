@@ -284,9 +284,6 @@ namespace BudgetWise.Controllers
             return transactions;
         }
 
-
-
-
         private string CalculateTotalDemoIncome(List<Transaction> transactions)
         {
             DateTime? earliestDate = transactions.OrderBy(t => t.Date).FirstOrDefault()?.Date;

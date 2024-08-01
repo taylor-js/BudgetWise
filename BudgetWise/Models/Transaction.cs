@@ -1,6 +1,7 @@
 ﻿using BudgetWise.Areas.Identity.Data;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Globalization;
 
 namespace BudgetWise.Models
 {
@@ -19,26 +20,30 @@ namespace BudgetWise.Models
         [Column(TypeName = "varchar(75)")]
         public string? Note { get; set; }
 
-        //public DateTime Date { get; set; } = DateTime.Now;
         public DateTime Date { get; set; } = DateTime.Today;
         public Category? Category { get; set; }
 
         [NotMapped]
-        public string? CategoryTitleWithIcon 
+        public string? CategoryTitleWithIcon
         {
             get
             {
                 return Category == null ? "" : Category.Icon + " " + Category.Title;
             }
         }
+
         [NotMapped]
-        public string? FormattedAmount
+        public string FormattedAmount
         {
             get
             {
-                return ((Category == null || Category.Type == "Expense") ? "-" : "+") + Amount.ToString("C0");
+                CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
+                culture.NumberFormat.CurrencyNegativePattern = 1;
+                string amount = Amount.ToString("C", culture);
+                return (Category == null || Category.Type == "Expense") ? "-" + amount : "+" + amount;
             }
         }
+
         public string TitleWithoutEmoji
         {
             get

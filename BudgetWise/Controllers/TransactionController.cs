@@ -33,6 +33,8 @@ namespace BudgetWise.Controllers
                 .OrderByDescending(d => d.Date)
                 .ToListAsync();
 
+
+
             return View(transactions);
         }
 
