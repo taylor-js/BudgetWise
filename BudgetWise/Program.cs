@@ -72,7 +72,7 @@ app.Use(async (context, next) =>
     // Redirect from Heroku domain to custom domain
     if (host == "budgetwise-expense-tracker-f4aae4b8ebbc.herokuapp.com")
     {
-        var newUrl = $"https://www.budget-wise.net{request.Path}{request.QueryString}";
+        var newUrl = $"budget-wise.net{request.Path}{request.QueryString}";
         context.Response.Redirect(newUrl);
     }
     else
@@ -80,12 +80,6 @@ app.Use(async (context, next) =>
         await next();
     }
 });
-
-// Configure routes
-app.MapControllerRoute(
-    name: "root",
-    pattern: "",
-    defaults: new { controller = "DemoDashboard", action = "Demo" });
 
 app.MapControllerRoute(
     name: "default",
