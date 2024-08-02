@@ -1,6 +1,6 @@
 # BudgetWise
 
-[BudgetWise](https://budgetwise-expense-tracker-f4aae4b8ebbc.herokuapp.com/) is an ASP.NET Core MVC application designed to help individuals manage their personal budgets effectively. It provides real-time insights into income and expenses through a variety of data visualizations and interactive elements, utilizing PostgreSQL for data storage and Syncfusion UI components for an enhanced user experience.
+[BudgetWise](https://www.budget-wise.net/) is an ASP.NET Core MVC application designed to help individuals manage their personal budgets effectively. It provides real-time insights into income and expenses through a variety of data visualizations and interactive elements, utilizing PostgreSQL for data storage and Syncfusion UI components for an enhanced user experience.
 
 ## Features
 
@@ -12,7 +12,7 @@
 
 ## Live Demo
 
-You can try out a live demo of the application here: [BudgetWise Live Demo](https://budgetwise-expense-tracker-f4aae4b8ebbc.herokuapp.com/)
+You can try out a live demo of the application here: [BudgetWise Live Demo](https://www.budget-wise.net/)
 
 ## Deployment
 
