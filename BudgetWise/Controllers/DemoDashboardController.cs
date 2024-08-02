@@ -117,13 +117,11 @@ namespace BudgetWise.Controllers
             var random = new Random();
             var transactions = new List<Transaction>();
             var transactionCounts = new Dictionary<DateTime, int>();
-
             var incomeCategories = categories.Where(c => c.Type == "Income").ToList();
             var expenseCategories = categories.Where(c => c.Type == "Expense").ToList();
-
             int totalIncome = 0;
             int totalExpense = 0;
-
+            int incomeCount = 0;
             var usedCategories = new HashSet<int>();
             var last7DaysCategories = new Dictionary<DateTime, HashSet<int>>();
 
@@ -131,7 +129,6 @@ namespace BudgetWise.Controllers
             {
                 var localTimeZone = TimeZoneInfo.FindSystemTimeZoneById("America/New_York");
                 var localDate = TimeZoneInfo.ConvertTimeFromUtc(date.ToUniversalTime(), localTimeZone);
-
                 transactions.Add(new Transaction
                 {
                     TransactionId = transactions.Count + 1,
@@ -142,144 +139,115 @@ namespace BudgetWise.Controllers
                     Date = localDate.Date,
                     UserId = "demo-user"
                 });
-
                 usedCategories.Add(category.CategoryId);
-
-                if (!last7DaysCategories.ContainsKey(localDate))
+                if (!last7DaysCategories.ContainsKey(localDate.Date))
                 {
-                    last7DaysCategories[localDate] = new HashSet<int>();
+                    last7DaysCategories[localDate.Date] = new HashSet<int>();
                 }
-
-                last7DaysCategories[localDate].Add(category.CategoryId);
-            }
-
-            bool generateIncomeNext = true;
-
-            for (int i = 0; i < count; i++)
-            {
-                Category category;
-                DateTime date;
-                int attempts = 0;
-
-                do
+                last7DaysCategories[localDate.Date].Add(category.CategoryId);
+                if (!transactionCounts.ContainsKey(localDate.Date))
                 {
-                    category = generateIncomeNext ? incomeCategories[random.Next(incomeCategories.Count)] : expenseCategories[random.Next(expenseCategories.Count)];
-                    date = DateTime.Today.AddDays(-random.Next(0, 366));
-                    attempts++;
-
-                    if (attempts > 2000)
-                    {
-                        category = generateIncomeNext ? incomeCategories[random.Next(incomeCategories.Count)] : expenseCategories[random.Next(expenseCategories.Count)];
-                        break;
-                    }
-                } while ((transactionCounts.ContainsKey(date) && transactionCounts[date] >= maxTransactionsPerDay) || usedCategories.Contains(category.CategoryId));
-
-                if (!transactionCounts.ContainsKey(date))
-                {
-                    transactionCounts[date] = 0;
+                    transactionCounts[localDate.Date] = 0;
                 }
-
-                transactionCounts[date]++;
-
-                int amount = random.Next(category.MinAmount, category.MaxAmount + 1);
-
-                // Decrease expense amounts over time
-                if (category.Type == "Expense")
-                {
-                    amount = (int)(amount * (1.0 - (double)i / count));
-                }
-
-                if (category.Type == "Expense" && totalExpense + amount >= totalIncome * 0.3m)
-                {
-                    amount = (int)(totalIncome * 0.3m - totalExpense - 1);
-                }
-
-                if (amount <= 0) continue;
-
-                AddTransaction(category, amount, date);
-
+                transactionCounts[localDate.Date]++;
                 if (category.Type == "Income")
                 {
                     totalIncome += amount;
-                    generateIncomeNext = false;
+                    incomeCount++;
                 }
                 else
                 {
                     totalExpense += amount;
-                    generateIncomeNext = true;
                 }
             }
 
-            var last7Days = Enumerable.Range(0, 7).Select(i => DateTime.Today.AddDays(-i)).ToList();
-            var allUsedCategories = new HashSet<int>(last7Days.SelectMany(date => last7DaysCategories.ContainsKey(date) ? last7DaysCategories[date] : new HashSet<int>()));
+            DateTime startDate = DateTime.Today.AddDays(-365);
+            DateTime endDate = DateTime.Today;
+            int daysPassed = 0;
 
-            while (allUsedCategories.Count < 10)
+            for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
             {
-                var category = categories[random.Next(categories.Count)];
-                if (!allUsedCategories.Contains(category.CategoryId))
+                daysPassed++;
+                var weekStart = date.AddDays(-(int)date.DayOfWeek);
+                var categoriesThisWeek = new HashSet<int>();
+
+                for (int i = 0; i < 7; i++)
                 {
-                    int amount = random.Next(category.MinAmount, category.MaxAmount + 1);
-                    var date = last7Days[random.Next(last7Days.Count)];
-
-                    if (transactionCounts.ContainsKey(date) && transactionCounts[date] >= maxTransactionsPerDay)
+                    var currentDate = weekStart.AddDays(i);
+                    if (last7DaysCategories.ContainsKey(currentDate))
                     {
-                        continue;
+                        categoriesThisWeek.UnionWith(last7DaysCategories[currentDate]);
                     }
+                }
 
-                    if (!transactionCounts.ContainsKey(date))
+                int dailyIncome = 0;
+                int dailyExpense = 0;
+                int incomeTransactions = 0;
+                int expenseTransactions = 0;
+
+                while (transactionCounts.GetValueOrDefault(date, 0) < maxTransactionsPerDay &&
+                       (incomeTransactions == 0 || expenseTransactions == 0 ||
+                        random.Next(2) == 0 || categoriesThisWeek.Count < 10))
+                {
+                    Category category;
+                    int amount;
+
+                    if (incomeTransactions <= expenseTransactions && (expenseTransactions > 0 || random.Next(2) == 0))
                     {
-                        transactionCounts[date] = 0;
-                    }
-
-                    transactionCounts[date]++;
-                    AddTransaction(category, amount, date);
-
-                    if (category.Type == "Income")
-                    {
-                        totalIncome += amount;
+                        // Generate income transaction
+                        category = incomeCategories[random.Next(incomeCategories.Count)];
+                        amount = random.Next(category.MinAmount, category.MaxAmount + 1);
+                        dailyIncome += amount;
+                        incomeTransactions++;
                     }
                     else
                     {
-                        totalExpense += amount;
+                        // Generate expense transaction
+                        category = expenseCategories[random.Next(expenseCategories.Count)];
+                        double timeRatio = 1.0 - (double)daysPassed / 366;
+                        int maxExpenseAmount = Math.Max(Math.Min((int)(dailyIncome * 0.5), category.MaxAmount), category.MinAmount);
+                        amount = random.Next(category.MinAmount, maxExpenseAmount + 1);
+                        dailyExpense += amount;
+                        expenseTransactions++;
                     }
 
-                    allUsedCategories.Add(category.CategoryId);
+                    if (!categoriesThisWeek.Contains(category.CategoryId))
+                    {
+                        AddTransaction(category, amount, date);
+                        categoriesThisWeek.Add(category.CategoryId);
+                    }
                 }
+
+                // Ensure daily expense is about half or less of daily income
+                if (dailyExpense > dailyIncome * 0.5)
+                {
+                    int adjustment = (int)(dailyExpense - dailyIncome * 0.5);
+                    var expenseTransactionsToday = transactions.Where(t => t.Category?.Type == "Expense" && t.Date.Date == date.Date).ToList();
+                    while (adjustment > 0 && expenseTransactionsToday.Any())
+                    {
+                        var transaction = expenseTransactionsToday[random.Next(expenseTransactionsToday.Count)];
+                        if (transaction != null && transaction.Category != null)
+                        {
+                            int reduceAmount = Math.Min(adjustment, transaction.Amount - transaction.Category.MinAmount);
+                            transaction.Amount -= reduceAmount;
+                            adjustment -= reduceAmount;
+                            totalExpense -= reduceAmount;
+                            if (transaction.Amount == transaction.Category.MinAmount)
+                            {
+                                expenseTransactionsToday.Remove(transaction);
+                            }
+                        }
+                    }
+                }
+
             }
 
-            if (totalExpense == 0 || totalIncome <= totalExpense)
-            {
-                var category = incomeCategories[random.Next(incomeCategories.Count)];
-                int amount = random.Next(category.MinAmount, category.MaxAmount + 1);
-                var date = DateTime.Today.AddDays(-random.Next(0, 366));
+            // Calculate average income
+            int averageIncome = incomeCount > 0 ? totalIncome / incomeCount : 0;
 
-                AddTransaction(category, amount, date);
-                totalIncome += amount;
-            }
-
-            // Ensure a high balance and income at the end by adding additional income if necessary
-            int finalIncomeNeeded = 10000 + random.Next(0, 5001); // Random final balance between 10000 and 15000
-            int finalBalanceNeeded = finalIncomeNeeded + totalExpense - totalIncome;
-
-            if (finalBalanceNeeded > 0)
-            {
-                var finalIncomeCategory = incomeCategories[random.Next(incomeCategories.Count)];
-                AddTransaction(finalIncomeCategory, finalBalanceNeeded, DateTime.Today);
-                totalIncome += finalBalanceNeeded;
-            }
-
-            // Explicitly add a high income transaction on the last day (today)
-            int highIncomeAmount = random.Next(5000, 10001); // High income value between 5000 and 10000
-            var highIncomeCategory = incomeCategories[random.Next(incomeCategories.Count)];
-            AddTransaction(highIncomeCategory, highIncomeAmount, DateTime.Today);
-            totalIncome += highIncomeAmount;
-
-            // Logging for debugging
-            transactions.ForEach(t =>
-            {
-                var localDate = TimeZoneInfo.ConvertTimeFromUtc(t.Date.ToUniversalTime(), TimeZoneInfo.FindSystemTimeZoneById("America/New_York"));
-                Console.WriteLine($"Transaction: Id={t.TransactionId}, CategoryId={t.CategoryId}, Amount={t.Amount}, Date={localDate}");
-            });
+            // Add final income transaction with average amount
+            var finalIncomeCategory = incomeCategories[random.Next(incomeCategories.Count)];
+            AddTransaction(finalIncomeCategory, averageIncome, DateTime.Today);
 
             return transactions;
         }
