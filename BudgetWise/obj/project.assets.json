@@ -1609,11 +1609,11 @@
           }
         }
       },
-      "Microsoft.EntityFrameworkCore.SqlServer/8.0.4": {
+      "Microsoft.EntityFrameworkCore.SqlServer/8.0.5": {
         "type": "package",
         "dependencies": {
           "Microsoft.Data.SqlClient": "5.1.5",
-          "Microsoft.EntityFrameworkCore.Relational": "8.0.4"
+          "Microsoft.EntityFrameworkCore.Relational": "8.0.5"
         },
         "compile": {
           "lib/net8.0/Microsoft.EntityFrameworkCore.SqlServer.dll": {
@@ -7230,10 +7230,10 @@
         "microsoft.entityframeworkcore.sqlite.core.nuspec"
       ]
     },
-    "Microsoft.EntityFrameworkCore.SqlServer/8.0.4": {
-      "sha512": "/IlHNxzZGqiuVi+FPtjFZgAOfY989fTPtxw8zhmlFwv5M2WJzBSMlAP4jNVQX/k7/qu+y1YvddPxg4O5QdeRXw==",
+    "Microsoft.EntityFrameworkCore.SqlServer/8.0.5": {
+      "sha512": "vBJR6QzJrZvd6oHsfMXA++v+dKYx/vhoPDgUgQZwKbcP9oYJowzoWl5JydPjlrCjwq4sxIOyqxJ7m/rSsb7zMg==",
       "type": "package",
-      "path": "microsoft.entityframeworkcore.sqlserver/8.0.4",
+      "path": "microsoft.entityframeworkcore.sqlserver/8.0.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -7241,7 +7241,7 @@
         "PACKAGE.md",
         "lib/net8.0/Microsoft.EntityFrameworkCore.SqlServer.dll",
         "lib/net8.0/Microsoft.EntityFrameworkCore.SqlServer.xml",
-        "microsoft.entityframeworkcore.sqlserver.8.0.4.nupkg.sha512",
+        "microsoft.entityframeworkcore.sqlserver.8.0.5.nupkg.sha512",
         "microsoft.entityframeworkcore.sqlserver.nuspec"
       ]
     },
@@ -13865,7 +13865,7 @@
       "Microsoft.AspNetCore.Identity.UI >= 8.0.4",
       "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation >= 8.0.5",
       "Microsoft.EntityFrameworkCore >= 8.0.5",
-      "Microsoft.EntityFrameworkCore.SqlServer >= 8.0.4",
+      "Microsoft.EntityFrameworkCore.SqlServer >= 8.0.5",
       "Microsoft.EntityFrameworkCore.Sqlite >= 8.0.4",
       "Microsoft.EntityFrameworkCore.Tools >= 8.0.5",
       "Microsoft.Extensions.Configuration >= 8.0.0",
@@ -13924,7 +13924,8 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      }
+      },
+      "SdkAnalysisLevel": "9.0.100"
     },
     "frameworks": {
       "net8.0": {
@@ -13956,7 +13957,7 @@
           },
           "Microsoft.EntityFrameworkCore.SqlServer": {
             "target": "Package",
-            "version": "[8.0.4, )"
+            "version": "[8.0.5, )"
           },
           "Microsoft.EntityFrameworkCore.Sqlite": {
             "target": "Package",
@@ -14030,7 +14031,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

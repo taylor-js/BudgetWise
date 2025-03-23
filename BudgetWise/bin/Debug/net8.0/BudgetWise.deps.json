@@ -42,7 +42,7 @@
           "Microsoft.AspNetCore.Identity.UI": "8.0.4",
           "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation": "8.0.5",
           "Microsoft.EntityFrameworkCore": "8.0.5",
-          "Microsoft.EntityFrameworkCore.SqlServer": "8.0.4",
+          "Microsoft.EntityFrameworkCore.SqlServer": "8.0.5",
           "Microsoft.EntityFrameworkCore.Sqlite": "8.0.4",
           "Microsoft.EntityFrameworkCore.Tools": "8.0.5",
           "Microsoft.Extensions.Configuration": "8.0.0",
@@ -1817,15 +1817,15 @@
           "lib/net8.0/Microsoft.EntityFrameworkCore.Sqlite.dll": {}
         }
       },
-      "Microsoft.EntityFrameworkCore.SqlServer/8.0.4": {
+      "Microsoft.EntityFrameworkCore.SqlServer/8.0.5": {
         "dependencies": {
           "Microsoft.Data.SqlClient": "5.1.5",
           "Microsoft.EntityFrameworkCore.Relational": "8.0.5"
         },
         "runtime": {
           "lib/net8.0/Microsoft.EntityFrameworkCore.SqlServer.dll": {
-            "assemblyVersion": "8.0.4.0",
-            "fileVersion": "8.0.424.16902"
+            "assemblyVersion": "8.0.5.0",
+            "fileVersion": "8.0.524.21704"
           }
         },
         "compile": {
@@ -6088,12 +6088,12 @@
       "path": "microsoft.entityframeworkcore.sqlite.core/8.0.4",
       "hashPath": "microsoft.entityframeworkcore.sqlite.core.8.0.4.nupkg.sha512"
     },
-    "Microsoft.EntityFrameworkCore.SqlServer/8.0.4": {
+    "Microsoft.EntityFrameworkCore.SqlServer/8.0.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-/IlHNxzZGqiuVi+FPtjFZgAOfY989fTPtxw8zhmlFwv5M2WJzBSMlAP4jNVQX/k7/qu+y1YvddPxg4O5QdeRXw==",
-      "path": "microsoft.entityframeworkcore.sqlserver/8.0.4",
-      "hashPath": "microsoft.entityframeworkcore.sqlserver.8.0.4.nupkg.sha512"
+      "sha512": "sha512-vBJR6QzJrZvd6oHsfMXA++v+dKYx/vhoPDgUgQZwKbcP9oYJowzoWl5JydPjlrCjwq4sxIOyqxJ7m/rSsb7zMg==",
+      "path": "microsoft.entityframeworkcore.sqlserver/8.0.5",
+      "hashPath": "microsoft.entityframeworkcore.sqlserver.8.0.5.nupkg.sha512"
     },
     "Microsoft.EntityFrameworkCore.Tools/8.0.5": {
       "type": "package",

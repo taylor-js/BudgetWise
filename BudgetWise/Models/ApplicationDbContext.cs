@@ -28,24 +28,22 @@ namespace BudgetWise.Models
                     .OnDelete(DeleteBehavior.Cascade);*/
 
                 entity.Property(c => c.CategoryId)
-                     .UseIdentityAlwaysColumn()
-                     .ValueGeneratedOnAdd();
+                     .ValueGeneratedOnAdd(); // Removed PostgreSQL-specific UseIdentityAlwaysColumn()
 
                 entity.Property(c => c.Title)
-                    .HasColumnType("varchar(50)")
+                    .HasMaxLength(50) // Changed from PostgreSQL-specific varchar to MaxLength
                     .IsRequired();
 
                 entity.Property(c => c.Icon)
-                    .HasColumnType("varchar(5)")
+                    .HasMaxLength(5) // Changed from PostgreSQL-specific varchar to MaxLength
                     .IsRequired();
 
                 entity.Property(c => c.Type)
-                    .HasColumnType("varchar(10)")
+                    .HasMaxLength(10) // Changed from PostgreSQL-specific varchar to MaxLength
                     .IsRequired();
 
                 entity.Property(c => c.UserId)
-                    .HasColumnType("text")
-                    .IsRequired();
+                    .IsRequired(); // Removed PostgreSQL-specific text type
             });
 
             modelBuilder.Entity<Transaction>(entity =>
@@ -61,22 +59,19 @@ namespace BudgetWise.Models
                     .OnDelete(DeleteBehavior.Restrict);
 
                 entity.Property(t => t.TransactionId)
-                    .UseIdentityAlwaysColumn()
-                    .ValueGeneratedOnAdd();
+                    .ValueGeneratedOnAdd(); // Removed PostgreSQL-specific UseIdentityAlwaysColumn()
 
                 entity.Property(t => t.Note)
-                    .HasColumnType("varchar(75)");
+                    .HasMaxLength(75); // Changed from PostgreSQL-specific varchar to MaxLength
 
                 entity.Property(t => t.Date)
-                    .IsRequired()
-                    .HasColumnType("timestamp without time zone");
+                    .IsRequired(); // Removed PostgreSQL-specific timestamp without time zone
 
                 entity.Property(t => t.Amount)
                     .IsRequired();
 
                 entity.Property(c => c.UserId)
-                   .HasColumnType("text")
-                   .IsRequired();
+                   .IsRequired(); // Removed PostgreSQL-specific text type
             });
         }
     }

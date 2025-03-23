@@ -3,10 +3,6 @@
   "WorkspaceRootPath": "C:\\Users\\taylo\\Documents\\GitHub\\BudgetWise\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D16BCF78-356E-47A1-93AC-C8CB72F6A0CF}|BudgetWise\\BudgetWise.csproj|c:\\users\\taylo\\documents\\github\\budgetwise\\budgetwise\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{D16BCF78-356E-47A1-93AC-C8CB72F6A0CF}|BudgetWise\\BudgetWise.csproj|solutionrelative:budgetwise\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{D16BCF78-356E-47A1-93AC-C8CB72F6A0CF}|BudgetWise\\BudgetWise.csproj|c:\\users\\taylo\\documents\\github\\budgetwise\\budgetwise\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D16BCF78-356E-47A1-93AC-C8CB72F6A0CF}|BudgetWise\\BudgetWise.csproj|solutionrelative:budgetwise\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -27,27 +23,15 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "_Layout.cshtml",
-              "DocumentMoniker": "C:\\Users\\taylo\\Documents\\GitHub\\BudgetWise\\BudgetWise\\Views\\Shared\\_Layout.cshtml",
-              "RelativeDocumentMoniker": "BudgetWise\\Views\\Shared\\_Layout.cshtml",
-              "ToolTip": "C:\\Users\\taylo\\Documents\\GitHub\\BudgetWise\\BudgetWise\\Views\\Shared\\_Layout.cshtml",
-              "RelativeToolTip": "BudgetWise\\Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AQIAAH4AAAAAAAAAAAAAABQAAAAiAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-08-19T19:13:16.046Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\taylo\\Documents\\GitHub\\BudgetWise\\BudgetWise\\Program.cs",
               "RelativeDocumentMoniker": "BudgetWise\\Program.cs",
               "ToolTip": "C:\\Users\\taylo\\Documents\\GitHub\\BudgetWise\\BudgetWise\\Program.cs",
               "RelativeToolTip": "BudgetWise\\Program.cs",
-              "ViewState": "AQIAAA8AAAAAAAAAAAAAAAUAAAAWAAAA",
+              "ViewState": "AgIAAEQAAAAAAAAAAAAAwEgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-01T19:11:31.19Z"
+              "WhenOpened": "2024-08-01T19:11:31.19Z",
+              "EditorCaption": ""
             }
           ]
         }

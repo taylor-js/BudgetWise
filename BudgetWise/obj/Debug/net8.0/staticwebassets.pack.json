@@ -2,7 +2,7 @@
   "Files": [
     {
       "Id": "C:\\Users\\taylo\\Documents\\GitHub\\BudgetWise\\BudgetWise\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\BudgetWise.bundle.scp.css",
-      "PackagePath": "staticwebassets\\BudgetWise.bundle.scp.css"
+      "PackagePath": "staticwebassets\\BudgetWise.8cy1wiif3o.bundle.scp.css"
     },
     {
       "Id": "C:\\Users\\taylo\\Documents\\GitHub\\BudgetWise\\BudgetWise\\wwwroot\\css\\site.css",
@@ -263,6 +263,10 @@
     {
       "Id": "C:\\Users\\taylo\\Documents\\GitHub\\BudgetWise\\BudgetWise\\wwwroot\\logo.png",
       "PackagePath": "staticwebassets\\logo.png"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.BudgetWise.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.BudgetWise.Microsoft.AspNetCore.StaticWebAssets.props",

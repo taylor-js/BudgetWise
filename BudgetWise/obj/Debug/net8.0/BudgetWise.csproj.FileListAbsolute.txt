@@ -604,3 +604,7 @@ C:\Users\taylo\Documents\GitHub\BudgetWise\BudgetWise\bin\Debug\net8.0\runtimes\
 C:\Users\taylo\Documents\GitHub\BudgetWise\BudgetWise\bin\Debug\net8.0\runtimes\win-arm64\native\e_sqlite3.dll
 C:\Users\taylo\Documents\GitHub\BudgetWise\BudgetWise\bin\Debug\net8.0\runtimes\win-x64\native\e_sqlite3.dll
 C:\Users\taylo\Documents\GitHub\BudgetWise\BudgetWise\bin\Debug\net8.0\runtimes\win-x86\native\e_sqlite3.dll
+C:\Users\taylo\Documents\GitHub\BudgetWise\BudgetWise\bin\Debug\net8.0\BudgetWise.staticwebassets.endpoints.json
+C:\Users\taylo\Documents\GitHub\BudgetWise\BudgetWise\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\Users\taylo\Documents\GitHub\BudgetWise\BudgetWise\obj\Debug\net8.0\staticwebassets\msbuild.BudgetWise.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+C:\Users\taylo\Documents\GitHub\BudgetWise\BudgetWise\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
