@@ -72,13 +72,8 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
     });
 
     // Syncfusion Configuration
-    var syncfusionLicenseKey = configuration["Syncfusion:LicenseKey"];
-    if (string.IsNullOrEmpty(syncfusionLicenseKey))
-    {
-        // Default to hardcoded key if not in configuration
-        syncfusionLicenseKey = "Mgo+DSMBMAY9C3t2UFhhQlJBfV5AQmBIYVp/TGpJfl96cVxMZVVBJAtUQF1hTX5WdkNjXH5edHxUR2VU";
-    }
-    Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(syncfusionLicenseKey);
+    var directLicenseKey = "Ngo9BigBOggjHTQxAR8/V1NMaF5cXmBCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWXxcc3VURWVdWE11WUA=";
+    Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(directLicenseKey);
 }
 
 void ConfigureApp(WebApplication app)
