@@ -91,7 +91,7 @@ void ConfigureApp(WebApplication app)
     }
 
     // Middleware Pipeline
-    app.UseHttpsRedirection();
+    // app.UseHttpsRedirection();
     app.UseStaticFiles();
     app.UseRouting();
     app.UseAuthentication();
