@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Syncfusion.Blazor;
 using BudgetWise.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -72,7 +73,7 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
     });
 
     // Syncfusion Configuration
-    var directLicenseKey = "Ngo9BigBOggjHTQxAR8/V1NMaF5cXmBCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWXxcc3VQRmVdUEV3XkQ=";
+    var directLicenseKey = "Ngo9BigBOggjHTQxAR8/V1NMaF5cXmBCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWXxcc3VQR2ZZWE10X0c=";
     Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(directLicenseKey);
 }
 
