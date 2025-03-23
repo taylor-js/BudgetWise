@@ -72,7 +72,7 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
     });
 
     // Syncfusion Configuration
-    var directLicenseKey = "Ngo9BigBOggjHTQxAR8/V1NMaF5cXmBCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWXxcc3VURWVdWE11WUA=";
+    var directLicenseKey = "Ngo9BigBOggjHTQxAR8/V1NMaF5cXmBCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWXxcc3VQRmVdUEV3XkQ=";
     Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(directLicenseKey);
 }
 
