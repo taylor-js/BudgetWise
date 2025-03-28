@@ -12,10 +12,6 @@ html {
     }
 }
 
-text{
-    color:white!important;
-}
-
 body {
     height: 100% !important;
     background-color: #12161d;
@@ -24,40 +20,21 @@ body {
     overflow-y: auto;
 }
 
-.dark-textbox {
-    background-color: #212529; /* Dark background color */
-    color: #ffffff; /* White text color */
+text {
+    color: white !important;
 }
-
 
 h1, h2, h3, h4, h5, h6 {
     color: #fff;
 }
 
 @media (max-width: 767.98px) {
-    h1 {
-        font-size: 2rem;
-    }
-
-    h2 {
-        font-size: 1.8rem;
-    }
-
-    h3 {
-        font-size: 1.6rem;
-    }
-
-    h4 {
-        font-size: 1.4rem;
-    }
-
-    h5 {
-        font-size: 1.2rem;
-    }
-
-    h6 {
-        font-size: 1rem;
-    }
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.8rem; }
+    h3 { font-size: 1.6rem; }
+    h4 { font-size: 1.4rem; }
+    h5 { font-size: 1.2rem; }
+    h6 { font-size: 1rem; }
 }
 
 section {
@@ -87,20 +64,13 @@ section {
     color: inherit;
 }
 
-.e-bigger .e-menu-wrapper ul .e-menu-item, .e-bigger.e-menu-wrapper ul .e-menu-item, 
-.e-bigger .e-menu-container ul .e-menu-item, .e-bigger.e-menu-container ul .e-menu-item{
-    line-height:50px;
-}
-#menu .e-menu-item.e-separator {
-    line-height:25px;
-}
 /* Menu */
 #menu {
     width: 100% !important;
     height: 100% !important;
     background-color: inherit;
     overflow-y: hidden;
-    padding-top: 80px!important;
+    padding-top: 80px !important;
 }
 
 #menu .e-menu-item:not(.e-separator) {
@@ -116,7 +86,7 @@ section {
     color: rgb(171, 163, 152);
     font-weight: 300;
     box-sizing: border-box;
-    height:30px;
+    height: 30px;
 }
 
 .e-anchor-wrap {
@@ -143,7 +113,7 @@ section {
     background-color: inherit;
 }
 
-/* Added CSS for dropdowns */
+/* Dropdowns */
 #menu .e-menu-item .e-ul {
     padding: 0;
     margin: 0;
@@ -162,10 +132,11 @@ section {
     height: 30px;
 }
 
-/*Main Content & Sidebar*/
+/* Main Content & Sidebar */
 .main-container {
     display: flex;
 }
+
 .main-content {
     flex-grow: 1;
     display: flex;
@@ -174,8 +145,8 @@ section {
     transition: margin-left 0.3s ease;
     padding-top: 60px;
     flex: 1;
-    overflow-y: auto;
 }
+
 #sidebar {
     border-right: 2px solid rgba(75, 82, 85, 0.24);
 }
@@ -184,6 +155,7 @@ section {
 #sidebar .e-menu-wrapper {
     background-color: #12161d;
 }
+
 .e-menu-wrapper, .e-menu-container {
     border-radius: 0px !important;
 }
@@ -193,8 +165,7 @@ section {
     cursor: pointer;
 }
 
-
-/*Desktop*/
+/* Desktop */
 @media (min-width: 768px) {
     #sidebar {
         width: 200px !important;
@@ -208,9 +179,11 @@ section {
         transition: transform 0.3s ease;
         z-index: 1000;
     }
+
     .e-sidebar.e-left.e-close {
         visibility: visible;
     }
+
     #sidebar.e-close {
         transform: translateX(-200px);
     }
@@ -232,25 +205,27 @@ section {
         width: 100%;
     }
 }
-/*Mobile*/
+
+/* Mobile */
 @media (max-width: 767px) {
     #sidebar {
-        top :0;
-        right:0;
+        top: 0;
+        right: 0;
         background-color: #12161d;
         -ms-overflow-style: none; /* IE and Edge */
         scrollbar-width: none; /* Firefox */
         overflow: hidden !important;
     }
-    
+
     .e-sidebar.e-left.e-close {
         visibility: visible;
     }
+
     .main-content {
         position: absolute;
         margin-left: 0px;
-        left:0;
-        width: 100% ;
+        left: 0;
+        width: 100%;
         top: 0;
     }
 
@@ -295,7 +270,6 @@ nav.navbar .nav-link:focus {
 nav.navbar i {
     padding: 10px;
     border-radius: 50%;
-    /*font-size: 1.2rem;*/
     cursor: pointer;
 }
 
@@ -328,8 +302,9 @@ nav.navbar img:hover {
     }
 }
 
+/* Tabs */
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
-    background-color: #454b51; /*#222b33*/
+    background-color: #454b51;
     color: #fff;
     border: none !important;
 }
@@ -379,9 +354,9 @@ img.profile-pic {
 .profile-wrapper .titles {
     line-height: 1;
 }
+
 /* Widgets */
 .widget {
-    border-radius: 1rem;
     border-radius: 0.5rem;
     background-color: #1a222b;
     width: 100%;
@@ -418,13 +393,13 @@ img.profile-pic {
 
 @media (max-width: 767.98px) {
     .widget.summary {
-        flex-direction: column; /* Change flex direction to column on mobile */
+        flex-direction: column;
     }
 
     .widget.summary > div:last-child {
-        border-bottom-left-radius: 1rem; /* Add border radius to bottom left on mobile */
-        border-bottom-right-radius: 1rem; /* Add border radius to bottom right on mobile
-        padding: 1rem; /* Add padding to the content on mobile */
+        border-bottom-left-radius: 1rem;
+        border-bottom-right-radius: 1rem;
+        padding: 1rem;
     }
 
     .widget .lead {
@@ -479,7 +454,6 @@ img.profile-pic {
 .ejs-accumulationchart {
     margin: auto;
 }
-
 
 /* Buttons */
 a.btn-custom {
