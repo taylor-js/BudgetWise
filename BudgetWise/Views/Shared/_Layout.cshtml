@@ -33,59 +33,50 @@
 </head>
 <body class="e-bigger">
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center ms-2" href="/">
                 <img src="~/favicon-32x32.png" alt="Logo" class="logo-img navbar-icon" />
                 <span class="logo-text ms-2 d-none d-lg-block">BudgetWise</span>
                 <span class="logo-text ms-2 d-lg-none">BW</span>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 justify-content-start align-items-center w-100">
+                <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link px-3" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        <partial name="_LoginPartial" />
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link px-3" asp-area="" asp-controller="Category" asp-action="Index">Categories</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link px-3" asp-area="" asp-controller="Transaction" asp-action="Index">Transactions</a>
-                    </li>
+                    @if (User is not null && User.Identity is not null && User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item">
+                            <i id="sidebar-toggler" class="sidebar-toggler fa-solid fa-bars fa-2x"></i>
+                        </li>
+                    }
                 </ul>
-                <div class="d-flex align-items-center ms-auto">
-                    <partial name="_LoginPartial" />
-                </div>
-                @if (User is not null && User.Identity is not null && User.Identity.IsAuthenticated)
-                {
-                    <div class="nav-item ms-2">
-                        <i id="sidebar-toggler" class="sidebar-toggler fa-solid fa-bars fa-2x"></i>
-                    </div>
-                }
             </div>
         </div>
     </nav>
-
+    
     <div class="container">
-    <div class="main-container">
+        <div class="main-container pb-3">
         @if (User is not null && User.Identity is not null && User.Identity.IsAuthenticated)
         {
             <partial name="_SideBar.cshtml" />
         }
         <div class="main-content @((User is not null && User.Identity is not null && User.Identity.IsAuthenticated) ? "main-content-logged-in" : "")">
-            <div class="container mt-4">
+            <div class="container">
                 <div class="row justify-content-center">
                     <main role="main" class="pb-3">
                         @if (ViewData["isDashboard"] == null || ViewContext.RouteData.Values["controller"]?.ToString() == "DemoDashboard")
                         {
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="d-flex flex-column mb-3">
+                                    <div class="d-flex flex-column">
                                         <div class="d-flex mb-1">
-                                            <div class="d-flex d-block w-100 justify-content-between mb-1 align-items-center">
-                                                <h3 class="fw-bold my-0">@ViewData["PageTitle"]</h3>
+                                            <div class="d-flex d-block w-100 justify-content-between align-items-center">
+                                                <h3 class="fw-bold my-0 pt-3 pb-3">@ViewData["PageTitle"]</h3>
                                                 <div class="">
                                                     @if (ViewData["PageActionText"] != null &&
                                                    (ViewContext.RouteData.Values["controller"]?.ToString() == "Category" || ViewContext.RouteData.Values["controller"]?.ToString() == "Transaction"))

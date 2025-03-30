@@ -20,6 +20,7 @@ body {
     overflow-y: auto;
 }
 
+
 text {
     color: white !important;
 }
@@ -143,7 +144,6 @@ section {
     flex-direction: column;
     overflow-y: auto;
     transition: margin-left 0.3s ease;
-    padding-top: 60px;
     flex: 1;
 }
 
@@ -169,7 +169,6 @@ section {
 @media (min-width: 768px) {
     #sidebar {
         width: 200px !important;
-        position: fixed;
         top: 0;
         left: 0;
         height: 100vh;
@@ -226,7 +225,6 @@ section {
         margin-left: 0px;
         left: 0;
         width: 100%;
-        top: 0;
     }
 
     body.sidebar-open {
@@ -236,12 +234,17 @@ section {
 
 /* Navbar */
 nav.navbar {
-    height: 60px !important;
-    position: fixed;
     top: 0;
     right: 0;
     background-color: #222b33;
     width: 100% !important;
+    z-index: 1030; /* Ensure navbar is above other elements */
+}
+
+.navbar-nav {
+    height: 100%; /* Make the navbar-nav the same height as the navbar */
+    display: flex;
+    align-items: center; /* Center items vertically */
 }
 
 .navbar-icon:hover {
@@ -251,6 +254,7 @@ nav.navbar {
 
 nav.navbar .navbar-toggler {
     border-color: rgba(255, 255, 255, 0.1);
+    overflow-y: hidden;
 }
 
 nav.navbar .navbar-toggler-icon {
@@ -262,10 +266,10 @@ nav.navbar .nav-link {
     padding: 0.5rem 1rem;
 }
 
-nav.navbar .nav-link:hover,
-nav.navbar .nav-link:focus {
-    color: rgba(255, 255, 255, 0.75);
-}
+    nav.navbar .nav-link:hover,
+    nav.navbar .nav-link:focus {
+        color: rgba(255, 255, 255, 0.75);
+    }
 
 nav.navbar i {
     padding: 10px;
@@ -273,56 +277,44 @@ nav.navbar i {
     cursor: pointer;
 }
 
-nav.navbar i:hover,
-nav.navbar img:hover {
-    cursor: pointer;
-    background-color: #48545f14;
-    transform: scale(1.05) translateZ(0px);
-}
+    nav.navbar i:hover,
+    nav.navbar img:hover {
+        cursor: pointer;
+        background-color: #48545f14;
+        transform: scale(1.05) translateZ(0px);
+    }
 
 @media (max-width: 991.98px) {
     nav.navbar .navbar-collapse {
-        top: 60px;
         right: 0;
         bottom: 0;
         left: 0;
         z-index: 1;
         background-color: rgba(18, 22, 29, 0.9);
-        overflow-y: auto;
+        overflow-y: hidden; /* Hide the scrollbar */
         transition: 0.3s;
     }
 
-    nav.navbar .navbar-collapse.show {
-        opacity: 1;
-        transform: translateY(0);
-    }
+        nav.navbar .navbar-collapse.show {
+            opacity: 1;
+            transform: translateY(0);
+            overflow-y: hidden; /* Ensure scrollbar is hidden when shown */
+        }
 
     nav.navbar .navbar-nav {
-        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+    }
+
+    nav.navbar .nav-item {
+        width: 100%;
+    }
+
+    .d-flex.flex-column.flex-lg-row {
+        flex-direction: column !important;
     }
 }
 
-/* Tabs */
-.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
-    background-color: #454b51;
-    color: #fff;
-    border: none !important;
-}
-
-.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link:hover {
-    background-color: #222b33;
-    color: #fff;
-    border: transparent !important;
-}
-
-.card-header {
-    border-bottom-color: #222b33 !important;
-    border-bottom: 2px solid;
-}
-
-.nav-tabs .nav-link {
-    border: none !important;
-}
 
 /* Profile */
 img.profile-pic {
@@ -336,7 +328,6 @@ img.profile-pic {
     justify-content: center;
     align-items: center;
     flex-direction: row;
-    background-color: rgba(72, 84, 95, 0.12);
     padding: 15px;
     margin: 0 15px 30px;
     border-radius: 12px;
