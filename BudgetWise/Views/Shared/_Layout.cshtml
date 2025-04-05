@@ -40,9 +40,10 @@
                 <span class="logo-text ms-2 d-none d-lg-block">BudgetWise</span>
                 <span class="logo-text ms-2 d-lg-none">BW</span>
             </a>
-            <button class="navbar-toggler mb-2" type="button" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" id="sidebar-toggler">
+            <button class="navbar-toggler mb-2" type="button" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" id="navbar-toggler">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
@@ -123,11 +124,9 @@
                 var dockBar = sidebarElement.ej2_instances[0];
                 console.log('DockBar initialized:', dockBar);
 
-                var toggler = document.getElementById('sidebar-toggler');
-                if (!toggler) {
-                    console.error('Sidebar toggler element not found.');
-                    return;
-                }
+                // Get both togglers
+                var sidebarToggler = document.getElementById('sidebar-toggler');
+                var navbarToggler = document.getElementById('navbar-toggler');
 
                 // Close the sidebar on page load if on mobile
                 if (window.innerWidth <= 768) {
@@ -136,22 +135,62 @@
                     document.body.classList.remove('sidebar-open');
                 }
 
-                toggler.onclick = function () {
-                    try {
-                        dockBar.toggle();
-                        document.body.classList.toggle('sidebar-open', dockBar.isOpen);
-                        console.log('Sidebar toggled. Is open:', dockBar.isOpen);
-                    } catch (error) {
-                        console.error('Error toggling sidebar:', error);
+                // Handle sidebar toggler click
+                if (sidebarToggler) {
+                    sidebarToggler.onclick = function (e) {
+                        e.stopPropagation();
+                        try {
+                            dockBar.toggle();
+                            document.body.classList.toggle('sidebar-open', dockBar.isOpen);
+                            console.log('Sidebar toggled. Is open:', dockBar.isOpen);
+                        } catch (error) {
+                            console.error('Error toggling sidebar:', error);
+                        }
+                    };
+                }
+
+                // Handle navbar toggler click on mobile
+                if (navbarToggler) {
+                    navbarToggler.onclick = function (e) {
+                        e.stopPropagation();
+                        if (window.innerWidth <= 768) {
+                            try {
+                                dockBar.toggle();
+                                document.body.classList.toggle('sidebar-open', dockBar.isOpen);
+                                console.log('Navbar toggler clicked. Sidebar is open:', dockBar.isOpen);
+                            } catch (error) {
+                                console.error('Error toggling sidebar from navbar:', error);
+                            }
+                        }
+                    };
+                }
+
+                // Close sidebar when clicking outside on mobile
+                document.addEventListener('click', function(e) {
+                    if (window.innerWidth <= 768 && dockBar.isOpen &&
+                        !sidebarElement.contains(e.target) &&
+                        e.target !== sidebarToggler &&
+                        e.target !== navbarToggler) {
+                        dockBar.hide();
+                        document.body.classList.remove('sidebar-open');
                     }
-                };
+                });
+
+                // Handle window resize
+                window.addEventListener('resize', function() {
+                    if (window.innerWidth <= 768) {
+                        dockBar.hide();
+                        document.body.classList.remove('sidebar-open');
+                    } else {
+                        dockBar.show();
+                    }
+                });
+
             } catch (error) {
                 console.error('Error initializing dockBar:', error);
             }
         });
     </script>
-
-
 
     @await RenderSectionAsync("scripts", required: false)
     <ejs-scripts></ejs-scripts>
