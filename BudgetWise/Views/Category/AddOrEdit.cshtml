@@ -5,10 +5,10 @@
 @{
     ViewData["PageTitle"] = Model.CategoryId == 0 ? "Create a new category" : "Edit category";
     var emojiFieldSettings = new AutoCompleteFieldSettings
-    {
-        // Retrieve only the actual HTML-encoded emoji
-        Value = "htmlCode"
-    };
+            {
+                // Retrieve only the actual HTML-encoded emoji
+                Value = "htmlCode"
+            };
 
     // Custom item template to display the emoji
     var itemTemplateHtml = "<div><span>${htmlCode}</span> - ${name}</div>";
@@ -24,9 +24,9 @@
                 <input type="hidden" asp-for="CategoryId" name="CategoryId" value="@Model.CategoryId" />
                 <div class="mb-3">
                     <div class='e-btn-group custom-rbt-group'>
-                        <input type="radio" id="radioleft" name="Type" value="Expense" checked="@(Model.Title == "Expense")" />
+                        <input type="radio" id="radioleft" name="Type" value="Expense" checked="@(Model.Type == "Expense")" />
                         <label class="e-btn" for="radioleft">Expense</label>
-                        <input type="radio" id="radiomiddle" name="Type" value="Income" checked="@(Model.Title == "Income")" />
+                        <input type="radio" id="radiomiddle" name="Type" value="Income" checked="@(Model.Type == "Income")" />
                         <label class="e-btn" for="radiomiddle">Income</label>
                     </div>
                     <span asp-validation-for="Type" class="text-danger fs-6"></span>
@@ -53,12 +53,6 @@
             </form>
         </div>
     </div>
-
-    @* <div class="col-md-5">
-        <div class="widget h-100 d-flex justify-content-center align-items-center">
-            <i class="fa-solid fa-shapes fa-2xl"></i>
-        </div>
-    </div> *@
 </div>
 
 <script>
@@ -67,8 +61,15 @@
 
         // Fetch and bind data to ejs-autocomplete
         fetch('/api/EmojiApi/flattened')
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
+                console.log('Fetched data:', data); // Log the fetched data
+
                 // Add a filterText property for combined search
                 data.forEach(emoji => {
                     emoji.filterText = `${emoji.htmlCode} ${emoji.name} ${emoji.category} ${emoji.group}`;
