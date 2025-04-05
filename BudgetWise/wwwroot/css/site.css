@@ -139,6 +139,7 @@ section {
 }
 
 .main-content {
+    padding-top: 70px;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -149,11 +150,23 @@ section {
 
 #sidebar {
     border-right: 2px solid rgba(75, 82, 85, 0.24);
+    top: 0;
+    right: 0;
+    background-color: #12161d;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    overflow: hidden !important;
+    transition: transform 0.3s ease;
+    z-index: 1000;
 }
 
 /* Sidebar */
 #sidebar .e-menu-wrapper {
     background-color: #12161d;
+}
+
+#sidebar .e-content-template {
+    padding-top: 56px;
 }
 
 .e-menu-wrapper, .e-menu-container {
@@ -232,14 +245,16 @@ section {
     }
 }
 
-/* Navbar */
 nav.navbar {
+    position: fixed;
     top: 0;
     right: 0;
+    left: 0;
     background-color: #222b33;
     width: 100% !important;
     z-index: 1030; /* Ensure navbar is above other elements */
 }
+
 
 .navbar-nav {
     height: 100%; /* Make the navbar-nav the same height as the navbar */

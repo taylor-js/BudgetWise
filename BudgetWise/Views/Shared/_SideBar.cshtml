@@ -47,8 +47,12 @@
         url = "/Identity/Account/Manage"
     });
 }
-<ejs-sidebar id="sidebar" enableDock="false" mediaQuery="(min-width: 768px)" enableGestures="false">
+<ejs-sidebar id="sidebar" enableDock="false" mediaQuery="(min-width: 768px)" enableGestures="false" class="e-close">
     <e-content-template>
+        <div class="d-block d-md-none">
+            <partial name="_LoginPartial" />
+        </div>
         <ejs-menu id="menu" items="menuItems" orientation="Vertical" hamburgerMode></ejs-menu>
     </e-content-template>
 </ejs-sidebar>
+

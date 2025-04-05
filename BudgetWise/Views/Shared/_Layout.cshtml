@@ -40,7 +40,7 @@
                 <span class="logo-text ms-2 d-none d-lg-block">BudgetWise</span>
                 <span class="logo-text ms-2 d-lg-none">BW</span>
             </a>
-            <button class="navbar-toggler mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler mb-2" type="button" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" id="sidebar-toggler">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -129,6 +129,13 @@
                     return;
                 }
 
+                // Close the sidebar on page load if on mobile
+                if (window.innerWidth <= 768) {
+                    dockBar.hide();
+                    sidebarElement.classList.add('e-close');
+                    document.body.classList.remove('sidebar-open');
+                }
+
                 toggler.onclick = function () {
                     try {
                         dockBar.toggle();
@@ -143,6 +150,8 @@
             }
         });
     </script>
+
+
 
     @await RenderSectionAsync("scripts", required: false)
     <ejs-scripts></ejs-scripts>
