@@ -15,7 +15,7 @@ namespace BudgetWise.Models
         [Required(ErrorMessage = "Title is required.")]
         public string Title { get; set; }
 
-        [Column(TypeName = "nvarchar(5)")]
+        [Column(TypeName = "varchar(5)")]
         [Required(ErrorMessage = "Icon is required.")]
         public string Icon { get; set; } = "";
 
