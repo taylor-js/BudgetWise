@@ -106,7 +106,7 @@ namespace BudgetWise.Migrations
                     b.Property<string>("Icon")
                         .IsRequired()
                         .HasMaxLength(5)
-                        .HasColumnType("varchar(5)");
+                        .HasColumnType("nvarchar(5)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -301,7 +301,7 @@ namespace BudgetWise.Migrations
                     b.HasOne("BudgetWise.Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");

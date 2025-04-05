@@ -44,6 +44,9 @@ namespace BudgetWise.Controllers
         [HttpGet]
         public async Task<IActionResult> AddOrEdit(int? id)
         {
+            var emojis = await _emojiApiController.GetFlattenedEmojis();
+            ViewBag.Emojis = emojis;
+
             if (id == null)
             {
                 var category = new Category
@@ -92,8 +95,11 @@ namespace BudgetWise.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            var emojis = await _emojiApiController.GetFlattenedEmojis();
+            ViewBag.Emojis = emojis;
             return View(category);
         }
+
 
         // POST: Category/Delete/5
         [HttpPost, ActionName("Delete")]

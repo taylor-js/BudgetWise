@@ -56,7 +56,7 @@ namespace BudgetWise.Models
                 entity.HasOne(t => t.Category)
                     .WithMany()
                     .HasForeignKey(t => t.CategoryId)
-                    .OnDelete(DeleteBehavior.Restrict);
+                    .OnDelete(DeleteBehavior.Cascade);
 
                 entity.Property(t => t.TransactionId)
                     .ValueGeneratedOnAdd(); // Removed PostgreSQL-specific UseIdentityAlwaysColumn()
