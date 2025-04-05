@@ -71,7 +71,6 @@ section {
     height: 100% !important;
     background-color: inherit;
     overflow-y: hidden;
-    padding-top: 80px !important;
 }
 
 #menu .e-menu-item:not(.e-separator) {
@@ -148,16 +147,37 @@ section {
     flex: 1;
 }
 
+/* Sidebar overlay behavior */
 #sidebar {
-    border-right: 2px solid rgba(75, 82, 85, 0.24);
+    position: fixed;
+    width: 250px !important;
     top: 0;
-    right: 0;
+    left: 0;
+    height: 100vh;
     background-color: #12161d;
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
-    overflow: hidden !important;
+    transform: translateX(-200px);
     transition: transform 0.3s ease;
-    z-index: 1000;
+    z-index: 1030;
+    border-right: 2px solid rgba(75, 82, 85, 0.24);
+}
+
+    #sidebar.e-open {
+        transform: translateX(0);
+    }
+
+.e-sidebar.e-left.e-close {
+    visibility: visible;
+    transform: translateX(-200px);
+}
+
+/* Main content should always be full width */
+.main-content,
+.main-content-logged-in {
+    width: 100%;
+    margin-left: 0;
+    transition: none;
 }
 
 /* Sidebar */
@@ -177,73 +197,86 @@ section {
     font-size: 1.5rem;
     cursor: pointer;
 }
+/* Mobile specific adjustments */
+@media (max-width: 767px) {
+    #sidebar {
+        height: calc(100vh - 56px);
+        top: 56px;
+        width: 100% !important; /* Make sidebar full width on mobile */
+        transform: translateX(-100%); /* Start off-screen */
+    }
+    
+    #sidebar.e-open {
+        transform: translateX(0); /* Show when open */
+    }
+}
 
 /* Desktop */
 @media (min-width: 768px) {
     #sidebar {
-        width: 200px !important;
         top: 0;
         left: 0;
         height: 100vh;
         background-color: #12161d;
         -ms-overflow-style: none; /* IE and Edge */
         scrollbar-width: none; /* Firefox */
+        transform: translateX(-200px); /* Always start collapsed */
         transition: transform 0.3s ease;
         z-index: 1000;
+        position: fixed; /* Keep it fixed */
     }
 
     .e-sidebar.e-left.e-close {
         visibility: visible;
+        transform: translateX(-200px) !important; /* Force it to be hidden when closed */
     }
 
-    #sidebar.e-close {
-        transform: translateX(-200px);
+    .e-sidebar.e-left.e-open {
+        transform: translateX(0) !important; /* Show when explicitly opened */
     }
 
-    .main-content {
-        width: calc(100% - 200px);
+    .main-content,
+    .main-content-logged-in {
+        width: 100%; /* Always start at full width */
+        margin-left: 0; /* Always start with no margin */
         transition: margin-left 0.3s ease, width 0.3s ease;
     }
 
-    .main-content-logged-in {
+    body.sidebar-open .main-content,
+    body.sidebar-open .main-content-logged-in {
         margin-left: 200px;
         width: calc(100% - 200px);
-        transition: margin-left 0.3s ease, width 0.3s ease;
     }
-
-    #sidebar.e-close + .main-content,
-    #sidebar.e-close + .main-content-logged-in {
-        margin-left: 0;
-        width: 100%;
+    #menu {
+        padding-top: 80px !important;
     }
 }
 
 /* Mobile */
 @media (max-width: 767px) {
     #sidebar {
-        top: 0;
-        right: 0;
-        background-color: #12161d;
-        -ms-overflow-style: none; /* IE and Edge */
-        scrollbar-width: none; /* Firefox */
-        overflow: hidden !important;
+        position: fixed;
+        height: calc(100vh - 56px);
+        top: 56px;
+        z-index: 1029;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        transform: translateX(-100%); /* Start off-screen */
+        transition: transform 0.3s ease;
     }
 
     .e-sidebar.e-left.e-close {
         visibility: visible;
+        transform: translateX(-100%) !important; /* Force it to be hidden when closed */
     }
 
-    .main-content {
-        position: absolute;
-        margin-left: 0px;
-        left: 0;
-        width: 100%;
+    .e-sidebar.e-left.e-open {
+        transform: translateX(0) !important; /* Show when explicitly opened */
     }
-
-    body.sidebar-open {
-        overflow: hidden;
+    #menu {
+        padding-top: 20px !important;
     }
 }
+
 
 nav.navbar {
     position: fixed;

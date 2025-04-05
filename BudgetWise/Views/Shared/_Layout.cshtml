@@ -67,7 +67,7 @@
             <partial name="_SideBar.cshtml" />
         }
         <div class="main-content @((User is not null && User.Identity is not null && User.Identity.IsAuthenticated) ? "main-content-logged-in" : "")">
-            <div class="container">
+            <div class="container mt-3">
                 <div class="row justify-content-center">
                     <main role="main" class="pb-3">
                         @if (ViewData["isDashboard"] == null || ViewContext.RouteData.Values["controller"]?.ToString() == "DemoDashboard")
@@ -111,86 +111,48 @@
     <script type="text/javascript" asp-append-version="true" src="~/js/site.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            try {
-                var sidebarElement = document.getElementById('sidebar');
-                if (!sidebarElement) {
-                    console.error('Sidebar element not found.');
-                    return;
-                }
-                if (!sidebarElement.ej2_instances || !sidebarElement.ej2_instances[0]) {
-                    console.error('ej2_instances not found or not initialized.');
-                    return;
-                }
-                var dockBar = sidebarElement.ej2_instances[0];
-                console.log('DockBar initialized:', dockBar);
+            // Get elements
+            var sidebar = document.getElementById('sidebar');
+            var togglers = document.querySelectorAll('#sidebar-toggler, #navbar-toggler');
 
-                // Get both togglers
-                var sidebarToggler = document.getElementById('sidebar-toggler');
-                var navbarToggler = document.getElementById('navbar-toggler');
+            // Function to toggle sidebar
+            function toggleSidebar(e) {
+                if (e) e.stopPropagation();
 
-                // Close the sidebar on page load if on mobile
-                if (window.innerWidth <= 768) {
-                    dockBar.hide();
-                    sidebarElement.classList.add('e-close');
-                    document.body.classList.remove('sidebar-open');
-                }
+                if (sidebar && sidebar.ej2_instances && sidebar.ej2_instances[0]) {
+                    var sidebarObj = sidebar.ej2_instances[0];
 
-                // Handle sidebar toggler click
-                if (sidebarToggler) {
-                    sidebarToggler.onclick = function (e) {
-                        e.stopPropagation();
-                        try {
-                            dockBar.toggle();
-                            document.body.classList.toggle('sidebar-open', dockBar.isOpen);
-                            console.log('Sidebar toggled. Is open:', dockBar.isOpen);
-                        } catch (error) {
-                            console.error('Error toggling sidebar:', error);
-                        }
-                    };
-                }
-
-                // Handle navbar toggler click on mobile
-                if (navbarToggler) {
-                    navbarToggler.onclick = function (e) {
-                        e.stopPropagation();
-                        if (window.innerWidth <= 768) {
-                            try {
-                                dockBar.toggle();
-                                document.body.classList.toggle('sidebar-open', dockBar.isOpen);
-                                console.log('Navbar toggler clicked. Sidebar is open:', dockBar.isOpen);
-                            } catch (error) {
-                                console.error('Error toggling sidebar from navbar:', error);
-                            }
-                        }
-                    };
-                }
-
-                // Close sidebar when clicking outside on mobile
-                document.addEventListener('click', function(e) {
-                    if (window.innerWidth <= 768 && dockBar.isOpen &&
-                        !sidebarElement.contains(e.target) &&
-                        e.target !== sidebarToggler &&
-                        e.target !== navbarToggler) {
-                        dockBar.hide();
-                        document.body.classList.remove('sidebar-open');
-                    }
-                });
-
-                // Handle window resize
-                window.addEventListener('resize', function() {
-                    if (window.innerWidth <= 768) {
-                        dockBar.hide();
+                    if (sidebarObj.isOpen) {
+                        sidebarObj.hide();
                         document.body.classList.remove('sidebar-open');
                     } else {
-                        dockBar.show();
+                        sidebarObj.show();
+                        document.body.classList.add('sidebar-open');
                     }
-                });
-
-            } catch (error) {
-                console.error('Error initializing dockBar:', error);
+                }
             }
+
+            // Add click event to all togglers
+            togglers.forEach(function(toggler) {
+                if (toggler) toggler.addEventListener('click', toggleSidebar);
+            });
+
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768 &&
+                    sidebar &&
+                    sidebar.ej2_instances &&
+                    sidebar.ej2_instances[0] &&
+                    sidebar.ej2_instances[0].isOpen &&
+                    !sidebar.contains(e.target) &&
+                    !Array.from(togglers).some(t => t === e.target || t.contains(e.target))) {
+
+                    toggleSidebar();
+                }
+            });
         });
     </script>
+
 
     @await RenderSectionAsync("scripts", required: false)
     <ejs-scripts></ejs-scripts>
