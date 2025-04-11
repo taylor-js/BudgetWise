@@ -1,6 +1,6 @@
 # BudgetWise
 
-[BudgetWise](https://www.budget-wise.net/) is a comprehensive personal finance application built with ASP.NET Core MVC that helps users track expenses, manage budgets, and gain insights into their spending habits. Originally developed with PostgreSQL, it has been migrated to SQL Server and deployed on Microsoft Azure for improved performance and reliability.
+[BudgetWise](https://budgetwise-app-ardnf9gefuafb5e0.canadaeast-01.azurewebsites.net/) is a comprehensive personal finance application built with ASP.NET Core MVC that helps users track expenses, manage budgets, and gain insights into their spending habits. Originally developed with PostgreSQL, it has been migrated to SQL Server and deployed on Microsoft Azure for improved performance and reliability.
 
 ## Features
 
